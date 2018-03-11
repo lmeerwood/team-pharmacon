@@ -1,4 +1,4 @@
-**Team Pharmacon Repository**
+## Team Pharmacon Repository
 
 Welcome! Team Pharmacon comprises of Beau Johnson, Leonard Meerwood and Ryan Smith. Team Pharmacon will be making a pharmacy error tracker in the hopes to aid pharmacist in keeping track of wastage and errors.
 
