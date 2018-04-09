@@ -87,17 +87,28 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
+-- Table `testdatabase`.`testData`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `testdatabase`.`testData` (
+  `idtestData` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `timeDate` TIMESTAMP(6) NOT NULL COMMENT '',
+  `address` VARCHAR(45) NOT NULL COMMENT '',
+  PRIMARY KEY (`idtestData`)  COMMENT '')
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Data for table `testdatabase`.`medicine`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `testdatabase`;
-INSERT INTO `testdatabase`.`medicine` (`medicineType`) VALUES ('Ibuprofen');
-INSERT INTO `testdatabase`.`medicine` (`medicineType`) VALUES ('Morphine');
-INSERT INTO `testdatabase`.`medicine` (`medicineType`) VALUES ('Codeine');
-INSERT INTO `testdatabase`.`medicine` (`medicineType`) VALUES ('Paracetamol');
-INSERT INTO `testdatabase`.`medicine` (`medicineType`) VALUES ('Levothroxine');
-INSERT INTO `testdatabase`.`medicine` (`medicineType`) VALUES ('Rosuvastatin');
-INSERT INTO `testdatabase`.`medicine` (`medicineType`) VALUES ('Ciprofloxacin');
+INSERT INTO `testdatabase`.`medicine` (`idMedicine`, `medicineType`) VALUES (1, 'Ibuprofen');
+INSERT INTO `testdatabase`.`medicine` (`idMedicine`, `medicineType`) VALUES (2, 'Morphine');
+INSERT INTO `testdatabase`.`medicine` (`idMedicine`, `medicineType`) VALUES (3, 'Codeine');
+INSERT INTO `testdatabase`.`medicine` (`idMedicine`, `medicineType`) VALUES (4, 'Paracetamol');
+INSERT INTO `testdatabase`.`medicine` (`idMedicine`, `medicineType`) VALUES (5, 'Levothroxine');
+INSERT INTO `testdatabase`.`medicine` (`idMedicine`, `medicineType`) VALUES (6, 'Rosuvastatin');
+INSERT INTO `testdatabase`.`medicine` (`idMedicine`, `medicineType`) VALUES (7, 'Ciprofloxacin');
 
 COMMIT;
 
@@ -107,27 +118,15 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `testdatabase`;
-INSERT INTO `testdatabase`.`error` (`errorType`) VALUES ('Quantity');
-INSERT INTO `testdatabase`.`error` (`errorType`) VALUES ('Incorrect drug supplied');
-INSERT INTO `testdatabase`.`error` (`errorType`) VALUES ('Incorrect directions given');
-INSERT INTO `testdatabase`.`error` (`errorType`) VALUES ('Slow release drug provided');
-INSERT INTO `testdatabase`.`error` (`errorType`) VALUES ('Immediate release provided');
-INSERT INTO `testdatabase`.`error` (`errorType`) VALUES ('Per oral drug provided');
-INSERT INTO `testdatabase`.`error` (`errorType`) VALUES ('Given intraveniously');
+INSERT INTO `testdatabase`.`error` (`idError`, `errorType`) VALUES (1, 'Quantity');
+INSERT INTO `testdatabase`.`error` (`idError`, `errorType`) VALUES (2, 'Incorrect drug supplied');
+INSERT INTO `testdatabase`.`error` (`idError`, `errorType`) VALUES (3, 'Incorrect directions given');
+INSERT INTO `testdatabase`.`error` (`idError`, `errorType`) VALUES (4, 'Slow release drug provided');
+INSERT INTO `testdatabase`.`error` (`idError`, `errorType`) VALUES (5, 'Immediate release provided');
+INSERT INTO `testdatabase`.`error` (`idError`, `errorType`) VALUES (6, 'Per oral drug provided');
+INSERT INTO `testdatabase`.`error` (`idError`, `errorType`) VALUES (7, 'Given intraveniously');
 
 COMMIT;
-
--- -----------------------------------------------------
--- Data for table `testdatabase`.`user`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `testdatabase`;
-insert into user (userName, userType, password, salt) values ('Oliver', 'User', aes_encrypt(concat('password12', 'salt1'), 'key1'), 'salt1');
-insert into user (userName, userType, password, salt) values ('Charlotte', 'User', aes_encrypt(concat('password12', 'salt2'), 'key1'), 'salt2');
-insert into user (userName, userType, password, salt) values ('Jackson', 'Supervisor', aes_encrypt(concat('password12', 'salt3'), 'key1'), 'salt3');
-insert into user (userName, userType, password, salt) values ('Chloe', 'Administrator', aes_encrypt(concat('password12', 'salt4'), 'key1'), 'salt4');
-
-commit;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
