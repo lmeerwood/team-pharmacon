@@ -10,5 +10,5 @@ java -jar ~/metabase.jar &
 echo Metabase Started;
 
 # Start nodejs and app
-node ~/pharmacy_app/code/app.js &
+npm start --prefix ~/pharmacy_app/code/server/app.js &
 echo Node Started;
