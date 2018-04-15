@@ -61,7 +61,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PETdatabase`.`Physician` (
   `idPhysician` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `physicianName` VARCHAR(45) NOT NULL COMMENT '',
-  `providerNumber` VARCHAR(45) NOT NULL COMMENT '',
+  `providerNumber` VARCHAR(15) NOT NULL COMMENT '',
+  `physicianComment` VARCHAR(150) NULL COMMENT '',
   PRIMARY KEY (`idPhysician`)  COMMENT '')
 ENGINE = InnoDB;
 
@@ -72,8 +73,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PETdatabase`.`Patient` (
   `idPatient` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `patientName` VARCHAR(50) NOT NULL COMMENT '',
-  `patientHospitalId` VARCHAR(45) NOT NULL COMMENT '',
-  `patientType` VARCHAR(20) NOT NULL COMMENT '',
+  `patientHospitalId` VARCHAR(20) NOT NULL COMMENT '',
+  `patientType` VARCHAR(15) NOT NULL COMMENT '',
   PRIMARY KEY (`idPatient`)  COMMENT '',
   CONSTRAINT `idPhysician`
     FOREIGN KEY (`idPatient`)
@@ -102,9 +103,10 @@ CREATE TABLE IF NOT EXISTS `PETdatabase`.`Error` (
   `userId` INT NOT NULL COMMENT '',
   `errorDate` DATE NOT NULL COMMENT '',
   `errorTime` TIME(6) NOT NULL COMMENT '',
-  `errorLocation` VARCHAR(45) NOT NULL COMMENT '',
+  `errorDetectedLocation` VARCHAR(25) NOT NULL COMMENT '',
   `iimsCompleted` TINYINT(1) NOT NULL COMMENT '',
   `wasPharmacistNotified` TINYINT(1) NOT NULL COMMENT '',
+  `wasPhysicianNotified` TINYINT(1) NOT NULL COMMENT '',
   PRIMARY KEY (`idError`)  COMMENT '',
   INDEX `idUser_idx` (`userId` ASC)  COMMENT '',
   CONSTRAINT `idPharmacist`
@@ -165,7 +167,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PETdatabase`.`Diagnosis` (
   `idDiagnosis` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `diagnosis` VARCHAR(150) NOT NULL COMMENT '',
+  `diagnosis` VARCHAR(150) NULL COMMENT '',
   PRIMARY KEY (`idDiagnosis`)  COMMENT '',
   CONSTRAINT `idPhysician`
     FOREIGN KEY (`idDiagnosis`)
