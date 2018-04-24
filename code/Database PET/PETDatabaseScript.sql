@@ -15,43 +15,68 @@ CREATE SCHEMA IF NOT EXISTS `PETdatabase` DEFAULT CHARACTER SET utf8 COLLATE utf
 USE `PETdatabase` ;
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`User`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`User` (
-  `idUser` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `userName` VARCHAR(45) NOT NULL COMMENT '',
-  `userAuthorisation` VARCHAR(20) NOT NULL COMMENT '',
-  PRIMARY KEY (`idUser`)  COMMENT '')
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `PETdatabase`.`Login`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PETdatabase`.`Login` (
   `idLogin` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `userName` VARCHAR(45) NOT NULL COMMENT '',
+  `userAuthorisation` VARCHAR(20) NOT NULL COMMENT '',
+  `userActive` TINYINT(1) NOT NULL COMMENT '',
   `password` VARCHAR(150) NOT NULL COMMENT '',
   `key` VARCHAR(45) NOT NULL COMMENT '',
   `salt` VARCHAR(45) NOT NULL COMMENT '',
   PRIMARY KEY (`idLogin`)  COMMENT '',
-  CONSTRAINT `idUser`
-    FOREIGN KEY (`idLogin`)
-    REFERENCES `PETdatabase`.`User` (`idUser`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  UNIQUE INDEX `userName_UNIQUE` (`userName` ASC)  COMMENT '')
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`Pharmacist`
+-- Table `PETdatabase`.`Worker`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Pharmacist` (
-  `idPharmacist` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `pharmacistName` VARCHAR(45) NOT NULL COMMENT '',
-  `pharmacistProviderId` VARCHAR(15) NOT NULL COMMENT '',
-  PRIMARY KEY (`idPharmacist`)  COMMENT '')
+CREATE TABLE IF NOT EXISTS `PETdatabase`.`Worker` (
+  `idWorker` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `workerName` VARCHAR(45) NOT NULL COMMENT '',
+  `workerRole` VARCHAR(20) NOT NULL COMMENT '',
+  `workerActive` TINYINT(1) NOT NULL COMMENT '',
+  PRIMARY KEY (`idWorker`)  COMMENT '',
+  UNIQUE INDEX `workerName_UNIQUE` (`workerName` ASC)  COMMENT '')
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `PETdatabase`.`ErrorType`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `PETdatabase`.`ErrorType` (
+  `idErrorType` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `errorType` VARCHAR(45) NOT NULL COMMENT '',
+  `generalComment` VARCHAR(150) NULL COMMENT '',
+  PRIMARY KEY (`idErrorType`)  COMMENT '')
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `PETdatabase`.`Medication`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `PETdatabase`.`Medication` (
+  `idMedication` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `medicationName` VARCHAR(45) NOT NULL COMMENT '',
+  `medicationType` VARCHAR(45) NOT NULL COMMENT '',
+  `errorTypeId` INT NOT NULL COMMENT '',
+  `patientId` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`idMedication`)  COMMENT '')
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `PETdatabase`.`Patient`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `PETdatabase`.`Patient` (
+  `idPatient` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `patientName` VARCHAR(50) NOT NULL COMMENT '',
+  `patientHospitalId` VARCHAR(20) NOT NULL COMMENT '',
+  `patientType` VARCHAR(15) NOT NULL COMMENT '',
+  PRIMARY KEY (`idPatient`)  COMMENT '')
 ENGINE = InnoDB;
 
 
@@ -68,16 +93,14 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`Patient`
+-- Table `PETdatabase`.`Diagnosis`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Patient` (
-  `idPatient` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `patientName` VARCHAR(50) NOT NULL COMMENT '',
-  `patientHospitalId` VARCHAR(20) NOT NULL COMMENT '',
-  `patientType` VARCHAR(15) NOT NULL COMMENT '',
-  PRIMARY KEY (`idPatient`)  COMMENT '',
+CREATE TABLE IF NOT EXISTS `PETdatabase`.`Diagnosis` (
+  `idDiagnosis` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `diagnosis` VARCHAR(150) NULL COMMENT '',
+  PRIMARY KEY (`idDiagnosis`)  COMMENT '',
   CONSTRAINT `idPhysician`
-    FOREIGN KEY (`idPatient`)
+    FOREIGN KEY (`idDiagnosis`)
     REFERENCES `PETdatabase`.`Physician` (`idPhysician`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -85,13 +108,39 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`ErrorType`
+-- Table `PETdatabase`.`Prescription`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`ErrorType` (
-  `idErrorType` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `errorType` VARCHAR(45) NOT NULL COMMENT '',
-  `generalComment` VARCHAR(150) NULL COMMENT '',
-  PRIMARY KEY (`idErrorType`)  COMMENT '')
+CREATE TABLE IF NOT EXISTS `PETdatabase`.`Prescription` (
+  `idPrescription` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `medicationID` INT NOT NULL COMMENT '',
+  `patientID` INT NOT NULL COMMENT '',
+  `physicianID` INT NULL COMMENT '',
+  `diagnosisID` INT NULL COMMENT '',
+  PRIMARY KEY (`idPrescription`)  COMMENT '',
+  INDEX `idMedication_idx` (`medicationID` ASC)  COMMENT '',
+  INDEX `idPatient_idx` (`patientID` ASC)  COMMENT '',
+  INDEX `idPhysician_idx` (`physicianID` ASC)  COMMENT '',
+  INDEX `idDiagnosis_idx` (`diagnosisID` ASC)  COMMENT '',
+  CONSTRAINT `idMedication`
+    FOREIGN KEY (`medicationID`)
+    REFERENCES `PETdatabase`.`Medication` (`idMedication`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idPatient`
+    FOREIGN KEY (`patientID`)
+    REFERENCES `PETdatabase`.`Patient` (`idPatient`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idPhysician`
+    FOREIGN KEY (`physicianID`)
+    REFERENCES `PETdatabase`.`Physician` (`idPhysician`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idDiagnosis`
+    FOREIGN KEY (`diagnosisID`)
+    REFERENCES `PETdatabase`.`Diagnosis` (`idDiagnosis`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -104,79 +153,30 @@ CREATE TABLE IF NOT EXISTS `PETdatabase`.`Error` (
   `errorDate` DATE NOT NULL COMMENT '',
   `errorTime` TIME(6) NOT NULL COMMENT '',
   `errorDetectedLocation` VARCHAR(25) NOT NULL COMMENT '',
-  `iimsCompleted` TINYINT(1) NOT NULL COMMENT '',
-  `wasPharmacistNotified` TINYINT(1) NOT NULL COMMENT '',
+  `errorCausedByWorker` VARCHAR(45) NOT NULL COMMENT '',
+  `wasWorkerNotified` TINYINT(1) NOT NULL COMMENT '',
   `wasPhysicianNotified` TINYINT(1) NOT NULL COMMENT '',
+  `iimsCompleted` TINYINT(1) NOT NULL COMMENT '',
   PRIMARY KEY (`idError`)  COMMENT '',
   INDEX `idUser_idx` (`userId` ASC)  COMMENT '',
-  CONSTRAINT `idPharmacist`
-    FOREIGN KEY (`idError`)
-    REFERENCES `PETdatabase`.`Pharmacist` (`idPharmacist`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `idPatient`
-    FOREIGN KEY (`idError`)
-    REFERENCES `PETdatabase`.`Patient` (`idPatient`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `idUser`
     FOREIGN KEY (`userId`)
-    REFERENCES `PETdatabase`.`User` (`idUser`)
+    REFERENCES `PETdatabase`.`Worker` (`idWorker`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `idErrorType`
     FOREIGN KEY (`idError`)
     REFERENCES `PETdatabase`.`ErrorType` (`idErrorType`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `PETdatabase`.`Medication`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Medication` (
-  `idMedication` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `medicationName` VARCHAR(45) NOT NULL COMMENT '',
-  `medicationType` VARCHAR(45) NOT NULL COMMENT '',
-  `errorTypeId` INT NOT NULL COMMENT '',
-  `patientId` INT NOT NULL COMMENT '',
-  PRIMARY KEY (`idMedication`)  COMMENT '',
-  INDEX `idErrorType_idx` (`errorTypeId` ASC)  COMMENT '',
-  INDEX `idPatient_idx` (`patientId` ASC)  COMMENT '',
-  CONSTRAINT `idErrorType`
-    FOREIGN KEY (`errorTypeId`)
-    REFERENCES `PETdatabase`.`ErrorType` (`idErrorType`)
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idLogin`
+    FOREIGN KEY (`idError`)
+    REFERENCES `PETdatabase`.`Login` (`idLogin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `idPatient`
-    FOREIGN KEY (`patientId`)
-    REFERENCES `PETdatabase`.`Patient` (`idPatient`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `idPhysician`
-    FOREIGN KEY (`idMedication`)
-    REFERENCES `PETdatabase`.`Physician` (`idPhysician`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `PETdatabase`.`Diagnosis`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Diagnosis` (
-  `idDiagnosis` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `diagnosis` VARCHAR(150) NULL COMMENT '',
-  PRIMARY KEY (`idDiagnosis`)  COMMENT '',
-  CONSTRAINT `idPhysician`
-    FOREIGN KEY (`idDiagnosis`)
-    REFERENCES `PETdatabase`.`Physician` (`idPhysician`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `idPatient`
-    FOREIGN KEY (`idDiagnosis`)
-    REFERENCES `PETdatabase`.`Patient` (`idPatient`)
+  CONSTRAINT `idPrescription`
+    FOREIGN KEY (`idError`)
+    REFERENCES `PETdatabase`.`Prescription` (`idPrescription`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
