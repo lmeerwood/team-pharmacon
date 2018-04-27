@@ -50,7 +50,6 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PETdatabase`.`ErrorType` (
   `idErrorType` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `errorType` VARCHAR(45) NOT NULL COMMENT '',
-  `generalComment` VARCHAR(150) NULL COMMENT '',
   PRIMARY KEY (`idErrorType`)  COMMENT '')
 ENGINE = InnoDB;
 
@@ -157,6 +156,7 @@ CREATE TABLE IF NOT EXISTS `PETdatabase`.`Error` (
   `wasWorkerNotified` TINYINT(1) NOT NULL COMMENT '',
   `wasPhysicianNotified` TINYINT(1) NOT NULL COMMENT '',
   `iimsCompleted` TINYINT(1) NOT NULL COMMENT '',
+  `generalComment` VARCHAR(150) NULL COMMENT '',
   PRIMARY KEY (`idError`)  COMMENT '',
   INDEX `idUser_idx` (`userId` ASC)  COMMENT '',
   CONSTRAINT `idUser`
