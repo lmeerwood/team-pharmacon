@@ -61,20 +61,7 @@ CREATE TABLE IF NOT EXISTS `PETdatabase`.`Medication` (
   `idMedication` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `medicationName` VARCHAR(45) NOT NULL COMMENT '',
   `medicationType` VARCHAR(45) NOT NULL COMMENT '',
-  `errorTypeId` INT NOT NULL COMMENT '',
-  `patientId` INT NOT NULL COMMENT '',
   PRIMARY KEY (`idMedication`)  COMMENT '')
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `PETdatabase`.`Physician`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Physician` (
-  `physicianName` VARCHAR(45) NOT NULL COMMENT '',
-  `providerNumber` VARCHAR(15) NOT NULL COMMENT '',
-  `physicianComment` VARCHAR(150) NULL COMMENT '',
-  PRIMARY KEY (`providerNumber`)  COMMENT '')
 ENGINE = InnoDB;
 
 
@@ -84,14 +71,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PETdatabase`.`Diagnosis` (
   `idDiagnosis` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `diagnosis` VARCHAR(150) NULL COMMENT '',
-  `physicianProviderNo` VARCHAR(5) NULL COMMENT '',
-  PRIMARY KEY (`idDiagnosis`)  COMMENT '',
-  INDEX `providerNumber_idx` (`physicianProviderNo` ASC)  COMMENT '',
-  CONSTRAINT `providerNumber`
-    FOREIGN KEY (`physicianProviderNo`)
-    REFERENCES `PETdatabase`.`Physician` (`providerNumber`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`idDiagnosis`)  COMMENT '')
 ENGINE = InnoDB;
 
 
@@ -103,6 +83,17 @@ CREATE TABLE IF NOT EXISTS `PETdatabase`.`Patient` (
   `patientName` VARCHAR(50) NOT NULL COMMENT '',
   `patientType` VARCHAR(15) NOT NULL COMMENT '',
   PRIMARY KEY (`patientHospitalId`)  COMMENT '')
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `PETdatabase`.`Physician`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `PETdatabase`.`Physician` (
+  `physicianName` VARCHAR(45) NOT NULL COMMENT '',
+  `providerNumber` VARCHAR(15) NOT NULL COMMENT '',
+  `physicianComment` VARCHAR(150) NULL COMMENT '',
+  PRIMARY KEY (`providerNumber`)  COMMENT '')
 ENGINE = InnoDB;
 
 
@@ -159,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `PETdatabase`.`Error` (
   `generalComment` VARCHAR(150) NULL COMMENT '',
   PRIMARY KEY (`idError`)  COMMENT '',
   INDEX `idUser_idx` (`userId` ASC)  COMMENT '',
-  CONSTRAINT `idUser`
+  CONSTRAINT `idWorker`
     FOREIGN KEY (`userId`)
     REFERENCES `PETdatabase`.`Worker` (`idWorker`)
     ON DELETE NO ACTION
