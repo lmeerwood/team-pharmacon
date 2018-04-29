@@ -5,18 +5,37 @@
         <h1 id="introduction" class="display-1 primary--text">
           {{msg}}
         </h1>
-        <fieldset>
-        <div class="uname">
-          <label class="username"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="username" required>
-        </div>
-        <div class="pword">
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
-        </div>
-        <div class="button">
-            <input type="submit" value="Login">
-        </div>
+
+        <fieldset class="white">
+          <v-container fluid>
+            <v-layout row>
+              <v-flex xs4>
+                <v-subheader><b>Enter Username</b></v-subheader>
+                </v-flex>
+                <v-flex xs8>
+                  <v-text-field
+                  name="input-3-5"
+                  label="Username"
+                  single-line
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+            <v-layout row>
+              <v-flex xs4>
+                <v-subheader><b>Enter Password</b></v-subheader>
+                </v-flex>
+                <v-flex xs8>
+                  <v-text-field
+                  name="input-3-5"
+                  label="Password"
+                  single-line
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+          </v-container>
+          <div class="text-xs-center">
+            <v-btn round color="primary" dark>Login</v-btn>
+          </div>
         </fieldset>
       </section>
     </v-flex>
@@ -37,19 +56,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .top-margin {
-    margin-top: 58px;
-  }
-  .uname {
-    padding: 15px;
-  }
-  .pword {
-    padding: 15px;
-  }
-  .button {
-    padding: 15px;
-    background-color: cornflowerblue;
-    width: 200px;
-    text-align: center;
+    margin-top: 40px;
   }
   
 </style>
