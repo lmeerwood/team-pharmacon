@@ -4,7 +4,7 @@
       <page-header/>
       <div class="imgcontainer">
         <img src="@/assets/PET-image.png" alt="Avatar">
-        </div>  
+        </div>
       <main>
         <router-view/>
       </main>
