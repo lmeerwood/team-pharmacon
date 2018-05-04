@@ -79,6 +79,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .top-margin {
-  margin-top: 58px;
+  margin-top: 40px;
 }
 </style>

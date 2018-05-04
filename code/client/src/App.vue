@@ -1,7 +1,10 @@
 <template>
-  <div id="app">
-    <v-app>
+  <div id="app" class="body">
+    <v-app class="blue lighten-5">
       <page-header/>
+      <div class="imgcontainer">
+        <img src="@/assets/PET-image.png" alt="Avatar">
+        </div>
       <main>
         <router-view/>
       </main>
@@ -26,7 +29,12 @@ section::before {
   display: block;
   position: relative;
   width: 0;
-  height: 80px;
-  margin-top: -80px;
+  height: 60px;
+  margin-top: -60px;
 }
+.imgcontainer {
+  margin-top: 20mm;
+  text-align: center;
+}
+
 </style>

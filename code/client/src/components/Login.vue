@@ -5,9 +5,38 @@
         <h1 id="introduction" class="display-1 primary--text">
           {{msg}}
         </h1>
-        <div>
-          <p>A template page for Login. Feel free to edit this page as needed.</p>
-        </div>
+
+        <fieldset class="white">
+          <v-container fluid>
+            <v-layout row>
+              <v-flex xs4>
+                <v-subheader><b>Enter Username</b></v-subheader>
+                </v-flex>
+                <v-flex xs8>
+                  <v-text-field
+                  name="input-3-5"
+                  label="Username"
+                  single-line
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+            <v-layout row>
+              <v-flex xs4>
+                <v-subheader><b>Enter Password</b></v-subheader>
+                </v-flex>
+                <v-flex xs8>
+                  <v-text-field
+                  name="input-3-5"
+                  label="Password"
+                  single-line
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+          </v-container>
+          <div class="text-xs-center">
+            <v-btn round color="primary" dark>Login</v-btn>
+          </div>
+        </fieldset>
       </section>
     </v-flex>
   </v-layout>
@@ -27,6 +56,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .top-margin {
-    margin-top: 58px;
+    margin-top: 40px;
   }
 </style>
