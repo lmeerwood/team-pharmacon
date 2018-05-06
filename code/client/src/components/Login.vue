@@ -105,7 +105,7 @@ export default {
     message: '',
     errorMessages: [],
     rules: {
-      required: (value) => !!value || 'Required.',
+      required: (value) => !!value || 'Required.'
     }
   }),
   computed: {
@@ -146,7 +146,7 @@ export default {
       Object.keys(this.form).forEach(f => {
         this.$refs[f].reset()
       })
-    },
+    }
   }
 }
 </script>
