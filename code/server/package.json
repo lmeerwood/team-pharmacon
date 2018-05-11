@@ -8,9 +8,12 @@
     "dev": "node node_modules/nodemon/bin/nodemon.js ./bin/www --exec \"npm run test && node\""
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "~4.16.0",
+    "mustache": "^2.3.0",
     "mysql": "^2.15.0",
-    "nodemon": "^1.17.4"
+    "nodemon": "^1.17.4",
+    "pug": "^2.0.3"
   },
   "devDependencies": {
     "standard": "^11.0.1"
