@@ -4,11 +4,15 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "node node_modules/nodemon/bin/nodemon.js ./bin/www"
+    "test": "node node_modules/standard/bin/cmd.js",
+    "dev": "node node_modules/nodemon/bin/nodemon.js ./bin/www --exec \"npm run test && node\""
   },
   "dependencies": {
     "express": "~4.16.0",
     "mysql": "^2.15.0",
     "nodemon": "^1.17.4"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
   }
 }
