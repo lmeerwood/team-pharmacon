@@ -86,3 +86,28 @@ INSERT INTO `petdatabase`.`medication` (`idMedication`, `medicationName`, `medic
 INSERT INTO `petdatabase`.`medication` (`idMedication`, `medicationName`, `medicationType`) VALUES (18, 'Succimer', 'Oral');
 
 COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`patient`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (1, '145dfg', 'HALL, Marshall', 'Inpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (2, '128hnk', 'GREEN, Oscar', 'Outpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (3, '1cji89', 'PENAL, Lucy', 'Inpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (4, '389nub', 'FEDERA, Patricia', 'Discharge');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (5, 'adu086', 'HALL, Marshall', 'Inpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (6, '389huk', 'HALASMITH, Victora', 'Inpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (7, '1cji89', 'PENAL, Lucy', 'Discharge');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (8, '987hio', 'GEORGE, Lester', 'Outpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (9, '498abk', 'WILLIS, Storm', 'Outpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (10, '908biu', 'CON, Marta', 'Inpatient');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`physician`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (1, 'HALL, Marshall', '145dfg', '');

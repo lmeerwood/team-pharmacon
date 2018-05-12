@@ -76,24 +76,26 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`Patient`
+-- Table `PETdatabase`.`Physician`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Patient` (
-  `patientHospitalId` VARCHAR(20) NOT NULL,
-  `patientName` VARCHAR(50) NOT NULL,
-  `patientType` VARCHAR(15) NOT NULL,
-  PRIMARY KEY (`patientHospitalId`))
+CREATE TABLE IF NOT EXISTS `PETdatabase`.`Physician` (
+  `idPhysician` INT NOT NULL,
+  `physicianName` VARCHAR(45) NOT NULL,
+  `providerNumber` VARCHAR(15) NOT NULL,
+  `physicianComment` VARCHAR(150) NULL,
+  PRIMARY KEY (`idPhysician`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`Physician`
+-- Table `PETdatabase`.`Patient`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Physician` (
-  `physicianName` VARCHAR(45) NOT NULL,
-  `providerNumber` VARCHAR(15) NOT NULL,
-  `physicianComment` VARCHAR(150) NULL,
-  PRIMARY KEY (`providerNumber`))
+CREATE TABLE IF NOT EXISTS `PETdatabase`.`Patient` (
+  `idPatient` INT NOT NULL,
+  `patientHospitalId` VARCHAR(20) NOT NULL,
+  `patientName` VARCHAR(50) NOT NULL,
+  `patientType` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`idPatient`))
 ENGINE = InnoDB;
 
 
@@ -103,13 +105,12 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PETdatabase`.`Prescription` (
   `idPrescription` INT NOT NULL AUTO_INCREMENT,
   `medicationID` INT NOT NULL,
-  `patientID` VARCHAR(20) NOT NULL,
-  `physicianID` VARCHAR(15) NULL,
+  `patientID` INT NOT NULL,
+  `physicianID` INT NULL,
   `diagnosisID` INT NULL,
   PRIMARY KEY (`idPrescription`),
   INDEX `idMedication_idx` (`medicationID` ASC),
   INDEX `idDiagnosis_idx` (`diagnosisID` ASC),
-  INDEX `patientHospitalId_idx` (`patientID` ASC),
   INDEX `providerNumber_idx` (`physicianID` ASC),
   CONSTRAINT `idMedication`
     FOREIGN KEY (`medicationID`)
@@ -121,14 +122,14 @@ CREATE TABLE IF NOT EXISTS `PETdatabase`.`Prescription` (
     REFERENCES `PETdatabase`.`Diagnosis` (`idDiagnosis`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `patientHospitalId`
-    FOREIGN KEY (`patientID`)
-    REFERENCES `PETdatabase`.`Patient` (`patientHospitalId`)
+  CONSTRAINT `idPhysician`
+    FOREIGN KEY (`physicianID`)
+    REFERENCES `PETdatabase`.`Physician` (`idPhysician`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `providerNumber`
-    FOREIGN KEY (`physicianID`)
-    REFERENCES `PETdatabase`.`Physician` (`providerNumber`)
+  CONSTRAINT `idPatient`
+    FOREIGN KEY (`patientID`)
+    REFERENCES `PETdatabase`.`Patient` (`idPatient`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
