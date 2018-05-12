@@ -1,22 +1,17 @@
-use petdatabase;
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`errortype`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`errortype` (`idErrorType`, `errorType`) VALUES (1, 'Batch Number');
+INSERT INTO `petdatabase`.`errortype` (`idErrorType`, `errorType`) VALUES (2, 'Directions');
+INSERT INTO `petdatabase`.`errortype` (`idErrorType`, `errorType`) VALUES (3, 'Dosage / Strength');
+INSERT INTO `petdatabase`.`errortype` (`idErrorType`, `errorType`) VALUES (4, 'Expiry Date');
+INSERT INTO `petdatabase`.`errortype` (`idErrorType`, `errorType`) VALUES (5, 'Form Intravenous');
+INSERT INTO `petdatabase`.`errortype` (`idErrorType`, `errorType`) VALUES (6, 'Form Per Oral');
+INSERT INTO `petdatabase`.`errortype` (`idErrorType`, `errorType`) VALUES (7, 'Incorrect Medication');
+INSERT INTO `petdatabase`.`errortype` (`idErrorType`, `errorType`) VALUES (8, 'Incorrect Patient');
+INSERT INTO `petdatabase`.`errortype` (`idErrorType`, `errorType`) VALUES (9, 'Incorrect Quantity');
+INSERT INTO `petdatabase`.`errortype` (`idErrorType`, `errorType`) VALUES (10, 'Other');
 
-insert into errortype(errorType)
-	values ('Batch Number');
-insert into errortype(errorType)
-	values ('Directions');
-insert into errortype(errorType)
-	values ('Dosage / Strength');
-insert into errortype(errorType)
-	values ('Expiry Date');
-insert into errortype(errorType)
-	values ('Form Intravenous');
-insert into errortype(errorType)
-	values ('Form Per Oral');
-insert into errortype(errorType)
-	values ('Incorrect Medication');
-insert into errortype(errorType)
-	values ('Incorrect Patient');
-insert into errortype(errorType)
-	values ('Incorrect Quantity');
-insert into errortype(errorType)
-	values ('Other');
+COMMIT;
