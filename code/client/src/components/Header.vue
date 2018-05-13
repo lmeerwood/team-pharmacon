@@ -8,6 +8,7 @@
       <v-btn :to="{name:'Main'}" flat>Main</v-btn>
       <v-btn :to="{name:'Login'}" flat>Login</v-btn>
       <v-btn :to="{name:'Error'}" flat>Error</v-btn>
+      <v-btn :to="{name:'Physician'}" flat>Physician</v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
