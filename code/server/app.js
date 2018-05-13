@@ -2,6 +2,7 @@ var express = require('express')
 // var path = require('path')
 var mysql = require('mysql')
 var bodyParser = require('body-parser')
+var cors = require('cors')
 
 var app = express()
 
@@ -15,6 +16,7 @@ var queryRoute = require('./routes/query')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(cors())
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // MySQL setup
