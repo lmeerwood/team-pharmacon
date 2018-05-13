@@ -118,3 +118,5 @@ INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `provider
 INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (6, 'STEVENS, Berlinda', 'cjo54843', '');
 INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (7, 'HOWLETT, Sarah', 'gui89264', 'Comment made');
 INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (8, 'DOUSIP, Marcus', 'nja86078', 'Not again');
+
+COMMIT;
