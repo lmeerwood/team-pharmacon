@@ -36,11 +36,12 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PETdatabase`.`Worker` (
   `idWorker` INT NOT NULL AUTO_INCREMENT,
-  `workerName` VARCHAR(45) NOT NULL,
+  `workerFirstName` VARCHAR(45) NOT NULL,
+  `workerSurname` VARCHAR(45) NOT NULL,
   `workerRole` VARCHAR(20) NOT NULL,
   `workerActive` TINYINT(1) NOT NULL,
   PRIMARY KEY (`idWorker`),
-  UNIQUE INDEX `workerName_UNIQUE` (`workerName` ASC))
+  UNIQUE INDEX `workerName_UNIQUE` (`workerFirstName` ASC))
 ENGINE = InnoDB;
 
 
@@ -80,7 +81,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `PETdatabase`.`Physician` (
   `idPhysician` INT NOT NULL,
-  `physicianName` VARCHAR(45) NOT NULL,
+  `physicianSurname` VARCHAR(45) NOT NULL,
+  `physicianFirstName` VARCHAR(45) NOT NULL,
   `providerNumber` VARCHAR(15) NOT NULL,
   `physicianComment` VARCHAR(150) NULL,
   PRIMARY KEY (`idPhysician`))
@@ -93,7 +95,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `PETdatabase`.`Patient` (
   `idPatient` INT NOT NULL,
   `patientHospitalId` VARCHAR(20) NOT NULL,
-  `patientName` VARCHAR(50) NOT NULL,
+  `patientSurname` VARCHAR(45) NOT NULL,
+  `patientFirstName` VARCHAR(45) NOT NULL,
   `patientType` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`idPatient`))
 ENGINE = InnoDB;

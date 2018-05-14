@@ -27,8 +27,6 @@
           <p>{{ message }}</p>
           </v-flex>
         </v-layout>
-
-      </section>
     </v-flex>
   </v-layout>
   </template>

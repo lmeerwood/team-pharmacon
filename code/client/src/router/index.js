@@ -37,7 +37,7 @@ export default new Router({
     {
       path: '/physician/view',
       name: 'viewPhysician',
-      component: viewPhysician  
+      component: viewPhysician
     }
   ]
 })

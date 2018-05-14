@@ -1,3 +1,10 @@
+use petdatabase;
+-- -----------------------------------------------------
+-- disable foreign keys checksum table
+-- -----------------------------------------------------
+SET FOREIGN_KEY_CHECKS=0;
+COMMIT;
+
 -- -----------------------------------------------------
 -- Data for table `petdatabase`.`errortype`
 -- -----------------------------------------------------
@@ -35,11 +42,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petdatabase`;
-INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerName`, `workerRole`, `workerActive`) VALUES (1, 'Pat Smith', 'Pharmacist', 1);
-INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerName`, `workerRole`, `workerActive`) VALUES (2, 'Timothy Myers', 'Pharmacist', 1);
-INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerName`, `workerRole`, `workerActive`) VALUES (3, 'Jessica Noble', 'Senior Pharmacist', 1);
-INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerName`, `workerRole`, `workerActive`) VALUES (4, 'Amanda Stait', 'Pharmacist', 1);
-INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerName`, `workerRole`, `workerActive`) VALUES (5, 'Wang Shu', 'Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (1, 'Pat', 'Smith', 'Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (2, 'Timothy', 'Myers', 'Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (3, 'Jessica', 'Noble', 'Senior Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (4, 'Amanda', 'Stait', 'Trainee Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (5, 'Wang', 'Shu', 'Pharmacist', 1);
 
 COMMIT;
 
@@ -92,16 +99,16 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petdatabase`;
-INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (1, '145dfg', 'HALL, Marshall', 'Inpatient');
-INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (2, '128hnk', 'GREEN, Oscar', 'Outpatient');
-INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (3, '1cji89', 'PENAL, Lucy', 'Inpatient');
-INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (4, '389nub', 'FEDERA, Patricia', 'Discharge');
-INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (5, 'adu086', 'HALL, Marshall', 'Inpatient');
-INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (6, '389huk', 'HALASMITH, Victora', 'Inpatient');
-INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (7, '1cji89', 'PENAL, Lucy', 'Discharge');
-INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (8, '987hio', 'GEORGE, Lester', 'Outpatient');
-INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (9, '498abk', 'WILLIS, Storm', 'Outpatient');
-INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientName`, `patientType`) VALUES (10, '908biu', 'CON, Marta', 'Inpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientSurname`, `patientFirstName`, `patientType`) VALUES (1, '145dfg', 'HALL', 'Marshall', 'Inpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientSurname`, `patientFirstName`, `patientType`) VALUES (2, '128hnk', 'GREEN', 'Oscar', 'Outpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientSurname`, `patientFirstName`, `patientType`) VALUES (3, '1cji89', 'PENAL', 'Lucy', 'Inpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientSurname`, `patientFirstName`, `patientType`) VALUES (4, '389nub', 'FEDERA', 'Patricia', 'Discharge');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientSurname`, `patientFirstName`, `patientType`) VALUES (5, 'adu086', 'HALL', 'Marshall', 'Inpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientSurname`, `patientFirstName`, `patientType`) VALUES (6, '389huk', 'HALASMITH', 'Victora', 'Inpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientSurname`, `patientFirstName`, `patientType`) VALUES (7, '1cji89', 'PENAL', 'Lucy', 'Discharge');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientSurname`, `patientFirstName`, `patientType`) VALUES (8, '987hio', 'GEORGE', 'Lester', 'Outpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientSurname`, `patientFirstName`, `patientType`) VALUES (9, '498abk', 'WILLIS', 'Storm', 'Outpatient');
+INSERT INTO `petdatabase`.`patient` (`idPatient`, `patientHospitalId`, `patientSurname`, `patientFirstName`, `patientType`) VALUES (10, '908biu', 'CON', 'Marta', 'Inpatient');
 
 COMMIT;
 
@@ -110,11 +117,19 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petdatabase`;
-INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (1, 'DOUSIP, Marcus', 'nja86078', '');
-INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (2, 'HOWLETT, Sarah', 'gui89264', 'Hi there');
-INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (3, 'ARULANANTHAN, Alvin', 'njy98623', '');
-INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (4, 'DAVID, Mark', 'apn15385', '');
-INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (5, 'SCHIBECI, Alice', 'afd15591', 'All fixed');
-INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (6, 'STEVENS, Berlinda', 'cjo54843', '');
-INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (7, 'HOWLETT, Sarah', 'gui89264', 'Comment made');
-INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (8, 'DOUSIP, Marcus', 'nja86078', 'Not again');
+INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianSurname`, `physicianFirstName`, `providerNumber`, `physicianComment`) VALUES (1, 'DOUSIP', 'Marcus', 'nja86078', '');
+INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianSurname`, `physicianFirstName`, `providerNumber`, `physicianComment`) VALUES (2, 'HOWLETT', 'Sarah', 'gui89264', 'Hi there');
+INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianSurname`, `physicianFirstName`, `providerNumber`, `physicianComment`) VALUES (3, 'ARULANANTHAN', 'Alvin', 'njy98623', '');
+INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianSurname`, `physicianFirstName`, `providerNumber`, `physicianComment`) VALUES (4, 'DAVID', 'Mark', 'apn15385', '');
+INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianSurname`, `physicianFirstName`, `providerNumber`, `physicianComment`) VALUES (5, 'SCHIBECI', 'Alice', 'afd15591', 'All fixed');
+INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianSurname`, `physicianFirstName`, `providerNumber`, `physicianComment`) VALUES (6, 'STEVENS', 'Berlinda', 'cjo54843', '');
+INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianSurname`, `physicianFirstName`, `providerNumber`, `physicianComment`) VALUES (7, 'HOWLETT', 'Sarah', 'gui89264', 'Comment made');
+INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianSurname`, `physicianFirstName`, `providerNumber`, `physicianComment`) VALUES (8, 'DOUSIP', 'Marcus', 'nja86078', 'Not again');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- enable foreign keys checksum table
+-- -----------------------------------------------------
+SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
