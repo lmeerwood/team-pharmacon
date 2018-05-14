@@ -66,20 +66,12 @@ app.use(function (req, res, next) {
   next()
 })
 
-app.testDatabaseConnection = function () {
-  var connection = mysql.createConnection({
+app.dbConnection = function () {
+  return mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'password',
     database: 'petdatabase'
-  })
-  connection.ping(function (err) {
-    if (err) {
-      console.log('There was an error pinging the Database. ' +
-          err.stack)
-      return false
-    }
-    return true
   })
 }
 

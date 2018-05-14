@@ -19,9 +19,16 @@ app.set('port', port);
  * Ensure that the NodeJS Server can talk to the MySQL server
  */
 
-if (!app.testDatabaseConnection()) {
-  process.exit(1)
-}
+app.dbConnection().ping(function (err) {
+  if (err) {
+    var errorOutput = 'What happened: ' + err.code +
+        '\nWhat was attempted: ' + err.syscall +
+        '\nConnection target: ' + err.address + ':' + err.port
+    console.log(errorOutput)
+    if (err.fatal) process.exit(1)
+  }
+})
+
 
 /**
  * Create HTTP server.
@@ -94,5 +101,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
 }
