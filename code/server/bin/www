@@ -16,6 +16,14 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
+ * Ensure that the NodeJS Server can talk to the MySQL server
+ */
+
+if (!app.testDatabaseConnection()) {
+  process.exit(1)
+}
+
+/**
  * Create HTTP server.
  */
 
