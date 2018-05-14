@@ -122,7 +122,7 @@ export default {
               this.clear()
             }
           }.bind(this)) // This bind() function allows you to use the 'this' keyword inside the then() function.
-          // Then finally a catch function incase the server can't add the new value for whatever reason.
+          // Then finally a catch function in case the server can't add the new value for whatever reason.
           .catch(function (error) {
             this.message = 'There was an error adding the Physician: ' +
               error.stack
