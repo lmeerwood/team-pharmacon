@@ -3,6 +3,7 @@ var express = require('express')
 var mysql = require('mysql')
 var bodyParser = require('body-parser')
 var cors = require('cors')
+require('dotenv').config()
 
 var app = express()
 
@@ -22,10 +23,10 @@ app.use(cors())
 // MySQL setup
 app.use(function (req, res, next) {
   res.locals.connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'petdatabase'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_TABLE
   })
   res.locals.connection.connect(function (err) {
     if (err) {
@@ -68,10 +69,10 @@ app.use(function (req, res, next) {
 
 app.dbConnection = function () {
   return mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'petdatabase'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_TABLE
   })
 }
 

@@ -1,3 +1,5 @@
 .idea
+.env
+pharmacy_app.iml
 
 node_modules
