@@ -17,6 +17,7 @@
     "material-icons": "^0.2.3",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
+    "vuejs-datepicker": "^1.2.0",
     "vuetify": "^1.0.17"
   },
   "devDependencies": {
