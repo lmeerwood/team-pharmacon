@@ -97,7 +97,7 @@
               </v-layout>
             <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasPersonNotified" :mandatory="false" row= true>
+                  <v-radio-group v-model="wasPersonNotified" :mandatory="false" row=true>
                     <v-radio label="Yes" value="yes"></v-radio>
                     <v-radio label="No" value="no"></v-radio>
                   </v-radio-group>
@@ -122,7 +122,7 @@
               </v-layout>
             <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasIIMScompleted" :mandatory="false" row= true>
+                  <v-radio-group v-model="wasIIMScompleted" :mandatory="false" row=true>
                     <v-radio label="Yes" value="yes"></v-radio>
                     <v-radio label="No" value="no"></v-radio>
                   </v-radio-group>
@@ -151,12 +151,30 @@
 
             <v-layout row>
                 <v-flex xs8 offset-xs2>
+                  <h4>Severity of Error</h4>
+                </v-flex>
+              </v-layout>
+            <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-radio-group v-model="severity" :mandatory="false" column>
+                    <v-radio label="Minor" value="minor"></v-radio>
+                    <v-radio label="Low" value="low"></v-radio>
+                    <v-radio label="Moderate-Low" value="mod-low"></v-radio>
+                    <v-radio label="Moderate" value="moderate"></v-radio>
+                    <v-radio label="Moderate-Severe" value="mod-severe"></v-radio>
+                    <v-radio label="Severe" value="severe"></v-radio>
+                  </v-radio-group>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row>
+                <v-flex xs8 offset-xs2>
                   <h4>Was the physician notified?</h4>
                 </v-flex>
               </v-layout>
             <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasPhysicianNotified" :mandatory="false" row= true>
+                  <v-radio-group v-model="wasPhysicianNotified" :mandatory="false" row="true">
                     <v-radio label="Yes" value="yes"></v-radio>
                     <v-radio label="No" value="no"></v-radio>
                   </v-radio-group>
