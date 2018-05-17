@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "node node_modules/standard/bin/cmd.js",
+    "fix": "node node_modules/standard/bin/cmd.js --fix" ,
     "dev": "node node_modules/nodemon/bin/nodemon.js ./bin/www --exec \"npm run test && node\""
   },
   "dependencies": {
