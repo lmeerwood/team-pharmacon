@@ -1,3 +1,10 @@
+use petdatabase;
+-- -----------------------------------------------------
+-- disable foreign keys checksum table
+-- -----------------------------------------------------
+SET FOREIGN_KEY_CHECKS=0;
+COMMIT;
+
 -- -----------------------------------------------------
 -- Data for table `petdatabase`.`errortype`
 -- -----------------------------------------------------
@@ -120,3 +127,8 @@ INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `provider
 INSERT INTO `petdatabase`.`physician` (`idphysician`, `physicianName`, `providerNumber`, `physicianComment`) VALUES (8, 'DOUSIP, Marcus', 'nja86078', 'Not again');
 
 COMMIT;
+
+-- -----------------------------------------------------
+-- enable foreign keys checksum table
+-- -----------------------------------------------------
+SET FOREIGN_KEY_CHECKS=1;
