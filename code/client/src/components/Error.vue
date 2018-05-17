@@ -11,10 +11,34 @@
           <v-container fluid>
 
             <v-layout row>
+              <v-flex xs8 offset-xs1>
+              <v-text-field
+                label="Date yyyy-mm-dd"
+                v-model="date"
+              ></v-text-field>
+              </v-flex>
+              <v-flex xs8 offset-xs1>
+                <v-text-field
+                label="Time hh:ss"
+                v-model="time"
+              ></v-text-field>
+              </v-flex>
+              </v-layout>
+
+            <v-layout row>
               <v-flex xs8 offset-xs2>
               <v-text-field
-                label="Patient Name"
-                v-model="patientName"
+                label="Patient First Name"
+                v-model="patientFirstName"
+              ></v-text-field>
+              </v-flex>
+              </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+              <v-text-field
+                label="Patient Surname"
+                v-model="patientSurname"
               ></v-text-field>
               </v-flex>
               </v-layout>
@@ -49,8 +73,27 @@
               </v-layout>
 
             <v-layout row>
+              <v-flex xs8 offset-xs2>
+                <h4>Person who made the error</h4>
+              <v-text-field
+                label="First Name"
+                v-model="workerFirstName"
+              ></v-text-field>
+              </v-flex>
+              </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+              <v-text-field
+                label="Surname"
+                v-model="workerSurname"
+              ></v-text-field>
+              </v-flex>
+              </v-layout>
+
+            <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <h4>Was the person who made the error notified?</h4>
+                  <h4>Was the person notified?</h4>
                 </v-flex>
               </v-layout>
             <v-layout row>
@@ -220,10 +263,15 @@ export default {
       { text: 'Type 3', value: '2' },
       { text: 'Other', value: '3' }
     ],
-    patientName: '',
+    date: '',
+    time: '',
+    patientFirstName: '',
+    patientSurname: '',
     patientMRN: '',
     errorType: '',
     errorDesc: '',
+    workerFirstName: '',
+    workerSurname: '',
     wasPersonNotified: '',
     errorLocation: '',
     wasIIMScompleted: '',
@@ -242,12 +290,20 @@ export default {
   methods: {
     submit () {
       // Native form submission is not yet supported
-      this.message = 'Error form sumbission not yet supported. Patient Name: ' +
-      this.patientName +
+      this.message = 'Error form sumbission not yet supported. Date ' +
+      this.date + ' Time ' + this.time +
+      ' Patient FirstName: ' +
+      this.patientFirstName +
+      ' Patient Surname: ' +
+      this.patientSurname +
       ' Patient MRN: ' +
       this.patientMRN +
       ' Error Type: ' +
       this.errorType.text +
+      ' Worker FirstName: ' +
+      this.workerFirstName +
+      ' Worker Surname: ' +
+      this.workerSurname +
       ' IIMS Completed: ' +
       this.wasIIMScompleted
     },
