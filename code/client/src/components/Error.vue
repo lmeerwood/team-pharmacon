@@ -1,4 +1,3 @@
-
 <template>
   <v-layout row class="pt-5 top-margin">
     <v-flex xs6 offset-xs3>
