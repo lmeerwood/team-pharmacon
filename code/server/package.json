@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "test": "node node_modules/standard/bin/cmd.js",
     "fix": "node node_modules/standard/bin/cmd.js --fix" ,
-    "dev": "node node_modules/nodemon/bin/nodemon.js ./bin/www --exec \"npm run test && node\""
+    "dev": "node node_modules/nodemon/bin/nodemon.js ./bin/www --exec \"npm run fix && npm run test && node\""
   },
   "dependencies": {
     "body-parser": "^1.18.2",
