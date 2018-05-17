@@ -1,4 +1,3 @@
-
 <template>
   <v-layout row class="pt-5 top-margin">
     <v-flex xs6 offset-xs3>
@@ -12,18 +11,18 @@
 
             <v-layout row>
               <v-flex xs8 offset-xs1>
-              <v-text-field
+                <v-text-field
                 label="Date yyyy-mm-dd"
                 v-model="date"
-              ></v-text-field>
-              </v-flex>
+                ></v-text-field>
+                </v-flex>
               <v-flex xs8 offset-xs1>
                 <v-text-field
                 label="Time hh:ss"
                 v-model="time"
               ></v-text-field>
               </v-flex>
-              </v-layout>
+            </v-layout>
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
@@ -240,6 +239,8 @@
 <script>
 export default {
   data: () => ({
+    date: null,
+    menu: false,
     errorTypes: [
       { text: 'Incorrect directions', value: '0' },
       { text: 'Incorrect dosage', value: '1' },
@@ -263,7 +264,6 @@ export default {
       { text: 'Type 3', value: '2' },
       { text: 'Other', value: '3' }
     ],
-    date: '',
     time: '',
     patientFirstName: '',
     patientSurname: '',
