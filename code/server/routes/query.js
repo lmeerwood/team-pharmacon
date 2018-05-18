@@ -97,6 +97,32 @@ router.post('/error', function (req, res, next) {
   var comment = req.body.comment
   var severity = req.body.severity
 
+  var queryPatient = `INSERT INTO \`petdatabase\`.\`patient\` 
+  (patientHospitalId, patientSurname, patientFirstName, patientType) 
+  VALUES (
+   '${patientMRN}',
+   '${patientSurame}',
+   '${patientFirstName}',
+   '${patientType}'
+  );`
+
+  res.locals.connection.query(queryPatient, function (error, results) {
+    if (error) {
+      res.status(500)
+      res.send(JSON.stringify({
+        'status': 500,
+        'error': error.stack,
+        'response': null
+      }))
+    } else {
+      res.send(JSON.stringify({
+        'status': 200,
+        'error': null,
+        'response': results
+      }))
+    }
+  })
+
   var query = `INSERT INTO \`petdatabase\`.\`error\` 
   (errorDate, errorTime, errorTypeId, errorDetectedLocation, errorCausedByWorker, wasWorkerNotified,
   wasPhysicianNotified, iimsCompleted, generalComment, severityId) 
@@ -116,32 +142,6 @@ router.post('/error', function (req, res, next) {
   console.log(query)
 
   res.locals.connection.query(query, function (error, results) {
-    if (error) {
-      res.status(500)
-      res.send(JSON.stringify({
-        'status': 500,
-        'error': error.stack,
-        'response': null
-      }))
-    } else {
-      res.send(JSON.stringify({
-        'status': 200,
-        'error': null,
-        'response': results
-      }))
-    }
-  })
-
-  var queryPatient = `INSERT INTO \`petdatabase\`.\`patient\` 
-  (patientHospitalId, patientSurname, patientFirstName, patientType) 
-  VALUES (
-   '${patientMRN}',
-   '${patientSurame}',
-   '${patientFirstName}',
-   '${patientType}'
-  );`
-
-  res.locals.connection.query(queryPatient, function (error, results) {
     if (error) {
       res.status(500)
       res.send(JSON.stringify({

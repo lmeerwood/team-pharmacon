@@ -134,20 +134,11 @@
 
             <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Medication Name"
-                    v-model="medication"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-            <v-layout row>
-                <v-flex xs8 offset-xs2>
                   <v-select
-                  :items="medicationTypes"
-                  v-model="medicationType"
-                  label='Medication Type'
-                  return-object
+                    label="Select Medication"
+                    v-model="medication"
+                    :items="medications"
+                    return-object
                   ></v-select>
                 </v-flex>
               </v-layout>
@@ -180,9 +171,9 @@
             <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
-                    label="Physician First Name"
-                    v-model="physicianFirstName"
-                    :disabled="this.wasPhysicianNotified == 'no'"
+                  label="Physician First Name"
+                  v-model="physicianFirstName"
+                  :disabled="this.wasPhysicianNotified == 'no'"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -190,54 +181,64 @@
               <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
-                    label="Physician Surname"
-                    v-model="physicianSurname"
-                    :disabled="this.wasPhysicianNotified == 'no'"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-            <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Physician Provider Number"
-                    v-model="physicianProviderNumber"
-                    :disabled="this.wasPhysicianNotified == 'no'"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-            <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Physician Comments"
-                    v-model="physicianComments"
-                    :disabled="this.wasPhysicianNotified == 'no'"
+                  label="Physician Surname"
+                  v-model="physicianSurname"
+                  :disabled="this.wasPhysicianNotified == 'no'"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
+                <v-text-field
+                label="Physician Provider Number"
+                v-model="physicianProviderNumber"
+                :disabled="this.wasPhysicianNotified == 'no'"
+                ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+                <v-text-field
+                label="Physician Comments"
+                v-model="physicianComments"
+                :disabled="this.wasPhysicianNotified == 'no'"
+                ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+                <v-text-field
+                label="Diagnosis"
+                v-model="diagnosis"
+                :disabled="this.wasPhysicianNotified == 'no'"
+                ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
               <v-btn
-                round
-                color="primary"
-                dark
-                @click="submit"
-                :disabled="!valid"
+              round
+              color="primary"
+              dark
+              @click="submit"
+              :disabled="!valid"
               >Submit
               </v-btn>
-              <v-btn
-                round color="primary"
-                dark
-                @click="clear">
-                clear
-                </v-btn>
-              </v-flex>
-            </v-layout>
+            <v-btn
+              round color="primary"
+              dark
+              @click="clear">
+              clear
+              </v-btn>
+            </v-flex>
+          </v-layout>
 
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
+          <v-layout row>
+            <v-flex xs8 offset-xs2>
               <p>{{ message }}</p>
               </v-flex>
             </v-layout>
@@ -248,7 +249,7 @@
       </section>
     </v-flex>
   </v-layout>
-  </template>
+</template>
 
 <script>
 export default {
@@ -272,13 +273,7 @@ export default {
       { text: 'Location 3', value: '2' },
       { text: 'Other', value: '3' }
     ],
-    medicationTypes: [
-      { text: 'Type 1', value: '0' },
-      { text: 'Type 2', value: '1' },
-      { text: 'Type 3', value: '2' },
-      { text: 'Other', value: '3' }
-    ],
-    severityLevel: [
+    severityLevels: [
       { text: 'Minor', value: '0'},
       { text: 'Low', value: '1'},
       { text: 'Moderate-Low', value: '2'},
@@ -297,7 +292,6 @@ export default {
     errorLocation: '',
     wasIIMScompleted: '',
     medication: '',
-    medicationType: '',
     wasPhysicianNotified: '',
     physicianName: '',
     physicianProviderNumber: '',
