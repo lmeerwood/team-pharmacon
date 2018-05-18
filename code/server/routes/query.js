@@ -87,15 +87,17 @@ router.post('/error', function (req, res, next) {
   var patientType = req.body.patientType
   var errorlocation = req.body.errorlocation
   var medication = req.body.medication
-  var medicationType = req.body.medicationType
   var workerAtFault = req.body.workerAtFault
   var workerNotified = req.body.workerNotified
+  var iimsCompleted = req.body.iimsCompleted
+  var errorComment = req.body.errorComment
+  var severity = req.body.severity
   var physicianNotified = req.body.physicianNotified
   var physicianFirstName = req.body.patientFirstName
   var physicianSurname = req.body.physicianSurname
-  var iimsCompleted = req.body.iimsCompleted
-  var comment = req.body.comment
-  var severity = req.body.severity
+  var providerNumber = req.body.providerNumber
+  var physicianComment = req.body.physicianComment
+  var diagnosis = req.body.diagnosis
 
   var queryPatient = `INSERT INTO \`petdatabase\`.\`patient\` 
   (patientHospitalId, patientSurname, patientFirstName, patientType) 
@@ -105,6 +107,8 @@ router.post('/error', function (req, res, next) {
    '${patientFirstName}',
    '${patientType}'
   );`
+
+  console.log(queryPatient)
 
   res.locals.connection.query(queryPatient, function (error, results) {
     if (error) {
@@ -123,6 +127,61 @@ router.post('/error', function (req, res, next) {
     }
   })
 
+  if (physicianNotified == true) {
+    var queryPhysician = `INSERT INTO \`petdatabase\`.\`physician\` 
+    (physicianSurname, physicianFirstName, providerNumber, physicianComment) 
+    VALUES (
+      '${physicianSurname}',
+      '${physicianFirstName}',
+      '${providerNumber}',
+      '${physicianComment}'
+    );`
+
+    console.log(queryPhysician)
+
+    res.locals.connection.query(queryPhysician, function (error, results) {
+      if (error) {
+        res.status(500)
+        res.send(JSON.stringify({
+          'status': 500,
+          'error': error.stack,
+          'response': null
+        }))
+      } else {
+        res.send(JSON.stringify({
+          'status': 200,
+          'error': null,
+          'response': results
+        }))
+      }
+    })
+
+    var queryDiagnosis = `INSERT INTO \`petdatabase\`.\`diagnosis\` 
+    (diagnosis) 
+    VALUES (
+      '${diagnosis}'
+    );`
+
+    console.log(queryDiagnosis)
+
+    res.locals.connection.query(queryDiagnosis, function (error, results) {
+      if (error) {
+        res.status(500)
+        res.send(JSON.stringify({
+          'status': 500,
+          'error': error.stack,
+          'response': null
+        }))
+      } else {
+        res.send(JSON.stringify({
+          'status': 200,
+          'error': null,
+          'response': results
+        }))
+      }
+    })
+  }
+
   var query = `INSERT INTO \`petdatabase\`.\`error\` 
   (errorDate, errorTime, errorTypeId, errorDetectedLocation, errorCausedByWorker, wasWorkerNotified,
   wasPhysicianNotified, iimsCompleted, generalComment, severityId) 
@@ -135,7 +194,7 @@ router.post('/error', function (req, res, next) {
    '${workerNotified}',
    '${physicianNotified}', 
    '${iimsCompleted}', 
-   '${comment}', 
+   '${errorComment}', 
    '${severity}'
    );`
 

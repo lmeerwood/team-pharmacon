@@ -256,23 +256,6 @@ export default {
   data: () => ({
     date: null,
     menu: false,
-    errorTypes: [
-      { text: 'Incorrect directions', value: '0' },
-      { text: 'Incorrect dosage', value: '1' },
-      { text: 'Incorrect form of delivery', value: '2' },
-      { text: 'Invalid batch number', value: '3' },
-      { text: 'Past expiry date', value: '4' },
-      { text: 'Incorrect medication', value: '5' },
-      { text: 'Incorrect patient', value: '6' },
-      { text: 'Incorrect quantity', value: '7' },
-      { text: 'Other', value: '8' }
-    ],
-    errorLocations: [
-      { text: 'Location 1', value: '0' },
-      { text: 'Location 2', value: '1' },
-      { text: 'Location 3', value: '2' },
-      { text: 'Other', value: '3' }
-    ],
     severityLevels: [
       { text: 'Minor', value: '0'},
       { text: 'Low', value: '1'},
