@@ -78,124 +78,52 @@ router.get('/error', function (req, res, next) {
 })
 
 router.post('/error', function (req, res, next) {
-  var date = req.body.date
-  var time = req.body.time
-  var errorType = req.body.errorType
-  var patientFirstName = req.body.patientFirstName
-  var patientSurame = req.body.patientSurame
-  var patientMRN = req.body.patientMRN
-  var patientType = req.body.patientType
-  var errorlocation = req.body.errorlocation
-  var medication = req.body.medication
-  var workerAtFault = req.body.workerAtFault
-  var workerNotified = req.body.workerNotified
-  var iimsCompleted = req.body.iimsCompleted
-  var errorComment = req.body.errorComment
-  var severity = req.body.severity
-  var physicianNotified = req.body.physicianNotified
-  var physicianFirstName = req.body.patientFirstName
-  var physicianSurname = req.body.physicianSurname
-  var providerNumber = req.body.providerNumber
-  var physicianComment = req.body.physicianComment
-  var diagnosis = req.body.diagnosis
+  var formDate = req.body.formDate
+  var formTime = req.body.formTime
+  var formPatientFirstName = req.body.formPatientFirstName
+  var formPatientSurname = req.body.formPatientSurname
+  var formPatientId = req.body.formPatientId
+  var formPatientType = req.body.formPatientType
+  var formErrorType = req.body.formErrorType
+  var formErrorComment = req.body.formErrorComment
+  var formWorkerAtFault = req.body.formWorkerAtFault
+  var formWorkerNotified = req.body.formWorkerNotified
+  var formErrorLocation = req.body.formErrorLocation
+  var formIimsCompleted = req.body.formIimsCompleted
+  var formMedication = req.body.formMedication
+  var formSeverity = req.body.formSeverity
+  var formPhysicianNotified = req.body.formPhysicianNotified
+  var formPhysicianFirstName = req.body.formPatientFirstName
+  var formPhysicianSurname = req.body.formPhysicianSurname
+  var formProviderNumber = req.body.formProviderNumber
+  var formPhysicianComment = req.body.formPhysicianComment
+  var formDiagnosis = req.body.formDiagnosis
 
-  var queryPatient = `INSERT INTO \`petdatabase\`.\`patient\` 
-  (patientHospitalId, patientSurname, patientFirstName, patientType) 
+  var query = `INSERT INTO \`tempPETdb\`.\`errorForm\` 
+  (date, time, patientFirstName, patientSurname, patientId, patientType, errorType, errorComment, workerAtFault, workerNotified,
+    location, iimsCompleted, medication, severity, physicianNotified, physicianFirstName, physicianSurname, providerNumber,
+    physicianComments, dianosis) 
   VALUES (
-   '${patientMRN}',
-   '${patientSurame}',
-   '${patientFirstName}',
-   '${patientType}'
-  );`
-
-  console.log(queryPatient)
-
-  res.locals.connection.query(queryPatient, function (error, results) {
-    if (error) {
-      res.status(500)
-      res.send(JSON.stringify({
-        'status': 500,
-        'error': error.stack,
-        'response': null
-      }))
-    } else {
-      res.send(JSON.stringify({
-        'status': 200,
-        'error': null,
-        'response': results
-      }))
-    }
-  })
-
-  if (physicianNotified == true) {
-    var queryPhysician = `INSERT INTO \`petdatabase\`.\`physician\` 
-    (physicianSurname, physicianFirstName, providerNumber, physicianComment) 
-    VALUES (
-      '${physicianSurname}',
-      '${physicianFirstName}',
-      '${providerNumber}',
-      '${physicianComment}'
-    );`
-
-    console.log(queryPhysician)
-
-    res.locals.connection.query(queryPhysician, function (error, results) {
-      if (error) {
-        res.status(500)
-        res.send(JSON.stringify({
-          'status': 500,
-          'error': error.stack,
-          'response': null
-        }))
-      } else {
-        res.send(JSON.stringify({
-          'status': 200,
-          'error': null,
-          'response': results
-        }))
-      }
-    })
-
-    var queryDiagnosis = `INSERT INTO \`petdatabase\`.\`diagnosis\` 
-    (diagnosis) 
-    VALUES (
-      '${diagnosis}'
-    );`
-
-    console.log(queryDiagnosis)
-
-    res.locals.connection.query(queryDiagnosis, function (error, results) {
-      if (error) {
-        res.status(500)
-        res.send(JSON.stringify({
-          'status': 500,
-          'error': error.stack,
-          'response': null
-        }))
-      } else {
-        res.send(JSON.stringify({
-          'status': 200,
-          'error': null,
-          'response': results
-        }))
-      }
-    })
-  }
-
-  var query = `INSERT INTO \`petdatabase\`.\`error\` 
-  (errorDate, errorTime, errorTypeId, errorDetectedLocation, errorCausedByWorker, wasWorkerNotified,
-  wasPhysicianNotified, iimsCompleted, generalComment, severityId) 
-  VALUES (
-   '${date}',
-   '${time}',
-   '${errorType}',
-   '${errorlocation}',
-   '${workerAtFault}',
-   '${workerNotified}',
-   '${physicianNotified}', 
-   '${iimsCompleted}', 
-   '${errorComment}', 
-   '${severity}'
+   '${formDate}',
+   '${formTime}',
+   '${formPatientFirstName}',
+   '${formPatientSurname}',
+   '${formPatientId}',
+   '${formPatientType}',
+   '${formErrorType}',
+   '${formErrorComment}',
+   '${formWorkerAtFault}',
+   '${formWorkerNotified}',
+   '${formErrorLocation}', 
+   '${formIimsCompleted}',
+   '${formMedication}',
+   '${formSeverity}',
+   '${formPhysicianNotified}',
+   '${formPhysicianFirstName}',
+   '${formPhysicianSurname}',
+   '${formProviderNumber}',
+   '${formPhysicianComment}',
+   '${formDiagnosis}'
    );`
 
   console.log(query)
