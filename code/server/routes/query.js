@@ -57,7 +57,7 @@ router.post('/physician', function (req, res, next) {
   })
 })
 
-// The physician route. The get is for retrieving details and the post is for adding details
+// The error route. The get is for retrieving details and the post is for adding details
 router.get('/error', function (req, res, next) {
   res.locals.connection.query('SELECT * from `petdatabase`.`error`;', function (error, results) {
     if (error) {
@@ -83,6 +83,7 @@ router.post('/error', function (req, res, next) {
   var errorType = req.body.errorType
   var patientFirstName = req.body.patientFirstName
   var patientSurame = req.body.patientSurame
+  var patientMRN = req.body.patientMRN
   var patientType = req.body.patientType
   var errorlocation = req.body.errorlocation
   var medication = req.body.medication
@@ -115,6 +116,32 @@ router.post('/error', function (req, res, next) {
   console.log(query)
 
   res.locals.connection.query(query, function (error, results) {
+    if (error) {
+      res.status(500)
+      res.send(JSON.stringify({
+        'status': 500,
+        'error': error.stack,
+        'response': null
+      }))
+    } else {
+      res.send(JSON.stringify({
+        'status': 200,
+        'error': null,
+        'response': results
+      }))
+    }
+  })
+
+  var queryPatient = `INSERT INTO \`petdatabase\`.\`patient\` 
+  (patientHospitalId, patientSurname, patientFirstName, patientType) 
+  VALUES (
+   '${patientMRN}',
+   '${patientSurame}',
+   '${patientFirstName}',
+   '${patientType}'
+  );`
+
+  res.locals.connection.query(queryPatient, function (error, results) {
     if (error) {
       res.status(500)
       res.send(JSON.stringify({
