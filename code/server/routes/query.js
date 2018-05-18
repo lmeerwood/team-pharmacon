@@ -80,11 +80,18 @@ router.get('/error', function (req, res, next) {
 router.post('/error', function (req, res, next) {
   var date = req.body.date
   var time = req.body.time
-  var type = req.body.type
-  var location = req.body.location
-  var workerAtFault = req.body.worker
+  var errorType = req.body.errorType
+  var patientFirstName = req.body.patientFirstName
+  var patientSurame = req.body.patientSurame
+  var patientType = req.body.patientType
+  var errorlocation = req.body.errorlocation
+  var medication = req.body.medication
+  var medicationType = req.body.medicationType
+  var workerAtFault = req.body.workerAtFault
   var workerNotified = req.body.workerNotified
   var physicianNotified = req.body.physicianNotified
+  var physicianFirstName = req.body.patientFirstName
+  var physicianSurname = req.body.physicianSurname
   var iimsCompleted = req.body.iimsCompleted
   var comment = req.body.comment
   var severity = req.body.severity
@@ -95,8 +102,8 @@ router.post('/error', function (req, res, next) {
   VALUES (
    '${date}',
    '${time}',
-   '${type}',
-   '${location}',
+   '${errorType}',
+   '${errorlocation}',
    '${workerAtFault}',
    '${workerNotified}',
    '${physicianNotified}', 

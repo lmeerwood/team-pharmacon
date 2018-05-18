@@ -54,6 +54,17 @@
             <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-select
+                    label="Select Patient Type"
+                    v-model="patientType"
+                    :items="patientTypes"
+                    return-object
+                  ></v-select>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-select
                   :items="errorTypes"
                   v-model="errorType"
                   label='Select an Error Type'
@@ -72,22 +83,14 @@
               </v-layout>
 
             <v-layout row>
-              <v-flex xs8 offset-xs2>
-                <h4>Person who made the error</h4>
-              <v-text-field
-                label="First Name"
-                v-model="workerFirstName"
-              ></v-text-field>
-              </v-flex>
-              </v-layout>
-
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
-              <v-text-field
-                label="Surname"
-                v-model="workerSurname"
-              ></v-text-field>
-              </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-select
+                    label="Select Person Who Made Error"
+                    v-model="workerAtFault"
+                    :items="workers"
+                    return-object
+                  ></v-select>
+                </v-flex>
               </v-layout>
 
             <v-layout row>
@@ -151,19 +154,12 @@
 
             <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <h4>Severity of Error</h4>
-                </v-flex>
-              </v-layout>
-            <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="severity" :mandatory="false" column>
-                    <v-radio label="Minor" value="minor"></v-radio>
-                    <v-radio label="Low" value="low"></v-radio>
-                    <v-radio label="Moderate-Low" value="mod-low"></v-radio>
-                    <v-radio label="Moderate" value="moderate"></v-radio>
-                    <v-radio label="Moderate-Severe" value="mod-severe"></v-radio>
-                    <v-radio label="Severe" value="severe"></v-radio>
-                  </v-radio-group>
+                  <v-select
+                  :items="severityLevel"
+                  v-model="severity"
+                  label='Select Severity Level'
+                  return-object
+                  ></v-select>
                 </v-flex>
               </v-layout>
 
@@ -184,8 +180,18 @@
             <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
-                    label="Physician Name"
-                    v-model="physicianName"
+                    label="Physician First Name"
+                    v-model="physicianFirstName"
+                    :disabled="this.wasPhysicianNotified == 'no'"
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field
+                    label="Physician Surname"
+                    v-model="physicianSurname"
                     :disabled="this.wasPhysicianNotified == 'no'"
                   ></v-text-field>
                 </v-flex>
@@ -196,16 +202,6 @@
                   <v-text-field
                     label="Physician Provider Number"
                     v-model="physicianProviderNumber"
-                    :disabled="this.wasPhysicianNotified == 'no'"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-            <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Patient Diagnosis"
-                    v-model="diagnosis"
                     :disabled="this.wasPhysicianNotified == 'no'"
                   ></v-text-field>
                 </v-flex>
@@ -282,14 +278,21 @@ export default {
       { text: 'Type 3', value: '2' },
       { text: 'Other', value: '3' }
     ],
+    severityLevel: [
+      { text: 'Minor', value: '0'},
+      { text: 'Low', value: '1'},
+      { text: 'Moderate-Low', value: '2'},
+      { text: 'Moderate', value: '3'},
+      { text: 'Moderate-Severe', value: '4'},
+      { text: 'Severe', value: '5'}
+    ],
     time: '',
     patientFirstName: '',
     patientSurname: '',
     patientMRN: '',
     errorType: '',
     errorDesc: '',
-    workerFirstName: '',
-    workerSurname: '',
+    workerAtFault: '',
     wasPersonNotified: '',
     errorLocation: '',
     wasIIMScompleted: '',
@@ -318,10 +321,8 @@ export default {
       this.patientMRN +
       ' Error Type: ' +
       this.errorType.text +
-      ' Worker FirstName: ' +
-      this.workerFirstName +
-      ' Worker Surname: ' +
-      this.workerSurname +
+      ' Worker: ' +
+      this.workerAtFault +
       ' IIMS Completed: ' +
       this.wasIIMScompleted
     },
