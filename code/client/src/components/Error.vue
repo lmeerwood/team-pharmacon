@@ -46,8 +46,19 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Patient MRN"
-                    v-model="patientMRN"
+                    v-model="patientId"
                   ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-select
+                    label="Select Patient Type"
+                    v-model="patientType"
+                    :items="patientTypes"
+                    return-object
+                  ></v-select>
                 </v-flex>
               </v-layout>
 
@@ -66,28 +77,20 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Error Description or General Comment"
-                    v-model="errorDesc"
+                    v-model="errorComment"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
             <v-layout row>
-              <v-flex xs8 offset-xs2>
-                <h4>Person who made the error</h4>
-              <v-text-field
-                label="First Name"
-                v-model="workerFirstName"
-              ></v-text-field>
-              </v-flex>
-              </v-layout>
-
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
-              <v-text-field
-                label="Surname"
-                v-model="workerSurname"
-              ></v-text-field>
-              </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-select
+                    label="Select Person Who Made Error"
+                    v-model="workerAtFault"
+                    :items="workers"
+                    return-object
+                  ></v-select>
+                </v-flex>
               </v-layout>
 
             <v-layout row>
@@ -97,7 +100,7 @@
               </v-layout>
             <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasPersonNotified" :mandatory="false" row= true>
+                  <v-radio-group v-model="workerNotified" :mandatory="true" row=true>
                     <v-radio label="Yes" value="yes"></v-radio>
                     <v-radio label="No" value="no"></v-radio>
                   </v-radio-group>
@@ -122,7 +125,7 @@
               </v-layout>
             <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasIIMScompleted" :mandatory="false" row= true>
+                  <v-radio-group v-model="iimsCompleted" :mandatory="true" row=true>
                     <v-radio label="Yes" value="yes"></v-radio>
                     <v-radio label="No" value="no"></v-radio>
                   </v-radio-group>
@@ -131,19 +134,21 @@
 
             <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Medication Name"
+                  <v-select
+                    label="Select Medication"
                     v-model="medication"
-                  ></v-text-field>
+                    :items="medications"
+                    return-object
+                  ></v-select>
                 </v-flex>
               </v-layout>
 
             <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-select
-                  :items="medicationTypes"
-                  v-model="medicationType"
-                  label='Medication Type'
+                  :items="severityLevels"
+                  v-model="severity"
+                  label='Select Severity Level'
                   return-object
                   ></v-select>
                 </v-flex>
@@ -156,7 +161,7 @@
               </v-layout>
             <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasPhysicianNotified" :mandatory="false" row= true>
+                  <v-radio-group v-model="wasPhysicianNotified" :mandatory="true" row="true">
                     <v-radio label="Yes" value="yes"></v-radio>
                     <v-radio label="No" value="no"></v-radio>
                   </v-radio-group>
@@ -166,64 +171,74 @@
             <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
-                    label="Physician Name"
-                    v-model="physicianName"
-                    :disabled="this.wasPhysicianNotified == 'no'"
+                  label="Physician First Name"
+                  v-model="physicianFirstName"
+                  :disabled="this.wasPhysicianNotified == 'no'"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
-                    label="Physician Provider Number"
-                    v-model="physicianProviderNumber"
-                    :disabled="this.wasPhysicianNotified == 'no'"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-            <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Patient Diagnosis"
-                    v-model="diagnosis"
-                    :disabled="this.wasPhysicianNotified == 'no'"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-            <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Physician Comments"
-                    v-model="physicianComments"
-                    :disabled="this.wasPhysicianNotified == 'no'"
+                  label="Physician Surname"
+                  v-model="physicianSurname"
+                  :disabled="this.wasPhysicianNotified == 'no'"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
+                <v-text-field
+                label="Physician Provider Number"
+                v-model="providerNumber"
+                :disabled="this.wasPhysicianNotified == 'no'"
+                ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+                <v-text-field
+                label="Physician Comments"
+                v-model="physicianComment"
+                :disabled="this.wasPhysicianNotified == 'no'"
+                ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+                <v-text-field
+                label="Diagnosis"
+                v-model="diagnosis"
+                :disabled="this.wasPhysicianNotified == 'no'"
+                ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
               <v-btn
-                round
-                color="primary"
-                dark
-                @click="submit"
-                :disabled="!valid"
+              round
+              color="primary"
+              dark
+              @click="submit"
+              :disabled="!valid"
               >Submit
               </v-btn>
-              <v-btn
-                round color="primary"
-                dark
-                @click="clear">
-                clear
-                </v-btn>
-              </v-flex>
-            </v-layout>
+            <v-btn
+              round color="primary"
+              dark
+              @click="clear">
+              clear
+              </v-btn>
+            </v-flex>
+          </v-layout>
 
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
+          <v-layout row>
+            <v-flex xs8 offset-xs2>
               <p>{{ message }}</p>
               </v-flex>
             </v-layout>
@@ -234,81 +249,143 @@
       </section>
     </v-flex>
   </v-layout>
-  </template>
+</template>
 
 <script>
+var axios = require('axios')
 export default {
   data: () => ({
     date: null,
     menu: false,
+    patientTypes: [
+      { text: 'Discharge', value: '0' },
+      { text: 'Inpatient', value: '1' },
+      { text: 'Outpatient', value: '2' },
+      { text: 'Day patient', value: '3' }
+    ],
+    workers: [
+      { text: 'Pat Smith', value: '0' },
+      { text: 'Timothy Myers', value: '1' },
+      { text: 'Jessica Noble', value: '2' },
+      { text: 'Amanda Stait', value: '3' },
+      { text: 'Wang Shu', value: '4' }
+    ],
     errorTypes: [
-      { text: 'Incorrect directions', value: '0' },
-      { text: 'Incorrect dosage', value: '1' },
-      { text: 'Incorrect form of delivery', value: '2' },
-      { text: 'Invalid batch number', value: '3' },
-      { text: 'Past expiry date', value: '4' },
-      { text: 'Incorrect medication', value: '5' },
-      { text: 'Incorrect patient', value: '6' },
-      { text: 'Incorrect quantity', value: '7' },
-      { text: 'Other', value: '8' }
+      { text: 'Batch Number', value: '0' },
+      { text: 'Directions', value: '1' },
+      { text: 'Dosage / Strength', value: '2' },
+      { text: 'Expiry Date', value: '3' },
+      { text: 'Form Intravenous', value: '4' },
+      { text: 'Form Per Oral', value: '5' },
+      { text: 'Incorrect Medication', value: '6' },
+      { text: 'Incorrect Patient', value: '7' },
+      { text: 'Incorrect Quantity', value: '8' },
+      { text: 'Other', value: '9' }
     ],
     errorLocations: [
-      { text: 'Location 1', value: '0' },
-      { text: 'Location 2', value: '1' },
-      { text: 'Location 3', value: '2' },
-      { text: 'Other', value: '3' }
+      { text: 'Dispensary', value: '0' },
+      { text: 'On the ward', value: '1' },
+      { text: 'Outside hospital', value: '2' }
     ],
-    medicationTypes: [
-      { text: 'Type 1', value: '0' },
-      { text: 'Type 2', value: '1' },
-      { text: 'Type 3', value: '2' },
-      { text: 'Other', value: '3' }
+    medications: [
+      { text: '5 mg Acetaminophen USP - Oral', value: '0' },
+      { text: '7.5 mg Acetaminophen USP - Oral', value: '1' },
+      { text: '10 mg Acetaminophen USP - Oral', value: '2' },
+      { text: 'Isotretinoin - Oral', value: '3' },
+      { text: 'Ambien - Oral', value: '4' },
+      { text: 'Diclofenac Sodium - Oral', value: '5' },
+      { text: 'Mustargen - Intravenous', value: '6' },
+      { text: 'Sulfamethoxazole and trimethoprim - Oral', value: '7' },
+      { text: 'Sodium Fluoride - Oral', value: '8' },
+      { text: 'Ceftriaxone - Intravenous', value: '9' },
+      { text: 'Claforan - Intravenous', value: '10' },
+      { text: 'Albuterol Sulfate Inhalation Solution - Inhalation', value: '11' },
+      { text: 'Azathioprine - Oral', value: '12' },
+      { text: 'CitraNatal Harmony 2.1 - Oral', value: '13' },
+      { text: 'Hydrocodone Bitartrate and Acetaminophen - Oral', value: '14' },
+      { text: 'Tinnitus - Oral', value: '15' },
+      { text: 'Atovaquone and Proguanil Hydrochloride - Oral', value: '16' },
+      { text: 'Succimer - Oral', value: '17' }
+    ],
+    severityLevels: [
+      { text: 'Minor', value: '0' },
+      { text: 'Low', value: '1' },
+      { text: 'Moderate-Low', value: '2' },
+      { text: 'Moderate', value: '3' },
+      { text: 'Moderate-Severe', value: '4' },
+      { text: 'Severe', value: '5' }
     ],
     time: '',
     patientFirstName: '',
     patientSurname: '',
-    patientMRN: '',
+    patientId: '',
+    patientType: '',
     errorType: '',
-    errorDesc: '',
-    workerFirstName: '',
-    workerSurname: '',
-    wasPersonNotified: '',
+    errorComment: '',
+    workerAtFault: '',
+    workerNotified: '',
     errorLocation: '',
-    wasIIMScompleted: '',
+    iimsCompleted: '',
     medication: '',
-    medicationType: '',
+    severity: '',
     wasPhysicianNotified: '',
-    physicianName: '',
-    physicianProviderNumber: '',
+    physicianFirstName: '',
+    physicianSurname: '',
+    providerNumber: '',
+    physicianComment: '',
     diagnosis: '',
-    physicianComments: '',
     valid: true,
-    message: '',
-    msg: 'Submit an Error'
+    message: ''
   }),
 
   methods: {
-    submit () {
-      // Native form submission is not yet supported
-      this.message = 'Error form sumbission not yet supported. Date ' +
-      this.date + ' Time ' + this.time +
-      ' Patient FirstName: ' +
-      this.patientFirstName +
-      ' Patient Surname: ' +
-      this.patientSurname +
-      ' Patient MRN: ' +
-      this.patientMRN +
-      ' Error Type: ' +
-      this.errorType.text +
-      ' Worker FirstName: ' +
-      this.workerFirstName +
-      ' Worker Surname: ' +
-      this.workerSurname +
-      ' IIMS Completed: ' +
-      this.wasIIMScompleted
+    submit: function () {
+      if (this.validForm()) {
+        this.message = ''
+
+        var url = 'http://localhost:3000/api/v1/query/error'
+        axios.post(url,
+          {
+            formDate: this.date,
+            formTime: this.time,
+            formPatientFirstName: this.patientFirstName,
+            formPatientSurname: this.patientSurname,
+            formPatientId: this.patientId,
+            formPatientType: this.patientType,
+            formErrorType: this.errorType,
+            formErrorComment: this.errorComment,
+            formWorkerAtFault: this.workerAtFault,
+            formWorkerNotified: this.workerNotified,
+            formErrorLocation: this.errorLocation,
+            formIimsCompleted: this.iimsCompleted,
+            formMedication: this.medication,
+            formSeverity: this.severity,
+            formPhysicianNotified: this.formPhysicianNotified,
+            formPhysicianFirstName: this.physicianFirstName,
+            formPhysicianSurname: this.physicianSurname,
+            formProviderNumber: this.providerNumber,
+            formPhysicianComment: this.formPhysicianComment,
+            formDiagnosis: this.diagnosis
+          })
+          .then(function (response) {
+            if (response.data['status'] === 200) {
+              this.message = 'Error added successfully'
+              this.clear()
+            }
+          }.bind(this))
+          .catch(function (error) {
+            this.message = 'There was an error adding the Error:' +
+            error.stack
+          }.bind(this))
+      } else {
+        this.message = 'There was an error with your form.'
+      }
     },
-    clear () {
+    clear: function () {
       this.$refs.form.reset()
+    },
+    validForm: function () {
+      return true
     }
   }
 }

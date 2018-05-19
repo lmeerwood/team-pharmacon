@@ -57,7 +57,7 @@ router.post('/physician', function (req, res, next) {
   })
 })
 
-// The physician route. The get is for retrieving details and the post is for adding details
+// The error route. The get is for retrieving details and the post is for adding details
 router.get('/error', function (req, res, next) {
   res.locals.connection.query('SELECT * from `petdatabase`.`error`;', function (error, results) {
     if (error) {
@@ -78,31 +78,52 @@ router.get('/error', function (req, res, next) {
 })
 
 router.post('/error', function (req, res, next) {
-  var date = req.body.date
-  var time = req.body.time
-  var type = req.body.type
-  var location = req.body.location
-  var workerAtFault = req.body.worker
-  var workerNotified = req.body.workerNotified
-  var physicianNotified = req.body.physicianNotified
-  var iimsCompleted = req.body.iimsCompleted
-  var comment = req.body.comment
-  var severity = req.body.severity
+  var formDate = req.body.formDate
+  var formTime = req.body.formTime
+  var formPatientFirstName = req.body.formPatientFirstName
+  var formPatientSurname = req.body.formPatientSurname
+  var formPatientId = req.body.formPatientId
+  var formPatientType = req.body.formPatientType
+  var formErrorType = req.body.formErrorType
+  var formErrorComment = req.body.formErrorComment
+  var formWorkerAtFault = req.body.formWorkerAtFault
+  var formWorkerNotified = req.body.formWorkerNotified
+  var formErrorLocation = req.body.formErrorLocation
+  var formIimsCompleted = req.body.formIimsCompleted
+  var formMedication = req.body.formMedication
+  var formSeverity = req.body.formSeverity
+  var formPhysicianNotified = req.body.formPhysicianNotified
+  var formPhysicianFirstName = req.body.formPatientFirstName
+  var formPhysicianSurname = req.body.formPhysicianSurname
+  var formProviderNumber = req.body.formProviderNumber
+  var formPhysicianComment = req.body.formPhysicianComment
+  var formDiagnosis = req.body.formDiagnosis
 
-  var query = `INSERT INTO \`petdatabase\`.\`error\` 
-  (errorDate, errorTime, errorTypeId, errorDetectedLocation, errorCausedByWorker, wasWorkerNotified,
-  wasPhysicianNotified, iimsCompleted, generalComment, severityId) 
+  var query = `INSERT INTO \`tempPETdb\`.\`errorForm\` 
+  (date, time, patientFirstName, patientSurname, patientId, patientType, errorType, errorComment, workerAtFault, workerNotified,
+    location, iimsCompleted, medication, severity, physicianNotified, physicianFirstName, physicianSurname, providerNumber,
+    physicianComments, dianosis) 
   VALUES (
-   '${date}',
-   '${time}',
-   '${type}',
-   '${location}',
-   '${workerAtFault}',
-   '${workerNotified}',
-   '${physicianNotified}', 
-   '${iimsCompleted}', 
-   '${comment}', 
-   '${severity}'
+   '${formDate}',
+   '${formTime}',
+   '${formPatientFirstName}',
+   '${formPatientSurname}',
+   '${formPatientId}',
+   '${formPatientType}',
+   '${formErrorType}',
+   '${formErrorComment}',
+   '${formWorkerAtFault}',
+   '${formWorkerNotified}',
+   '${formErrorLocation}', 
+   '${formIimsCompleted}',
+   '${formMedication}',
+   '${formSeverity}',
+   '${formPhysicianNotified}',
+   '${formPhysicianFirstName}',
+   '${formPhysicianSurname}',
+   '${formProviderNumber}',
+   '${formPhysicianComment}',
+   '${formDiagnosis}'
    );`
 
   console.log(query)

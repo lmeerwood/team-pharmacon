@@ -132,7 +132,5 @@ COMMIT;
 -- enable foreign keys checksum table
 -- -----------------------------------------------------
 SET FOREIGN_KEY_CHECKS=1;
-<<<<<<< HEAD
+
 COMMIT;
-=======
->>>>>>> remotes/origin/task6.4
