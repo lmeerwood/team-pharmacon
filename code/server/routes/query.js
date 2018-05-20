@@ -93,7 +93,7 @@ router.post('/error', function (req, res, next) {
   var formMedication = req.body.formMedication
   var formSeverity = req.body.formSeverity
   var formPhysicianNotified = req.body.formPhysicianNotified
-  var formPhysicianFirstName = req.body.formPatientFirstName
+  var formPhysicianFirstName = req.body.formPhysicianFirstName
   var formPhysicianSurname = req.body.formPhysicianSurname
   var formProviderNumber = req.body.formProviderNumber
   var formPhysicianComment = req.body.formPhysicianComment

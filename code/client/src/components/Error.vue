@@ -64,12 +64,17 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-select
-                label="Select Patient Type"
-                v-model="patientType"
+                :loading="loading"
                 :items="patientTypes"
                 :rules="[() => patientType.length > 0 || 'You must select one']"
+                :search-input.sync="search"
+                label="Select Patient Type"
+                v-model="patientType"
+                autocomplete
+                multiple
+                cache-items
+                chips
                 required
-                return-object
                 ></v-select>
               </v-flex>
             </v-layout>
@@ -77,12 +82,16 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-select
+                :loading="loading"
                 :items="errorTypes"
+                :rules="[() => errorType.length > 0 || 'You must select one']"
                 v-model="errorType"
                 label='Select an Error Type'
-                :rules="[() => errorType.length > 0 || 'You must select one']"
+                autocomplete
+                multiple
+                cache-items
+                chips
                 required
-                return-object
                 ></v-select>
               </v-flex>
             </v-layout>
@@ -99,12 +108,16 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-select
-                label="Select Person Who Made Error"
-                v-model="workerAtFault"
+                :loading="loading"
                 :items="workers"
                 :rules="[() => workerAtFault.length > 0 || 'You must select one']"
+                label="Select Person Who Made Error"
+                v-model="workerAtFault"
+                autocomplete
+                multiple
+                cache-items
+                chips
                 required
-                return-object
                 ></v-select>
               </v-flex>
             </v-layout>
@@ -116,7 +129,7 @@
             </v-layout>
             <v-layout row>
               <v-flex xs8 offset-xs2>
-                <v-radio-group v-model="workerNotified" row=true>
+                <v-radio-group v-model="workerNotified" :mandatory="false" row=true>
                   <v-radio label="Yes" value="yes"></v-radio>
                   <v-radio label="No" value="no"></v-radio>
                 </v-radio-group>
@@ -126,12 +139,16 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-select
+                :loading="loading"
                 :items="errorLocations"
+                :rules="[() => errorLocation.length > 0 || 'You must select one']"
                 v-model="errorLocation"
                 label='Where did the error occur?'
-                :rules="[() => errorLocation.length > 0 || 'You must select one']"
+                autocomplete
+                multiple
+                cache-items
+                chips
                 required
-                return-object
                 ></v-select>
               </v-flex>
             </v-layout>
@@ -153,12 +170,16 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-select
-                label="Select Medication"
-                v-model="medication"
+                :loading="loading"
                 :items="medications"
                 :rules="[() => medication.length > 0 || 'You must select one']"
+                label="Select Medication"
+                v-model="medication"
+                autocomplete
+                multiple
+                cache-items
+                chips
                 required
-                return-object
                 ></v-select>
               </v-flex>
             </v-layout>
@@ -166,12 +187,16 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-select
-                v-model="severity"
-                label='Select Severity Level'
+                :loading="loading"
                 :items="severityLevels"
                 :rules="[() => severity.length > 0 || 'You must select one']"
+                v-model="severity"
+                label='Select Severity Level'
+                autocomplete
+                multiple
+                cache-items
+                chips
                 required
-                return-object
                 ></v-select>
               </v-flex>
             </v-layout>
@@ -277,8 +302,8 @@
 var axios = require('axios')
 export default {
   data: () => ({
-    date: null,
     menu: false,
+    loading: false,
     patientTypes: [
       { text: 'Discharge', value: '0' },
       { text: 'Inpatient', value: '1' },
@@ -383,11 +408,11 @@ export default {
             formIimsCompleted: this.iimsCompleted,
             formMedication: this.medication,
             formSeverity: this.severity,
-            formPhysicianNotified: this.formPhysicianNotified,
+            formPhysicianNotified: this.wasPhysicianNotified,
             formPhysicianFirstName: this.physicianFirstName,
             formPhysicianSurname: this.physicianSurname,
             formProviderNumber: this.providerNumber,
-            formPhysicianComment: this.formPhysicianComment,
+            formPhysicianComment: this.physicianComment,
             formDiagnosis: this.diagnosis
           })
           .then(function (response) {
