@@ -71,7 +71,6 @@
                 label="Select Patient Type"
                 v-model="patientType"
                 autocomplete
-                multiple
                 cache-items
                 chips
                 required
@@ -88,7 +87,22 @@
                 v-model="errorType"
                 label='Select an Error Type'
                 autocomplete
-                multiple
+                cache-items
+                chips
+                required
+                ></v-select>
+              </v-flex>
+            </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+                <v-select
+                :loading="loading"
+                :items="medications"
+                :rules="[() => medication.length > 0 || 'You must select one']"
+                label="Select Medication"
+                v-model="medication"
+                autocomplete
                 cache-items
                 chips
                 required
@@ -114,7 +128,6 @@
                 label="Select Person Who Made Error"
                 v-model="workerAtFault"
                 autocomplete
-                multiple
                 cache-items
                 chips
                 required
@@ -130,8 +143,8 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-radio-group v-model="workerNotified" :mandatory="false" row=true>
-                  <v-radio label="Yes" value="yes"></v-radio>
-                  <v-radio label="No" value="no"></v-radio>
+                  <v-radio label="Yes" value=1></v-radio>
+                  <v-radio label="No" value=0></v-radio>
                 </v-radio-group>
               </v-flex>
             </v-layout>
@@ -145,7 +158,6 @@
                 v-model="errorLocation"
                 label='Where did the error occur?'
                 autocomplete
-                multiple
                 cache-items
                 chips
                 required
@@ -161,26 +173,9 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-radio-group v-model="iimsCompleted" row=true>
-                  <v-radio label="Yes" value="yes"></v-radio>
-                  <v-radio label="No" value="no"></v-radio>
+                  <v-radio label="Yes" value=1></v-radio>
+                  <v-radio label="No" value=0></v-radio>
                 </v-radio-group>
-              </v-flex>
-            </v-layout>
-
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
-                <v-select
-                :loading="loading"
-                :items="medications"
-                :rules="[() => medication.length > 0 || 'You must select one']"
-                label="Select Medication"
-                v-model="medication"
-                autocomplete
-                multiple
-                cache-items
-                chips
-                required
-                ></v-select>
               </v-flex>
             </v-layout>
 
@@ -193,7 +188,6 @@
                 v-model="severity"
                 label='Select Severity Level'
                 autocomplete
-                multiple
                 cache-items
                 chips
                 required
@@ -209,8 +203,8 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-radio-group v-model="wasPhysicianNotified" row="true">
-                  <v-radio label="Yes" value="yes"></v-radio>
-                  <v-radio label="No" value="no"></v-radio>
+                  <v-radio label="Yes" value=1></v-radio>
+                  <v-radio label="No" value=0></v-radio>
                 </v-radio-group>
               </v-flex>
             </v-layout>
@@ -220,7 +214,7 @@
                 <v-text-field
                 label="Physician First Name"
                 v-model="physicianFirstName"
-                :disabled="this.wasPhysicianNotified == 'no'"
+                :disabled="this.wasPhysicianNotified == 0"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -230,7 +224,7 @@
                 <v-text-field
                 label="Physician Surname"
                 v-model="physicianSurname"
-                :disabled="this.wasPhysicianNotified == 'no'"
+                :disabled="this.wasPhysicianNotified == 0"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -240,7 +234,7 @@
                 <v-text-field
                 label="Physician Provider Number"
                 v-model="providerNumber"
-                :disabled="this.wasPhysicianNotified == 'no'"
+                :disabled="this.wasPhysicianNotified == 0"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -250,7 +244,7 @@
                 <v-text-field
                 label="Physician Comments"
                 v-model="physicianComment"
-                :disabled="this.wasPhysicianNotified == 'no'"
+                :disabled="this.wasPhysicianNotified == 0"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -260,7 +254,7 @@
                 <v-text-field
                 label="Diagnosis"
                 v-model="diagnosis"
-                :disabled="this.wasPhysicianNotified == 'no'"
+                :disabled="this.wasPhysicianNotified == 0"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -372,12 +366,12 @@ export default {
     errorType: '',
     errorComment: '',
     workerAtFault: '',
-    workerNotified: '',
+    workerNotified: null,
     errorLocation: '',
-    iimsCompleted: '',
+    iimsCompleted: null,
     medication: '',
     severity: '',
-    wasPhysicianNotified: '',
+    wasPhysicianNotified: null,
     physicianFirstName: '',
     physicianSurname: '',
     providerNumber: '',
