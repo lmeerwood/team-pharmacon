@@ -14,7 +14,7 @@
                 <v-text-field
                 label="Date yyyy-mm-dd"
                 v-model="date"
-                :rules="[() => first.length > 0 || 'This field is required']"
+                :rules="[() => date.length > 0 || 'This field is required']"
                 required
                 ></v-text-field>
               </v-flex>
@@ -22,7 +22,7 @@
                 <v-text-field
                 label="Time hh:ss"
                 v-model="time"
-                :rules="[() => first.length > 0 || 'This field is required']"
+                :rules="[() => time.length > 0 || 'This field is required']"
                 required
                 ></v-text-field>
               </v-flex>
@@ -33,7 +33,7 @@
                 <v-text-field
                 label="Patient First Name"
                 v-model="patientFirstName"
-                :rules="[() => first.length > 0 || 'This field is required']"
+                :rules="[() => patientFirstName.length > 0 || 'This field is required']"
                 required
                 ></v-text-field>
               </v-flex>
@@ -44,7 +44,7 @@
                 <v-text-field
                 label="Patient Surname"
                 v-model="patientSurname"
-                :rules="[() => first.length > 0 || 'This field is required']"
+                :rules="[() => patientSurname.length > 0 || 'This field is required']"
                 required
                 ></v-text-field>
               </v-flex>
@@ -55,7 +55,7 @@
                 <v-text-field
                 label="Patient MRN"
                 v-model="patientId"
-                :rules="[() => first.length > 0 || 'This field is required']"
+                :rules="[() => patientId.length > 0 || 'This field is required']"
                 required
                 ></v-text-field>
               </v-flex>
@@ -67,7 +67,7 @@
                 label="Select Patient Type"
                 v-model="patientType"
                 :items="patientTypes"
-                :rules="[() => select.length > 0 || 'You must select one']"
+                :rules="[() => patientType.length > 0 || 'You must select one']"
                 required
                 return-object
                 ></v-select>
@@ -80,7 +80,7 @@
                 :items="errorTypes"
                 v-model="errorType"
                 label='Select an Error Type'
-                :rules="[() => select.length > 0 || 'You must select one']"
+                :rules="[() => errorType.length > 0 || 'You must select one']"
                 required
                 return-object
                 ></v-select>
@@ -102,7 +102,7 @@
                 label="Select Person Who Made Error"
                 v-model="workerAtFault"
                 :items="workers"
-                :rules="[() => select.length > 0 || 'You must select one']"
+                :rules="[() => workerAtFault.length > 0 || 'You must select one']"
                 required
                 return-object
                 ></v-select>
@@ -129,7 +129,7 @@
                 :items="errorLocations"
                 v-model="errorLocation"
                 label='Where did the error occur?'
-                :rules="[() => select.length > 0 || 'You must select one']"
+                :rules="[() => errorLocation.length > 0 || 'You must select one']"
                 required
                 return-object
                 ></v-select>
@@ -156,7 +156,7 @@
                 label="Select Medication"
                 v-model="medication"
                 :items="medications"
-                :rules="[() => select.length > 0 || 'You must select one']"
+                :rules="[() => medication.length > 0 || 'You must select one']"
                 required
                 return-object
                 ></v-select>
@@ -169,7 +169,7 @@
                 v-model="severity"
                 label='Select Severity Level'
                 :items="severityLevels"
-                :rules="[() => select.length > 0 || 'You must select one']"
+                :rules="[() => severity.length > 0 || 'You must select one']"
                 required
                 return-object
                 ></v-select>
@@ -246,8 +246,8 @@
                 round
                 color="primary"
                 dark
-                @click="submit"
                 :disabled="!valid"
+                @click="submit"
                 >Submit
                 </v-btn>
                 <v-btn
@@ -337,6 +337,8 @@ export default {
       { text: 'Moderate-Severe', value: '4' },
       { text: 'Severe', value: '5' }
     ],
+    valid: true,
+    date: '',
     time: '',
     patientFirstName: '',
     patientSurname: '',
@@ -356,7 +358,6 @@ export default {
     providerNumber: '',
     physicianComment: '',
     diagnosis: '',
-    valid: true,
     message: ''
   }),
 
@@ -405,9 +406,10 @@ export default {
     },
     clear: function () {
       this.$refs.form.reset()
+      this.message = ''
     },
     validForm: function () {
-      return true
+      this.$refs.form.validate()
     }
   }
 }
