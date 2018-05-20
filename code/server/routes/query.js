@@ -59,7 +59,7 @@ router.post('/physician', function (req, res, next) {
 
 // The error route. The get is for retrieving details and the post is for adding details
 router.get('/error', function (req, res, next) {
-  res.locals.connection.query('SELECT * from `petdatabase`.`error`;', function (error, results) {
+  res.locals.connection.query('SELECT * from `tempPETdb`.`errorForm`;', function (error, results) {
     if (error) {
       res.status(500)
       res.send(JSON.stringify({

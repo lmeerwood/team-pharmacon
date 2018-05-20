@@ -14,179 +14,201 @@
                 <v-text-field
                 label="Date yyyy-mm-dd"
                 v-model="date"
+                :rules="[() => first.length > 0 || 'This field is required']"
+                required
                 ></v-text-field>
-                </v-flex>
+              </v-flex>
               <v-flex xs8 offset-xs1>
                 <v-text-field
                 label="Time hh:ss"
                 v-model="time"
-              ></v-text-field>
+                :rules="[() => first.length > 0 || 'This field is required']"
+                required
+                ></v-text-field>
               </v-flex>
             </v-layout>
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
-              <v-text-field
+                <v-text-field
                 label="Patient First Name"
                 v-model="patientFirstName"
-              ></v-text-field>
+                :rules="[() => first.length > 0 || 'This field is required']"
+                required
+                ></v-text-field>
               </v-flex>
-              </v-layout>
+            </v-layout>
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
-              <v-text-field
+                <v-text-field
                 label="Patient Surname"
                 v-model="patientSurname"
-              ></v-text-field>
+                :rules="[() => first.length > 0 || 'This field is required']"
+                required
+                ></v-text-field>
               </v-flex>
-              </v-layout>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Patient MRN"
-                    v-model="patientId"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-text-field
+                label="Patient MRN"
+                v-model="patientId"
+                :rules="[() => first.length > 0 || 'This field is required']"
+                required
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-select
-                    label="Select Patient Type"
-                    v-model="patientType"
-                    :items="patientTypes"
-                    return-object
-                  ></v-select>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-select
+                label="Select Patient Type"
+                v-model="patientType"
+                :items="patientTypes"
+                :rules="[() => select.length > 0 || 'You must select one']"
+                required
+                return-object
+                ></v-select>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-select
-                  :items="errorTypes"
-                  v-model="errorType"
-                  label='Select an Error Type'
-                  return-object
-                  ></v-select>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-select
+                :items="errorTypes"
+                v-model="errorType"
+                label='Select an Error Type'
+                :rules="[() => select.length > 0 || 'You must select one']"
+                required
+                return-object
+                ></v-select>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Error Description or General Comment"
-                    v-model="errorComment"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-text-field
+                label="Error Description or General Comment"
+                v-model="errorComment"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-select
-                    label="Select Person Who Made Error"
-                    v-model="workerAtFault"
-                    :items="workers"
-                    return-object
-                  ></v-select>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-select
+                label="Select Person Who Made Error"
+                v-model="workerAtFault"
+                :items="workers"
+                :rules="[() => select.length > 0 || 'You must select one']"
+                required
+                return-object
+                ></v-select>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <h4>Was the person notified?</h4>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <h4>Was the person notified?</h4>
+              </v-flex>
+            </v-layout>
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="workerNotified" :mandatory="true" row=true>
-                    <v-radio label="Yes" value="yes"></v-radio>
-                    <v-radio label="No" value="no"></v-radio>
-                  </v-radio-group>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-radio-group v-model="workerNotified" row=true>
+                  <v-radio label="Yes" value="yes"></v-radio>
+                  <v-radio label="No" value="no"></v-radio>
+                </v-radio-group>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-select
-                  :items="errorLocations"
-                  v-model="errorLocation"
-                  label='Where did the error occur?'
-                  return-object
-                  ></v-select>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-select
+                :items="errorLocations"
+                v-model="errorLocation"
+                label='Where did the error occur?'
+                :rules="[() => select.length > 0 || 'You must select one']"
+                required
+                return-object
+                ></v-select>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <h4>Was an IIMS completed?</h4>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <h4>Was an IIMS completed?</h4>
+              </v-flex>
+            </v-layout>
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="iimsCompleted" :mandatory="true" row=true>
-                    <v-radio label="Yes" value="yes"></v-radio>
-                    <v-radio label="No" value="no"></v-radio>
-                  </v-radio-group>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-radio-group v-model="iimsCompleted" row=true>
+                  <v-radio label="Yes" value="yes"></v-radio>
+                  <v-radio label="No" value="no"></v-radio>
+                </v-radio-group>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-select
-                    label="Select Medication"
-                    v-model="medication"
-                    :items="medications"
-                    return-object
-                  ></v-select>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-select
+                label="Select Medication"
+                v-model="medication"
+                :items="medications"
+                :rules="[() => select.length > 0 || 'You must select one']"
+                required
+                return-object
+                ></v-select>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-select
-                  :items="severityLevels"
-                  v-model="severity"
-                  label='Select Severity Level'
-                  return-object
-                  ></v-select>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-select
+                v-model="severity"
+                label='Select Severity Level'
+                :items="severityLevels"
+                :rules="[() => select.length > 0 || 'You must select one']"
+                required
+                return-object
+                ></v-select>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <h4>Was the physician notified?</h4>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <h4>Was the physician notified?</h4>
+              </v-flex>
+            </v-layout>
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasPhysicianNotified" :mandatory="true" row="true">
-                    <v-radio label="Yes" value="yes"></v-radio>
-                    <v-radio label="No" value="no"></v-radio>
-                  </v-radio-group>
-                </v-flex>
-              </v-layout>
+              <v-flex xs8 offset-xs2>
+                <v-radio-group v-model="wasPhysicianNotified" row="true">
+                  <v-radio label="Yes" value="yes"></v-radio>
+                  <v-radio label="No" value="no"></v-radio>
+                </v-radio-group>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                  label="Physician First Name"
-                  v-model="physicianFirstName"
-                  :disabled="this.wasPhysicianNotified == 'no'"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
+               <v-flex xs8 offset-xs2>
+                <v-text-field
+                label="Physician First Name"
+                v-model="physicianFirstName"
+                :disabled="this.wasPhysicianNotified == 'no'"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
 
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                  label="Physician Surname"
-                  v-model="physicianSurname"
-                  :disabled="this.wasPhysicianNotified == 'no'"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+                <v-text-field
+                label="Physician Surname"
+                v-model="physicianSurname"
+                :disabled="this.wasPhysicianNotified == 'no'"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
@@ -195,8 +217,8 @@
                 v-model="providerNumber"
                 :disabled="this.wasPhysicianNotified == 'no'"
                 ></v-text-field>
-                </v-flex>
-              </v-layout>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
@@ -205,8 +227,8 @@
                 v-model="physicianComment"
                 :disabled="this.wasPhysicianNotified == 'no'"
                 ></v-text-field>
-                </v-flex>
-              </v-layout>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
@@ -215,35 +237,35 @@
                 v-model="diagnosis"
                 :disabled="this.wasPhysicianNotified == 'no'"
                 ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
-              <v-btn
-              round
-              color="primary"
-              dark
-              @click="submit"
-              :disabled="!valid"
-              >Submit
-              </v-btn>
-            <v-btn
-              round color="primary"
-              dark
-              @click="clear">
-              clear
-              </v-btn>
-            </v-flex>
-          </v-layout>
-
-          <v-layout row>
-            <v-flex xs8 offset-xs2>
-              <p>{{ message }}</p>
               </v-flex>
             </v-layout>
 
-          </v-container>
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+                <v-btn
+                round
+                color="primary"
+                dark
+                @click="submit"
+                :disabled="!valid"
+                >Submit
+                </v-btn>
+                <v-btn
+                round color="primary"
+                dark
+                @click="clear">
+                clear
+                </v-btn>
+              </v-flex>
+            </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+                <p>{{ message }}</p>
+              </v-flex>
+            </v-layout>
+
+            </v-container>
           </v-form>
         </fieldset>
       </section>
