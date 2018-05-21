@@ -18,7 +18,7 @@ USE `tempPETdb` ;
 -- Table `tempPETdb`.`errorForm`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tempPETdb`.`errorForm` (
-  `idErrorForm` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
   `time` TIME NOT NULL,
   `patientFirstName` VARCHAR(45) NOT NULL,
@@ -39,7 +39,17 @@ CREATE TABLE IF NOT EXISTS `tempPETdb`.`errorForm` (
   `providerNumber` VARCHAR(45) NULL,
   `physicianComments` VARCHAR(150) NULL,
   `dianosis` VARCHAR(150) NULL,
-  PRIMARY KEY (`idErrorForm`))
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `tempPETdb`.`User`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tempPETdb`.`User` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `email` varchar(200) NOT NULL,
+  `password` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 

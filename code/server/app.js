@@ -1,10 +1,10 @@
 var express = require('express')
 // var path = require('path')
-var mysql = require('mysql')
 var bodyParser = require('body-parser')
 var cors = require('cors')
+// const config = require('config/config')
 require('dotenv').config()
-
+require('./passport')
 var app = express()
 
 // Set up Body Parser
@@ -12,6 +12,7 @@ app.use(bodyParser.json()) // Support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })) // Support encoded bodies
 
 var queryRoute = require('./routes/query')
+var authRoute = require('./routes/authentication')
 
 // app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')))
 
@@ -20,26 +21,9 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cors())
 // app.use(express.static(path.join(__dirname, 'public')));
 
-// MySQL setup
-app.use(function (req, res, next) {
-  res.locals.connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_TABLE
-  })
-  res.locals.connection.connect(function (err) {
-    if (err) {
-      console.log(err)
-    } else {
-      console.log('Successfully connected to database')
-    }
-  })
-  next()
-})
-
 // Define Query URL
 app.use('/api/v1/query', queryRoute)
+app.use('/auth', authRoute)
 
 // View Engine
 app.set('view engine', 'pug')
@@ -66,14 +50,5 @@ app.use(function (req, res, next) {
   console.warn('Time: %d', Date.now())
   next()
 })
-
-app.dbConnection = function () {
-  return mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_TABLE
-  })
-}
 
 module.exports = app
