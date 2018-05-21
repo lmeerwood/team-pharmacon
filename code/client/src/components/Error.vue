@@ -432,8 +432,7 @@ export default {
       this.message = ''
     },
     validForm: function () {
-      return true
-      // return this.$refs.form.validate()
+      return this.$refs.form.validate()
     }
   }
 }
