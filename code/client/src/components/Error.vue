@@ -14,7 +14,7 @@
                   <v-text-field
                     label="Date yyyy-mm-dd"
                     v-model="date"
-                    :rules="[() => date.length > 0 || 'This field is required']"
+                    :rules="[() => !!date || 'This field is required']"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -22,7 +22,7 @@
                   <v-text-field
                     label="Time hh:ss"
                     v-model="time"
-                    :rules="[() => time.length > 0 || 'This field is required']"
+                    :rules="[() => !!time || 'This field is required']"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -33,7 +33,7 @@
                   <v-text-field
                     label="Patient First Name"
                     v-model="patientFirstName"
-                    :rules="[() => patientFirstName.length > 0 || 'This field is required']"
+                    :rules="[() => !!patientFirstName || 'This field is required']"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -44,7 +44,7 @@
                   <v-text-field
                     label="Patient Surname"
                     v-model="patientSurname"
-                    :rules="[() => patientSurname.length > 0 || 'This field is required']"
+                    :rules="[() => !!patientSurname || 'This field is required']"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -55,7 +55,7 @@
                   <v-text-field
                     label="Patient MRN"
                     v-model="patientId"
-                    :rules="[() => patientId.length > 0 || 'This field is required']"
+                    :rules="[() => !!patientId || 'This field is required']"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -213,7 +213,7 @@
                   <v-text-field
                     label="Physician First Name"
                     v-model="physicianFirstName"
-                    :disabled="this.wasPhysicianNotified == 0"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -223,7 +223,7 @@
                   <v-text-field
                     label="Physician Surname"
                     v-model="physicianSurname"
-                    :disabled="this.wasPhysicianNotified == 0"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -233,7 +233,7 @@
                   <v-text-field
                     label="Physician Provider Number"
                     v-model="providerNumber"
-                    :disabled="this.wasPhysicianNotified == 0"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -243,7 +243,7 @@
                   <v-text-field
                     label="Physician Comments"
                     v-model="physicianComment"
-                    :disabled="this.wasPhysicianNotified == 0"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -253,7 +253,7 @@
                   <v-text-field
                     label="Diagnosis"
                     v-model="diagnosis"
-                    :disabled="this.wasPhysicianNotified == 0"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
