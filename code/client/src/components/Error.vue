@@ -143,8 +143,8 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-radio-group v-model="workerNotified" :mandatory="false" row=true>
-                  <v-radio label="Yes" value="true"></v-radio>
-                  <v-radio label="No" value="false"></v-radio>
+                  <v-radio label="Yes" value='yes'></v-radio>
+                  <v-radio label="No" value='no'></v-radio>
                 </v-radio-group>
               </v-flex>
             </v-layout>
@@ -173,8 +173,8 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-radio-group v-model="iimsCompleted" row=true>
-                  <v-radio label="Yes" value="true"></v-radio>
-                  <v-radio label="No" value="false"></v-radio>
+                  <v-radio label="Yes" value='yes'></v-radio>
+                  <v-radio label="No" value='no'></v-radio>
                 </v-radio-group>
               </v-flex>
             </v-layout>
@@ -203,8 +203,8 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-radio-group v-model="wasPhysicianNotified" row="true">
-                  <v-radio label="Yes" value="true"></v-radio>
-                  <v-radio label="No" value="false"></v-radio>
+                  <v-radio label="Yes" value='yes'></v-radio>
+                  <v-radio label="No" value='no'></v-radio>
                 </v-radio-group>
               </v-flex>
             </v-layout>
@@ -366,12 +366,12 @@ export default {
     errorType: '',
     errorComment: '',
     workerAtFault: '',
-    workerNotified: false,
+    workerNotified: '',
     errorLocation: '',
-    iimsCompleted: false,
+    iimsCompleted: '',
     medication: '',
     severity: '',
-    wasPhysicianNotified: false,
+    wasPhysicianNotified: '',
     physicianFirstName: '',
     physicianSurname: '',
     providerNumber: '',
