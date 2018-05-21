@@ -1,8 +1,10 @@
 var express = require('express')
-// var mysql = require('mysql')
 var router = express.Router()
+var model = require('../models')
 
-router.get('/', function (req, res, next) {
+const isAuthenticated = require('../policies/isAuthenticated')
+
+router.get('/', isAuthenticated, function (req, res, next) {
   res.send(JSON.stringify({
     'status': 200,
     'works': 'yes'
@@ -58,92 +60,22 @@ router.post('/physician', function (req, res, next) {
 })
 
 // The error route. The get is for retrieving details and the post is for adding details
-router.get('/error', function (req, res, next) {
-  res.locals.connection.query('SELECT * from `petdatabase`.`error`;', function (error, results) {
-    if (error) {
-      res.status(500)
-      res.send(JSON.stringify({
-        'status': 500,
-        'error': error.stack,
-        'response': null
-      }))
-    } else {
-      res.send(JSON.stringify({
-        'status': 200,
-        'error': null,
-        'response': results
-      }))
-    }
+router.get('/error', function (req, res) {
+  model.errorForm.findAll({
+    limit: 100
+  }).then(function (errors) {
+    res.send(errors)
   })
 })
 
 router.post('/error', function (req, res, next) {
-  var formDate = req.body.formDate
-  var formTime = req.body.formTime
-  var formPatientFirstName = req.body.formPatientFirstName
-  var formPatientSurname = req.body.formPatientSurname
-  var formPatientId = req.body.formPatientId
-  var formPatientType = req.body.formPatientType
-  var formErrorType = req.body.formErrorType
-  var formErrorComment = req.body.formErrorComment
-  var formWorkerAtFault = req.body.formWorkerAtFault
-  var formWorkerNotified = req.body.formWorkerNotified
-  var formErrorLocation = req.body.formErrorLocation
-  var formIimsCompleted = req.body.formIimsCompleted
-  var formMedication = req.body.formMedication
-  var formSeverity = req.body.formSeverity
-  var formPhysicianNotified = req.body.formPhysicianNotified
-  var formPhysicianFirstName = req.body.formPatientFirstName
-  var formPhysicianSurname = req.body.formPhysicianSurname
-  var formProviderNumber = req.body.formProviderNumber
-  var formPhysicianComment = req.body.formPhysicianComment
-  var formDiagnosis = req.body.formDiagnosis
-
-  var query = `INSERT INTO \`tempPETdb\`.\`errorForm\` 
-  (date, time, patientFirstName, patientSurname, patientId, patientType, errorType, errorComment, workerAtFault, workerNotified,
-    location, iimsCompleted, medication, severity, physicianNotified, physicianFirstName, physicianSurname, providerNumber,
-    physicianComments, dianosis) 
-  VALUES (
-   '${formDate}',
-   '${formTime}',
-   '${formPatientFirstName}',
-   '${formPatientSurname}',
-   '${formPatientId}',
-   '${formPatientType}',
-   '${formErrorType}',
-   '${formErrorComment}',
-   '${formWorkerAtFault}',
-   '${formWorkerNotified}',
-   '${formErrorLocation}', 
-   '${formIimsCompleted}',
-   '${formMedication}',
-   '${formSeverity}',
-   '${formPhysicianNotified}',
-   '${formPhysicianFirstName}',
-   '${formPhysicianSurname}',
-   '${formProviderNumber}',
-   '${formPhysicianComment}',
-   '${formDiagnosis}'
-   );`
-
-  console.log(query)
-
-  res.locals.connection.query(query, function (error, results) {
-    if (error) {
-      res.status(500)
-      res.send(JSON.stringify({
-        'status': 500,
-        'error': error.stack,
-        'response': null
-      }))
-    } else {
-      res.send(JSON.stringify({
-        'status': 200,
-        'error': null,
-        'response': results
-      }))
-    }
-  })
+  model.errorForm.create(req.body)
+    .then(function (errors) {
+      res.send(errors)
+    })
+    .catch(function (e) {
+      res.send('Ruh-roh!')
+    })
 })
 
 module.exports = router

@@ -1,6 +1,4 @@
-var express = require('express')
-var router = express.Router()
-var model = require('../models')
+const {User} = require('../models')
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
@@ -11,22 +9,24 @@ function jwtSignUser (user) {
   })
 }
 
-router.post('/login', function (req, res) {
-  try {
-    const {email, password} = req.body
-    model.User.findOne({
-      where: {
-        email: email
-      }
-    }).then(function (user) {
+module.exports = {
+  async login (req, res) {
+    try {
+      const {email, password} = req.body
+      const user = await User.findOne({
+        where: {
+          email: email
+        }
+      })
+
       if (!user) {
         return res.status(403).send({
           error: 'The login information was incorrect'
         })
       }
 
-      var valid = user.comparePassword(password)
-      if (!valid) {
+      const isPasswordValid = await user.comparePassword(password)
+      if (!isPasswordValid) {
         return res.status(403).send({
           error: 'The login information was incorrect'
         })
@@ -37,12 +37,10 @@ router.post('/login', function (req, res) {
         user: userJson,
         token: jwtSignUser(userJson)
       })
-    })
-  } catch (err) {
-    res.status(500).send({
-      error: 'An error has occured trying to log in'
-    })
+    } catch (err) {
+      res.status(500).send({
+        error: 'An error has occured trying to log in'
+      })
+    }
   }
-})
-
-module.exports = router
+}
