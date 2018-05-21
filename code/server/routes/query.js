@@ -59,7 +59,7 @@ router.post('/physician', function (req, res, next) {
 
 // The error route. The get is for retrieving details and the post is for adding details
 router.get('/error', function (req, res, next) {
-  res.locals.connection.query('SELECT * from `petdatabase`.`error`;', function (error, results) {
+  res.locals.connection.query('SELECT * from `tempPETdb`.`errorForm`;', function (error, results) {
     if (error) {
       res.status(500)
       res.send(JSON.stringify({
@@ -93,7 +93,7 @@ router.post('/error', function (req, res, next) {
   var formMedication = req.body.formMedication
   var formSeverity = req.body.formSeverity
   var formPhysicianNotified = req.body.formPhysicianNotified
-  var formPhysicianFirstName = req.body.formPatientFirstName
+  var formPhysicianFirstName = req.body.formPhysicianFirstName
   var formPhysicianSurname = req.body.formPhysicianSurname
   var formProviderNumber = req.body.formProviderNumber
   var formPhysicianComment = req.body.formPhysicianComment
