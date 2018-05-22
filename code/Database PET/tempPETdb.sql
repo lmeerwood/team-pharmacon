@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `tempPETdb`.`User` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `email` varchar(200) NOT NULL,
   `password` varchar(200) NOT NULL,
+  `authlevel` INT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
