@@ -5,10 +5,11 @@ import Error from '@/components/Error'
 import Login from '@/components/Login'
 import Physician from '@/components/Physician'
 import viewPhysician from '@/components/viewPhysician'
+import store from '@/store/store'
 
 Vue.use(Router)
 
-export default new Router({
+var router = new Router({
   routes: [
     {
       path: '/',
@@ -41,3 +42,13 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && store.state.token === null) {
+    next('/login')
+  } else {
+    next()
+  }
+})
+
+export default router

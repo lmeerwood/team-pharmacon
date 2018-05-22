@@ -13,12 +13,23 @@
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "~4.16.0",
+    "jsonwebtoken": "^8.2.1",
     "mustache": "^2.3.0",
     "mysql": "^2.15.0",
+    "mysql2": "^1.5.3",
     "nodemon": "^1.17.4",
-    "pug": "^2.0.3"
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "pug": "^2.0.3",
+    "sequelize": "^4.37.8"
   },
   "devDependencies": {
     "standard": "^11.0.1"
+  },
+  "standard": {
+    "ignore": [
+      "/static/**/*.*",
+      "index.html"
+    ]
   }
 }
