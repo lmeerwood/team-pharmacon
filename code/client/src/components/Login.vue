@@ -12,14 +12,14 @@
 
             <v-layout row>
               <v-flex xs4>
-                <v-subheader><b>Enter Username</b></v-subheader>
+                <v-subheader><b>Enter Email</b></v-subheader>
                 </v-flex>
                 <v-flex xs8>
                   <v-text-field
-                  name="input-3-5"
-                  label="Username"
-                  v-model="username"
-                  :rules="[() => !!username || 'This field is required']"
+                  name="email"
+                  label="Email"
+                  v-model="email"
+                  :rules="[() => !!email || 'This field is required']"
                   :error-messages="errorMessages"
                   required
                   single-line
@@ -33,7 +33,7 @@
                 </v-flex>
                 <v-flex xs8>
                   <v-text-field
-                  name="input-10-1"
+                  name="password"
                   label="Enter your password"
                   hint="At least 8 characters"
                   v-model="password"
@@ -81,11 +81,9 @@
             </v-slide-x-reverse-transition>
           </div>
 
-          <v-layout row>
-            <v-flex xs8 offset-xs2>
-              <p>{{ message }} </p>
-            </v-flex>
-          </v-layout>
+          <br/>
+          <div class="danger-alert" v-html="error" />
+          <br/>
 
           </v-form>
         </fieldset>
@@ -95,29 +93,33 @@
 </template>
 
 <script>
+import AuthenticationService from '@/services/AuthenticationService'
+
 export default {
   data: () => ({
     msg: 'Please Login',
     e1: true,
-    username: '',
+    email: '',
     password: '',
     valid: true,
     message: '',
     errorMessages: [],
     rules: {
       required: (value) => !!value || 'Required.'
-    }
+    },
+    error: null,
+    formHasErrors: false
   }),
   computed: {
     form () {
       return {
-        username: this.username,
+        email: this.email,
         password: this.password
       }
     }
   },
   watch: {
-    username () {
+    email () {
       this.errorMessages = []
     },
     password () {
@@ -125,27 +127,33 @@ export default {
     }
   },
   methods: {
-    login () {
-      // Native form submission is not yet supported
-      this.message = 'Login submission not yet supported. Username: ' + this.username + ' Password ' + this.password
-      this.formHasErrors = false
-
-      Object.keys(this.form).forEach(f => {
+    async login () {
+      this.error = null
+      /* Object.keys(this.form).forEach(f => {
         if (!this.form[f]) this.formHasErrors = true
-
         this.$refs[f].validate(true)
       })
+      */
+      if (!this.formHasErrors) {
+        try {
+          const response = await AuthenticationService.login({
+            email: this.email,
+            password: this.password
+          })
+          console.log(' User: ' + response.data.user)
+          console.log('Token: ' + response.data.token)
+          this.$store.dispatch('setToken', response.data.token)
+          this.$store.dispatch('setUser', response.data.user)
+          this.$router.push({
+            name: 'Error'
+          })
+        } catch (error) {
+          this.error = error.response.data.error
+        }
+      }
     },
     clear () {
       this.$refs.form.reset()
-    },
-    resetForm () {
-      this.errorMessages = []
-      this.formHasErrors = false
-
-      Object.keys(this.form).forEach(f => {
-        this.$refs[f].reset()
-      })
     }
   }
 }
