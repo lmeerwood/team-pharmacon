@@ -1,4 +1,3 @@
-
 <template>
   <v-layout row class="pt-5 top-margin">
     <v-flex xs6 offset-xs3>
@@ -8,251 +7,424 @@
         </h1>
         <fieldset class="white">
           <v-form v-model="valid" ref="form" lazy-validation>
-          <v-container fluid>
+            <v-container fluid>
 
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
-              <v-text-field
-                label="Patient Name"
-                v-model="patientName"
-              ></v-text-field>
-              </v-flex>
-              </v-layout>
-
-            <v-layout row>
-                <v-flex xs8 offset-xs2>
+              <v-layout row>
+                <v-flex xs8 offset-xs1>
                   <v-text-field
-                    label="Patient MRN"
-                    v-model="patientMRN"
+                    label="Date yyyy-mm-dd"
+                    v-model="date"
+                    :rules="[() => !!date || 'This field is required']"
+                    required
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs8 offset-xs1>
+                  <v-text-field
+                    label="Time hh:ss"
+                    v-model="time"
+                    :rules="[() => !!time || 'This field is required']"
+                    required
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field
+                    label="Patient First Name"
+                    v-model="patientFirstName"
+                    :rules="[() => !!patientFirstName || 'This field is required']"
+                    required
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field
+                    label="Patient Surname"
+                    v-model="patientSurname"
+                    :rules="[() => !!patientSurname || 'This field is required']"
+                    required
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field
+                    label="Patient MRN"
+                    v-model="patientId"
+                    :rules="[() => !!patientId || 'This field is required']"
+                    required
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-select
-                  :items="errorTypes"
-                  v-model="errorType"
-                  label='Select an Error Type'
-                  return-object
+                    :loading="loading"
+                    :items="patientTypes"
+                    :rules="[() => patientType.length > 0 || 'You must select one']"
+                    label="Select Patient Type"
+                    v-model="patientType"
+                    autocomplete
+                    cache-items
+                    chips
+                    required
                   ></v-select>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-select
+                    :loading="loading"
+                    :items="errorTypes"
+                    :rules="[() => errorType.length > 0 || 'You must select one']"
+                    v-model="errorType"
+                    label='Select an Error Type'
+                    autocomplete
+                    cache-items
+                    chips
+                    required
+                  ></v-select>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-select
+                    :loading="loading"
+                    :items="medications"
+                    :rules="[() => medication.length > 0 || 'You must select one']"
+                    label="Select Medication"
+                    v-model="medication"
+                    autocomplete
+                    cache-items
+                    chips
+                    required
+                  ></v-select>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Error Description or General Comment"
-                    v-model="errorDesc"
+                    v-model="errorComment"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <h4>Was the person who made the error notified?</h4>
+                  <v-select
+                    :loading="loading"
+                    :items="workers"
+                    :rules="[() => workerAtFault.length > 0 || 'You must select one']"
+                    label="Select Person Who Made Error"
+                    v-model="workerAtFault"
+                    autocomplete
+                    cache-items
+                    chips
+                    required
+                  ></v-select>
                 </v-flex>
               </v-layout>
-            <v-layout row>
+
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasPersonNotified" :mandatory="false" row= true>
-                    <v-radio label="Yes" value="yes"></v-radio>
-                    <v-radio label="No" value="no"></v-radio>
+                  <h4>Was the person notified?</h4>
+                </v-flex>
+              </v-layout>
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-radio-group v-model="workerNotified" :mandatory="false" row=true>
+                    <v-radio label="Yes" value=true></v-radio>
+                    <v-radio label="No" value=false></v-radio>
                   </v-radio-group>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-select
-                  :items="errorLocations"
-                  v-model="errorLocation"
-                  label='Where did the error occur?'
-                  return-object
+                    :loading="loading"
+                    :items="errorLocations"
+                    :rules="[() => errorLocation.length > 0 || 'You must select one']"
+                    v-model="errorLocation"
+                    label='Where did the error occur?'
+                    autocomplete
+                    cache-items
+                    chips
+                    required
                   ></v-select>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <h4>Was an IIMS completed?</h4>
                 </v-flex>
               </v-layout>
-            <v-layout row>
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasIIMScompleted" :mandatory="false" row= true>
-                    <v-radio label="Yes" value="yes"></v-radio>
-                    <v-radio label="No" value="no"></v-radio>
+                  <v-radio-group v-model="iimsCompleted" row=true>
+                    <v-radio label="Yes" value="true"></v-radio>
+                    <v-radio label="No" value="false"></v-radio>
                   </v-radio-group>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Medication Name"
-                    v-model="medication"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-            <v-layout row>
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-select
-                  :items="medicationTypes"
-                  v-model="medicationType"
-                  label='Medication Type'
-                  return-object
+                    :loading="loading"
+                    :items="severityLevels"
+                    :rules="[() => severity.length > 0 || 'You must select one']"
+                    v-model="severity"
+                    label='Select Severity Level'
+                    autocomplete
+                    cache-items
+                    chips
+                    required
                   ></v-select>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <h4>Was the physician notified?</h4>
                 </v-flex>
               </v-layout>
-            <v-layout row>
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasPhysicianNotified" :mandatory="false" row= true>
-                    <v-radio label="Yes" value="yes"></v-radio>
-                    <v-radio label="No" value="no"></v-radio>
+                  <v-radio-group v-model="wasPhysicianNotified" row=true>
+                    <v-radio label="Yes" value="true"></v-radio>
+                    <v-radio label="No" value="false"></v-radio>
                   </v-radio-group>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
-                    label="Physician Name"
-                    v-model="physicianName"
-                    :disabled="this.wasPhysicianNotified == 'no'"
+                    label="Physician First Name"
+                    v-model="physicianFirstName"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field
+                    label="Physician Surname"
+                    v-model="physicianSurname"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Provider Number"
-                    v-model="physicianProviderNumber"
-                    :disabled="this.wasPhysicianNotified == 'no'"
+                    v-model="providerNumber"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Patient Diagnosis"
-                    v-model="diagnosis"
-                    :disabled="this.wasPhysicianNotified == 'no'"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-            <v-layout row>
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Comments"
-                    v-model="physicianComments"
-                    :disabled="this.wasPhysicianNotified == 'no'"
+                    v-model="physicianComment"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
-              <v-btn
-                round
-                color="primary"
-                dark
-                @click="submit"
-                :disabled="!valid"
-              >Submit
-              </v-btn>
-              <v-btn
-                round color="primary"
-                dark
-                @click="clear">
-                clear
-                </v-btn>
-              </v-flex>
-            </v-layout>
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field
+                    label="Diagnosis"
+                    v-model="diagnosis"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
 
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
-              <p>{{ message }}</p>
-              </v-flex>
-            </v-layout>
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-btn
+                    round
+                    color="primary"
+                    dark
+                    :disabled="!valid"
+                    @click="submit"
+                  >Submit
+                  </v-btn>
+                  <v-btn
+                    round color="primary"
+                    dark
+                    @click="clear">
+                    clear
+                  </v-btn>
+                </v-flex>
+              </v-layout>
 
-          </v-container>
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <p>{{ message }}</p>
+                </v-flex>
+              </v-layout>
+
+            </v-container>
           </v-form>
         </fieldset>
       </section>
     </v-flex>
   </v-layout>
-  </template>
+</template>
 
 <script>
+import ErrorService from '@/services/ErrorService'
+
 export default {
   data: () => ({
+    menu: false,
+    msg: 'Error Form',
+    loading: false,
+    patientTypes: [
+      { text: 'Discharge', value: 'Discharge' },
+      { text: 'Inpatient', value: 'Inpatient' },
+      { text: 'Outpatient', value: 'Outpatient' },
+      { text: 'Day patient', value: 'Day patient' }
+    ],
+    workers: [
+      { text: 'Pat Smith', value: 'Pat Smith' },
+      { text: 'Timothy Myers', value: 'Timothy Myers' },
+      { text: 'Jessica Noble', value: 'Jessica Noble' },
+      { text: 'Amanda Stait', value: 'Amanda Stait' },
+      { text: 'Wang Shu', value: 'Wang Shu' }
+    ],
     errorTypes: [
-      { text: 'Incorrect directions', value: '0' },
-      { text: 'Incorrect dosage', value: '1' },
-      { text: 'Incorrect form of delivery', value: '2' },
-      { text: 'Invalid batch number', value: '3' },
-      { text: 'Past expiry date', value: '4' },
-      { text: 'Incorrect medication', value: '5' },
-      { text: 'Incorrect patient', value: '6' },
-      { text: 'Incorrect quantity', value: '7' },
-      { text: 'Other', value: '8' }
+      { text: 'Batch Number', value: 'Batch Number' },
+      { text: 'Directions', value: 'Directions' },
+      { text: 'Dosage / Strength', value: 'Dosage / Strength' },
+      { text: 'Expiry Date', value: 'Expiry Date' },
+      { text: 'Form Intravenous', value: 'Form Intravenous' },
+      { text: 'Form Per Oral', value: 'Form Per Oral' },
+      { text: 'Incorrect Medication', value: 'Incorrect Medication' },
+      { text: 'Incorrect Patient', value: 'Incorrect Patient' },
+      { text: 'Incorrect Quantity', value: 'Incorrect Quantity' },
+      { text: 'Other', value: 'Other' }
     ],
     errorLocations: [
-      { text: 'Location 1', value: '0' },
-      { text: 'Location 2', value: '1' },
-      { text: 'Location 3', value: '2' },
-      { text: 'Other', value: '3' }
+      { text: 'Dispensary', value: 'Dispensary' },
+      { text: 'On the ward', value: 'On the ward' },
+      { text: 'Outside hospital', value: 'Outside hospital' }
     ],
-    medicationTypes: [
-      { text: 'Type 1', value: '0' },
-      { text: 'Type 2', value: '1' },
-      { text: 'Type 3', value: '2' },
-      { text: 'Other', value: '3' }
+    medications: [
+      { text: '5 mg Acetaminophen USP - Oral', value: '5 mg Acetaminophen USP - Oral' },
+      { text: '7.5 mg Acetaminophen USP - Oral', value: '7.5 mg Acetaminophen USP - Oral' },
+      { text: '10 mg Acetaminophen USP - Oral', value: '10 mg Acetaminophen USP - Oral' },
+      { text: 'Isotretinoin - Oral', value: 'Isotretinoin - Oral' },
+      { text: 'Ambien - Oral', value: 'Ambien - Oral' },
+      { text: 'Diclofenac Sodium - Oral', value: 'Diclofenac Sodium - Oral' },
+      { text: 'Mustargen - Intravenous', value: 'Mustargen - Intravenous' },
+      { text: 'Sulfamethoxazole and trimethoprim - Oral', value: 'Sulfamethoxazole and trimethoprim - Oral' },
+      { text: 'Sodium Fluoride - Oral', value: 'Sodium Fluoride - Oral' },
+      { text: 'Ceftriaxone - Intravenous', value: 'Ceftriaxone - Intravenous' },
+      { text: 'Claforan - Intravenous', value: 'Claforan - Intravenous' },
+      { text: 'Albuterol Sulfate Inhalation Solution - Inhalation', value: 'Albuterol Sulfate Inhalation Solution - Inhalation' },
+      { text: 'Azathioprine - Oral', value: 'Azathioprine - Oral' },
+      { text: 'CitraNatal Harmony 2.1 - Oral', value: 'CitraNatal Harmony 2.1 - Oral' },
+      { text: 'Hydrocodone Bitartrate and Acetaminophen - Oral', value: 'Hydrocodone Bitartrate and Acetaminophen - Oral' },
+      { text: 'Tinnitus - Oral', value: 'Tinnitus - Oral' },
+      { text: 'Atovaquone and Proguanil Hydrochloride - Oral', value: 'Atovaquone and Proguanil Hydrochloride - Oral' },
+      { text: 'Succimer - Oral', value: 'Succimer - Oral' }
     ],
-    patientName: '',
-    patientMRN: '',
-    errorType: '',
-    errorDesc: '',
-    wasPersonNotified: '',
-    errorLocation: '',
-    wasIIMScompleted: '',
-    medication: '',
-    medicationType: '',
-    wasPhysicianNotified: '',
-    physicianName: '',
-    physicianProviderNumber: '',
-    diagnosis: '',
-    physicianComments: '',
+    severityLevels: [
+      { text: 'Minor', value: 'Minor' },
+      { text: 'Low', value: 'Low' },
+      { text: 'Moderate-Low', value: 'Moderate-Low' },
+      { text: 'Moderate', value: 'Moderate' },
+      { text: 'Moderate-Severe', value: 'Moderate-Severe' },
+      { text: 'Severe', value: 'Severe' }
+    ],
     valid: true,
-    message: '',
-    msg: 'Submit an Error'
+    date: '',
+    time: '',
+    patientFirstName: '',
+    patientSurname: '',
+    patientId: '',
+    patientType: '',
+    errorType: '',
+    errorComment: '',
+    workerAtFault: '',
+    workerNotified: false,
+    errorLocation: '',
+    iimsCompleted: false,
+    medication: '',
+    severity: '',
+    wasPhysicianNotified: false,
+    physicianFirstName: '',
+    physicianSurname: '',
+    providerNumber: '',
+    physicianComment: '',
+    diagnosis: '',
+    message: ''
   }),
 
   methods: {
-    submit () {
-      // Native form submission is not yet supported
-      this.message = 'Error form sumbission not yet supported. Patient Name: ' +
-      this.patientName +
-      ' Patient MRN: ' +
-      this.patientMRN +
-      ' Error Type: ' +
-      this.errorType.text +
-      ' IIMS Completed: ' +
-      this.wasIIMScompleted
+    async submit () {
+      if (this.validForm()) {
+        try {
+          var wasPhysicianNotified = (this.wasPhysicianNotified.valueOf() === 'true') ? 1 : 0
+          var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
+          var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
+          await ErrorService.logError({
+            date: this.date.valueOf(),
+            time: this.time,
+            patientFirstName: this.patientFirstName,
+            PatientSurname: this.patientSurname,
+            patientId: this.patientId,
+            patientType: this.patientType.valueOf(),
+            errorType: this.errorType.valueOf(),
+            errorComment: this.errorComment,
+            workerAtFault: this.workerAtFault.valueOf(),
+            workerNotified: workerNotified,
+            location: this.errorLocation.valueOf(),
+            iimsCompleted: iimsCompleted,
+            medication: this.medication.valueOf(),
+            severity: this.severity.valueOf(),
+            physicianNotified: wasPhysicianNotified,
+            physicianFirstName: this.physicianFirstName,
+            physicianSurname: this.physicianSurname,
+            providerNumber: this.providerNumber,
+            physicianComment: this.physicianComment,
+            diagnosis: this.diagnosis
+          })
+          this.clear()
+          this.message = 'Form submitted successfully!'
+        } catch (error) {
+          this.message = error.response.data.error
+        }
+      } else {
+        this.message = 'There was an error with your form.'
+      }
     },
-    clear () {
+    clear: function () {
       this.$refs.form.reset()
+      this.message = ''
+    },
+    validForm: function () {
+      return this.$refs.form.validate()
     }
   }
 }
