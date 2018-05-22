@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true })) // Support encoded bodies
 
 var queryRoute = require('./routes/query')
 var authRoute = require('./routes/authentication')
+var vue = require('./routes/vue')
 
 // app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')))
 
@@ -25,8 +26,8 @@ app.use(cors())
 app.use('/api/v1/query', queryRoute)
 app.use('/auth', authRoute)
 
-// View Engine
-app.set('view engine', 'pug')
+app.use('/static', express.static('static'))
+app.use('/', vue)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
