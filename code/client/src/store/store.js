@@ -11,7 +11,10 @@ export default new Vuex.Store({
   ],
   state: {
     token: null,
-    user: null,
+    user: {
+      authlevel: 0,
+      email: ''
+    },
     isUserLoggedIn: false
   },
   mutations: {
@@ -21,6 +24,12 @@ export default new Vuex.Store({
     },
     setUser (state, user) {
       state.user = user
+    },
+    clearUser (state) {
+      state.user = {
+        authlevel: 0,
+        email: ''
+      }
     }
   },
   actions: {
@@ -31,6 +40,17 @@ export default new Vuex.Store({
     setUser ({commit}, user) {
       console.log('Setting user: ' + user)
       commit('setUser', user)
+    },
+    logout ({commit}) {
+      console.log('logging out')
+      commit('clearUser')
+      commit('setToken', null)
+    }
+  },
+  getters: {
+    auth: state => {
+      console.log('Someone wants the user ' + state.user.authlevel)
+      return state.user.authlevel
     }
   }
 })

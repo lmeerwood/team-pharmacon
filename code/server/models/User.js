@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true
     },
     password: DataTypes.STRING,
-    authLevel: DataTypes.INTEGER
+    authlevel: DataTypes.INTEGER
   }, {
     freezeTableName: true,
     timestamps: false
