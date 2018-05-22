@@ -292,7 +292,8 @@
 </template>
 
 <script>
-var axios = require('axios')
+import ErrorService from '@/services/ErrorService'
+
 export default {
   data: () => ({
     menu: false,
@@ -381,48 +382,39 @@ export default {
   }),
 
   methods: {
-    submit: function () {
+    async submit () {
       if (this.validForm()) {
-        this.message = ''
-
-        var url = 'http://localhost:3000/api/v1/query/error'
-        console.log(this.wasPhysicianNotified.valueOf())
-        var wasPhysicianNotified = (this.wasPhysicianNotified.valueOf() === 'true') ? 1 : 0
-        var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
-        var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
-        axios.post(url,
-          {
-            formDate: this.date.valueOf(),
-            formTime: this.time,
-            formPatientFirstName: this.patientFirstName,
-            formPatientSurname: this.patientSurname,
-            formPatientId: this.patientId,
-            formPatientType: this.patientType.valueOf(),
-            formErrorType: this.errorType.valueOf(),
-            formErrorComment: this.errorComment,
-            formWorkerAtFault: this.workerAtFault.valueOf(),
-            formWorkerNotified: workerNotified,
-            formErrorLocation: this.errorLocation.valueOf(),
-            formIimsCompleted: iimsCompleted,
-            formMedication: this.medication.valueOf(),
-            formSeverity: this.severity.valueOf(),
-            formPhysicianNotified: wasPhysicianNotified,
-            formPhysicianFirstName: this.physicianFirstName,
-            formPhysicianSurname: this.physicianSurname,
-            formProviderNumber: this.providerNumber,
-            formPhysicianComment: this.physicianComment,
-            formDiagnosis: this.diagnosis
+        try {
+          var wasPhysicianNotified = (this.wasPhysicianNotified.valueOf() === 'true') ? 1 : 0
+          var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
+          var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
+          await ErrorService.logError({
+            date: this.date.valueOf(),
+            time: this.time,
+            patientFirstName: this.patientFirstName,
+            PatientSurname: this.patientSurname,
+            patientId: this.patientId,
+            patientType: this.patientType.valueOf(),
+            errorType: this.errorType.valueOf(),
+            errorComment: this.errorComment,
+            workerAtFault: this.workerAtFault.valueOf(),
+            workerNotified: workerNotified,
+            location: this.errorLocation.valueOf(),
+            iimsCompleted: iimsCompleted,
+            medication: this.medication.valueOf(),
+            severity: this.severity.valueOf(),
+            physicianNotified: wasPhysicianNotified,
+            physicianFirstName: this.physicianFirstName,
+            physicianSurname: this.physicianSurname,
+            providerNumber: this.providerNumber,
+            physicianComment: this.physicianComment,
+            diagnosis: this.diagnosis
           })
-          .then(function (response) {
-            if (response.data['status'] === 200) {
-              this.message = 'Error added successfully'
-              this.clear()
-            }
-          }.bind(this))
-          .catch(function (error) {
-            this.message = 'There was an error adding the Error:' +
-              error
-          }.bind(this))
+          this.clear()
+          this.message = 'Form submitted successfully!'
+        } catch (error) {
+          this.message = error.response.data.error
+        }
       } else {
         this.message = 'There was an error with your form.'
       }
