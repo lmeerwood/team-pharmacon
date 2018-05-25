@@ -69,15 +69,14 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `petdatabase`.`worker`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `petdatabase`.`worker` (
-  `idWorker` INT NOT NULL AUTO_INCREMENT,
+  `idWorker` INT NOT NULL,
   `workerFirstName` VARCHAR(45) NOT NULL,
   `workerSurname` VARCHAR(45) NOT NULL,
   `workerRole` VARCHAR(20) NOT NULL,
   `workerActive` TINYINT(1) NOT NULL,
   PRIMARY KEY (`idWorker`),
-  UNIQUE INDEX `workerName_UNIQUE` (`workerFirstName` ASC))
+  UNIQUE INDEX `idWorker_UNIQUE` (`idWorker` ASC))
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -89,7 +88,6 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`errortype` (
   `errorType` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idErrorType`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -98,14 +96,11 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `petdatabase`.`login` (
   `idLogin` INT NOT NULL AUTO_INCREMENT,
-  `userName` VARCHAR(45) NOT NULL,
-  `userAuthorisation` VARCHAR(20) NOT NULL,
-  `userActive` TINYINT(1) NOT NULL,
-  `password` VARCHAR(150) NOT NULL,
-  `key` VARCHAR(45) NOT NULL,
-  `salt` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(200) NOT NULL,
+  `password` VARCHAR(200) NOT NULL,
+  `authlevel` INT NOT NULL,
   PRIMARY KEY (`idLogin`),
-  UNIQUE INDEX `userName_UNIQUE` (`userName` ASC))
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
@@ -118,7 +113,6 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`severity` (
   `level` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`idSeverity`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -141,7 +135,6 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`medication` (
   `medicationTypeId` INT NOT NULL,
   PRIMARY KEY (`idMedication`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 19
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -211,7 +204,6 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`error` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -246,6 +238,20 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Data for table `petdatabase`.`worker`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (1234, 'Pat', 'Smith', 'Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (2345, 'Timothy', 'Meyers', 'Pharmacist Trainee', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (3456, 'Jessica', 'Noble', 'Supervisor', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (4567, 'Amanda', 'Stait', 'Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (5678, 'Wang', 'Shu', 'Pharmacist', 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `petdatabase`.`errortype`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -265,6 +271,19 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `petdatabase`.`login`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('test@test.com', '12345678', 1);
+INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('frank@test.com', '87654321', 1);
+INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('jules@test.com', 'password', 1);
+INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('admin@test.com', 'super123', 2);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `petdatabase`.`severity`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -275,6 +294,18 @@ INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate-Low');
 INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate');
 INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate-Severe');
 INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Severe');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`location`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`location` (`errorLocation`) VALUES ('Dispensary');
+INSERT INTO `petdatabase`.`location` (`errorLocation`) VALUES ('On the ward');
+INSERT INTO `petdatabase`.`location` (`errorLocation`) VALUES ('Outside hospital');
 
 COMMIT;
 
