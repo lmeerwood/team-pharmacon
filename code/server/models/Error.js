@@ -2,17 +2,17 @@ module.exports = (sequelize, DataTypes) => {
   const Error = sequelize.define('error', {
     date: DataTypes.STRING,
     time: DataTypes.STRING,
-    errorTypeId: DataTypes.INT,
-    locationId: DataTypes.INT,
-    errorCausedByWoker: DataTypes.INT,
+    errorTypeId: DataTypes.INTEGER,
+    locationId: DataTypes.INTEGER,
+    errorCausedByWoker: DataTypes.INTEGER,
     wasWorkerNotified: DataTypes.BOOLEAN,
     wasPhysicianNotified: DataTypes.BOOLEAN,
     iimsCompleted: DataTypes.BOOLEAN,
     generalComment: DataTypes.STRING,
-    severityId: DataTypes.INT,
-    medicationId: DataTypes.INT,
-    patientId: DataTypes.INT,
-    physicianId: DataTypes.INT
+    severityId: DataTypes.INTEGER,
+    medicationId: DataTypes.INTEGER,
+    patientId: DataTypes.INTEGER,
+    physicianId: DataTypes.INTEGER
   },
   {
     freezeTableName: true,
