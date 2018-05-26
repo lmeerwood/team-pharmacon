@@ -95,12 +95,23 @@
 
               <v-layout row>
                 <v-flex xs8 offset-xs2>
+                  <v-text-field
+                    label="Medication Given"
+                    v-model="medication"
+                    :rules="[() => !!medication || 'This field is required']"
+                    required
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
-                    :items="medications"
-                    :rules="[() => medication.length > 0 || 'You must select one']"
-                    label="Select Medication"
-                    v-model="medication"
+                    :items="medicationTypes"
+                    :rules="[() => medicationType.length > 0 || 'You must select one']"
+                    label="Select Medication Type"
+                    v-model="medicationType"
                     autocomplete
                     cache-items
                     chips
@@ -329,25 +340,11 @@ export default {
       { text: 'On the ward', value: 'On the ward' },
       { text: 'Outside hospital', value: 'Outside hospital' }
     ],
-    medications: [
-      { text: '5 mg Acetaminophen USP - Oral', value: '5 mg Acetaminophen USP - Oral' },
-      { text: '7.5 mg Acetaminophen USP - Oral', value: '7.5 mg Acetaminophen USP - Oral' },
-      { text: '10 mg Acetaminophen USP - Oral', value: '10 mg Acetaminophen USP - Oral' },
-      { text: 'Isotretinoin - Oral', value: 'Isotretinoin - Oral' },
-      { text: 'Ambien - Oral', value: 'Ambien - Oral' },
-      { text: 'Diclofenac Sodium - Oral', value: 'Diclofenac Sodium - Oral' },
-      { text: 'Mustargen - Intravenous', value: 'Mustargen - Intravenous' },
-      { text: 'Sulfamethoxazole and trimethoprim - Oral', value: 'Sulfamethoxazole and trimethoprim - Oral' },
-      { text: 'Sodium Fluoride - Oral', value: 'Sodium Fluoride - Oral' },
-      { text: 'Ceftriaxone - Intravenous', value: 'Ceftriaxone - Intravenous' },
-      { text: 'Claforan - Intravenous', value: 'Claforan - Intravenous' },
-      { text: 'Albuterol Sulfate Inhalation Solution - Inhalation', value: 'Albuterol Sulfate Inhalation Solution - Inhalation' },
-      { text: 'Azathioprine - Oral', value: 'Azathioprine - Oral' },
-      { text: 'CitraNatal Harmony 2.1 - Oral', value: 'CitraNatal Harmony 2.1 - Oral' },
-      { text: 'Hydrocodone Bitartrate and Acetaminophen - Oral', value: 'Hydrocodone Bitartrate and Acetaminophen - Oral' },
-      { text: 'Tinnitus - Oral', value: 'Tinnitus - Oral' },
-      { text: 'Atovaquone and Proguanil Hydrochloride - Oral', value: 'Atovaquone and Proguanil Hydrochloride - Oral' },
-      { text: 'Succimer - Oral', value: 'Succimer - Oral' }
+    medicationTypes: [
+      { text: 'Oral', value: 'Oral' },
+      { text: 'Suppository', value: 'Suppository' },
+      { text: 'Inhalation', value: 'Inhalation' },
+      { text: 'Intravenous', value: 'Intravenous' }
     ],
     severityLevels: [
       { text: 'Minor', value: 'Minor' },
@@ -371,6 +368,7 @@ export default {
     errorLocation: '',
     iimsCompleted: false,
     medication: '',
+    medicationType: '',
     severity: '',
     wasPhysicianNotified: false,
     physicianFirstName: '',
@@ -397,11 +395,12 @@ export default {
             patientType: this.patientType.valueOf(),
             errorType: this.errorType.valueOf(),
             errorComment: this.errorComment,
-            workerAtFault: this.workerAtFault.valueOf(),
-            workerNotified: workerNotified,
+            workerAtFault: this.errorCausedByWorker.valueOf(),
+            workerNotified: this.wasWorkerNotified,
             location: this.errorLocation.valueOf(),
             iimsCompleted: iimsCompleted,
             medication: this.medication.valueOf(),
+            medicationType: this.medicationType.valueOf(),
             severity: this.severity.valueOf(),
             physicianNotified: wasPhysicianNotified,
             physicianFirstName: this.physicianFirstName,
