@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false
   })
 
-  User.prototype.comparePassword = function (password) {
+  Error.prototype.comparePassword = function (password) {
     return password === this.password
   }
 
-  User.associate = function (models) {
+  Error.associate = function (models) {
   }
 
   return Error

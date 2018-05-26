@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Error = sequelize.define('error', {
-    date: DataTypes.STRING,
-    time: DataTypes.STRING,
+    errorDate: DataTypes.STRING,
+    errorTime: DataTypes.STRING,
     errorTypeId: DataTypes.INTEGER,
     locationId: DataTypes.INTEGER,
     errorCausedByWoker: DataTypes.INTEGER,

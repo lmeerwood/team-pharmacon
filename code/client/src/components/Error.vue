@@ -31,6 +31,17 @@
               <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
+                    label="Patient MRN"
+                    v-model="patientId"
+                    :rules="[() => !!patientId || 'This field is required']"
+                    required
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field
                     label="Patient First Name"
                     v-model="patientFirstName"
                     :rules="[() => !!patientFirstName || 'This field is required']"
@@ -45,17 +56,6 @@
                     label="Patient Surname"
                     v-model="patientSurname"
                     :rules="[() => !!patientSurname || 'This field is required']"
-                    required
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Patient MRN"
-                    v-model="patientId"
-                    :rules="[() => !!patientId || 'This field is required']"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -280,7 +280,7 @@
                   >Submit
                   </v-btn>
                   <v-btn
-                    round color="primary"
+                    round color="secondary"
                     dark
                     @click="clear">
                     clear
@@ -304,71 +304,38 @@
 
 <script>
 import ErrorService from '@/services/ErrorService'
+import WorkerService from '@/services/WorkerService'
+import ErrortypeService from '@/services/ErrortypeService'
+import SeverityService from '@/services/SeverityService'
+import MedicationService from '@/services/MedicationService'
+import MedicationtypeService from '@/services/MedicationtypeService'
+import PhysicianService from '@/services/PhysicianService'
+import DiagnosisService from '@/services/DiagnosisService'
+import PatienttypeService from '@/services/PatienttypeService'
+import PatientService from '@/services/PatientService'
+import LocationService from '@/services/LocationService'
 
 export default {
   data: () => ({
     menu: false,
     msg: 'Error Form',
     loading: false,
-    patientTypes: [
-      { text: 'Discharge', value: 'Discharge' },
-      { text: 'Inpatient', value: 'Inpatient' },
-      { text: 'Outpatient', value: 'Outpatient' },
-      { text: 'Day patient', value: 'Day patient' }
-    ],
-    workers: [
-      { text: 'Pat Smith', value: 'Pat Smith' },
-      { text: 'Timothy Myers', value: 'Timothy Myers' },
-      { text: 'Jessica Noble', value: 'Jessica Noble' },
-      { text: 'Amanda Stait', value: 'Amanda Stait' },
-      { text: 'Wang Shu', value: 'Wang Shu' }
-    ],
-    errorTypes: [
-      { text: 'Batch Number', value: 'Batch Number' },
-      { text: 'Directions', value: 'Directions' },
-      { text: 'Dosage / Strength', value: 'Dosage / Strength' },
-      { text: 'Expiry Date', value: 'Expiry Date' },
-      { text: 'Form Intravenous', value: 'Form Intravenous' },
-      { text: 'Form Per Oral', value: 'Form Per Oral' },
-      { text: 'Incorrect Medication', value: 'Incorrect Medication' },
-      { text: 'Incorrect Patient', value: 'Incorrect Patient' },
-      { text: 'Incorrect Quantity', value: 'Incorrect Quantity' },
-      { text: 'Other', value: 'Other' }
-    ],
-    errorLocations: [
-      { text: 'Dispensary', value: 'Dispensary' },
-      { text: 'On the ward', value: 'On the ward' },
-      { text: 'Outside hospital', value: 'Outside hospital' }
-    ],
-    medicationTypes: [
-      { text: 'Oral', value: 'Oral' },
-      { text: 'Suppository', value: 'Suppository' },
-      { text: 'Inhalation', value: 'Inhalation' },
-      { text: 'Intravenous', value: 'Intravenous' }
-    ],
-    severityLevels: [
-      { text: 'Minor', value: 'Minor' },
-      { text: 'Low', value: 'Low' },
-      { text: 'Moderate-Low', value: 'Moderate-Low' },
-      { text: 'Moderate', value: 'Moderate' },
-      { text: 'Moderate-Severe', value: 'Moderate-Severe' },
-      { text: 'Severe', value: 'Severe' }
-    ],
+    
     valid: true,
     date: '',
     time: '',
+    patientId: '',
     patientFirstName: '',
     patientSurname: '',
-    patientId: '',
     patientType: '',
     errorType: '',
+    medication: '',
+    medicationType: '',
     errorComment: '',
     workerAtFault: '',
     workerNotified: false,
     errorLocation: '',
     iimsCompleted: false,
-    medication: '',
-    medicationType: '',
     severity: '',
     wasPhysicianNotified: false,
     physicianFirstName: '',
@@ -387,22 +354,22 @@ export default {
           var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
           var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
           await ErrorService.logError({
-            date: this.date.valueOf(),
-            time: this.time,
+            errorDate: this.date.valueOf(),
+            errorTime: this.time,
+            patientId: this.patientId,
             patientFirstName: this.patientFirstName,
             PatientSurname: this.patientSurname,
-            patientId: this.patientId,
             patientType: this.patientType.valueOf(),
             errorType: this.errorType.valueOf(),
-            errorComment: this.errorComment,
-            workerAtFault: this.errorCausedByWorker.valueOf(),
-            workerNotified: this.wasWorkerNotified,
-            location: this.errorLocation.valueOf(),
-            iimsCompleted: iimsCompleted,
             medication: this.medication.valueOf(),
             medicationType: this.medicationType.valueOf(),
-            severity: this.severity.valueOf(),
-            physicianNotified: wasPhysicianNotified,
+            generalComment: this.errorComment,
+            errorCausedByWorker: this.workerAtFault.valueOf(),
+            wasWorkerNotified: this.workerNotified,
+            errorLocation: this.errorLocation.valueOf(),
+            iimsCompleted: iimsCompleted,
+            level: this.severity.valueOf(),
+            wasPhysicianNotified: wasPhysicianNotified,
             physicianFirstName: this.physicianFirstName,
             physicianSurname: this.physicianSurname,
             providerNumber: this.providerNumber,
@@ -425,7 +392,13 @@ export default {
     validForm: function () {
       return this.$refs.form.validate()
     }
-  }
+  },
+  beforeMount: () => ({
+    async loadWorkers() {
+      await var workers = WorkerService.getWorkers()
+      this.workersList.values = workers
+    }
+  })
 }
 </script>
 
