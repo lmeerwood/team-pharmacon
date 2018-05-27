@@ -304,8 +304,8 @@
 
 <script>
 import ErrorService from '@/services/ErrorService'
-import WorkerService from '@/services/WorkerService'
-// import ErrortypeService from '@/services/ErrortypeService'
+// import WorkerService from '@/services/WorkerService'
+import ErrortypeService from '@/services/ErrortypeService'
 // import SeverityService from '@/services/SeverityService'
 // import MedicationService from '@/services/MedicationService'
 // import MedicationtypeService from '@/services/MedicationtypeService'
@@ -320,7 +320,7 @@ export default {
     menu: false,
     msg: 'Error Form',
     loading: false,
-    
+
     valid: true,
     date: '',
     time: '',
@@ -347,6 +347,12 @@ export default {
   }),
 
   methods: {
+    beforeMount: () => ({
+      async loadErrorTypes () {
+        var errorTypeList = ErrortypeService.getAll()
+        this.errorType.values = errorTypeList
+      }
+    }),
     async submit () {
       if (this.validForm()) {
         try {
@@ -365,7 +371,7 @@ export default {
             medicationType: this.medicationType.valueOf(),
             generalComment: this.errorComment,
             errorCausedByWorker: this.workerAtFault.valueOf(),
-            wasWorkerNotified: this.workerNotified,
+            wasWorkerNotified: workerNotified,
             errorLocation: this.errorLocation.valueOf(),
             iimsCompleted: iimsCompleted,
             level: this.severity.valueOf(),
