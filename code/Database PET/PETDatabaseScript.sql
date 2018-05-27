@@ -27,7 +27,6 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`physician` (
   PRIMARY KEY (`idPhysician`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
-<<<<<<< HEAD
 
 
 -- -----------------------------------------------------
@@ -67,47 +66,6 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
-=======
-
-
--- -----------------------------------------------------
--- Table `petdatabase`.`patient`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `petdatabase`.`patient` (
-  `idPatient` INT NOT NULL,
-  `patientHospitalId` VARCHAR(20) NOT NULL,
-  `patientSurname` VARCHAR(45) NOT NULL,
-  `patientFirstName` VARCHAR(45) NOT NULL,
-  `patientTypeId` INT NOT NULL,
-  `patientDiagnosis` INT NULL,
-  PRIMARY KEY (`idPatient`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `petdatabase`.`diagnosis`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `petdatabase`.`diagnosis` (
-  `idDiagnosis` INT NOT NULL AUTO_INCREMENT,
-  `diagnosis` VARCHAR(150) NULL DEFAULT NULL,
-  PRIMARY KEY (`idDiagnosis`),
-  CONSTRAINT `diagnosisID`
-    FOREIGN KEY (`idDiagnosis`)
-    REFERENCES `petdatabase`.`physician` (`idPhysician`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `patientDiagnosis`
-    FOREIGN KEY (`idDiagnosis`)
-    REFERENCES `petdatabase`.`patient` (`idPatient`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
->>>>>>> ca59325c5d0894b2a199c1421615dec9e7506be5
 -- Table `petdatabase`.`worker`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `petdatabase`.`worker` (
@@ -134,7 +92,6 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
-<<<<<<< HEAD
 -- Table `petdatabase`.`User`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `petdatabase`.`User` (
@@ -143,16 +100,6 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`User` (
   `password` VARCHAR(200) NOT NULL,
   `authlevel` INT NOT NULL,
   PRIMARY KEY (`id`),
-=======
--- Table `petdatabase`.`login`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `petdatabase`.`login` (
-  `idLogin` INT NOT NULL AUTO_INCREMENT,
-  `email` VARCHAR(200) NOT NULL,
-  `password` VARCHAR(200) NOT NULL,
-  `authlevel` INT NOT NULL,
-  PRIMARY KEY (`idLogin`),
->>>>>>> ca59325c5d0894b2a199c1421615dec9e7506be5
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
@@ -226,15 +173,9 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`error` (
     REFERENCES `petdatabase`.`errortype` (`idErrorType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-<<<<<<< HEAD
   CONSTRAINT `id`
     FOREIGN KEY (`idError`)
     REFERENCES `petdatabase`.`User` (`id`)
-=======
-  CONSTRAINT `idLogin`
-    FOREIGN KEY (`idError`)
-    REFERENCES `petdatabase`.`login` (`idLogin`)
->>>>>>> ca59325c5d0894b2a199c1421615dec9e7506be5
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `idSeverity`
@@ -330,7 +271,6 @@ COMMIT;
 
 
 -- -----------------------------------------------------
-<<<<<<< HEAD
 -- Data for table `petdatabase`.`User`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -339,16 +279,6 @@ INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('tes
 INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('frank@test.com', '87654321', 1);
 INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('jules@test.com', 'password', 1);
 INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('admin@test.com', 'super123', 2);
-=======
--- Data for table `petdatabase`.`login`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `petdatabase`;
-INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('test@test.com', '12345678', 1);
-INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('frank@test.com', '87654321', 1);
-INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('jules@test.com', 'password', 1);
-INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('admin@test.com', 'super123', 2);
->>>>>>> ca59325c5d0894b2a199c1421615dec9e7506be5
 
 COMMIT;
 

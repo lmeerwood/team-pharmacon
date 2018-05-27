@@ -304,7 +304,7 @@
 
 <script>
 import ErrorService from '@/services/ErrorService'
-// import WorkerService from '@/services/WorkerService'
+import WorkerService from '@/services/WorkerService'
 // import ErrortypeService from '@/services/ErrortypeService'
 // import SeverityService from '@/services/SeverityService'
 // import MedicationService from '@/services/MedicationService'
