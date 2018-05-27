@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     WorkerRole: DataTypes.STRING,
     workerActive: DataTypes.BOOLEAN
   },
+
   {
     freezeTableName: true,
     timestamps: false
