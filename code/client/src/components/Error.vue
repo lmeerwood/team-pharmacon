@@ -152,7 +152,7 @@
               </v-layout>
               <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="workerNotified" :mandatory="false" row=true>
+                  <v-radio-group v-model="workerNotified" :mandatory="false" row="row">
                     <v-radio label="Yes" value=true></v-radio>
                     <v-radio label="No" value=false></v-radio>
                   </v-radio-group>
@@ -182,7 +182,7 @@
               </v-layout>
               <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="iimsCompleted" row=true>
+                  <v-radio-group v-model="iimsCompleted" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
                     <v-radio label="No" value="false"></v-radio>
                   </v-radio-group>
@@ -212,7 +212,7 @@
               </v-layout>
               <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasPhysicianNotified" row=true>
+                  <v-radio-group v-model="wasPhysicianNotified" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
                     <v-radio label="No" value="false"></v-radio>
                   </v-radio-group>
@@ -321,6 +321,15 @@ export default {
     msg: 'Error Form',
     loading: false,
 
+    // Variables to hold drop down box values
+    errorLocations: [],
+    patientTypes: [],
+    errorTypes: [],
+    medicationTypes: [],
+    workers: [],
+    severityLevels: [],
+
+    // Variables to store inputted values
     valid: true,
     date: '',
     time: '',
@@ -345,14 +354,20 @@ export default {
     diagnosis: '',
     message: ''
   }),
-
+  created () {
+    ErrortypeService.getAll()
+      .then(function (res, err) {
+        this.errorTypes = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          this.errorTypes.push({
+            value: res.data[i].id,
+            text: res.data[i].errorType
+          })
+        }
+      }.bind(this))
+  },
   methods: {
-    beforeMount: () => ({
-      async loadErrorTypes () {
-        var errorTypeList = ErrortypeService.getAll()
-        this.errorType.values = errorTypeList
-      }
-    }),
     async submit () {
       if (this.validForm()) {
         try {
