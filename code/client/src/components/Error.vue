@@ -304,16 +304,16 @@
 
 <script>
 import ErrorService from '@/services/ErrorService'
-import WorkerService from '@/services/WorkerService'
-import ErrortypeService from '@/services/ErrortypeService'
-import SeverityService from '@/services/SeverityService'
-import MedicationService from '@/services/MedicationService'
-import MedicationtypeService from '@/services/MedicationtypeService'
-import PhysicianService from '@/services/PhysicianService'
-import DiagnosisService from '@/services/DiagnosisService'
-import PatienttypeService from '@/services/PatienttypeService'
-import PatientService from '@/services/PatientService'
-import LocationService from '@/services/LocationService'
+// import WorkerService from '@/services/WorkerService'
+// import ErrortypeService from '@/services/ErrortypeService'
+// import SeverityService from '@/services/SeverityService'
+// import MedicationService from '@/services/MedicationService'
+// import MedicationtypeService from '@/services/MedicationtypeService'
+// import PhysicianService from '@/services/PhysicianService'
+// import DiagnosisService from '@/services/DiagnosisService'
+// import PatienttypeService from '@/services/PatienttypeService'
+// import PatientService from '@/services/PatientService'
+// import LocationService from '@/services/LocationService'
 
 export default {
   data: () => ({
@@ -392,13 +392,7 @@ export default {
     validForm: function () {
       return this.$refs.form.validate()
     }
-  },
-  beforeMount: () => ({
-    async loadWorkers() {
-      await var workers = WorkerService.getWorkers()
-      this.workersList.values = workers
-    }
-  })
+  }
 }
 </script>
 
