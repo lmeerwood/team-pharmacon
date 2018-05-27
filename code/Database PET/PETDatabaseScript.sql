@@ -5,189 +5,335 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema PETdatabase
+-- Schema petdatabase
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema PETdatabase
+-- Schema petdatabase
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `PETdatabase` DEFAULT CHARACTER SET utf8 ;
-USE `PETdatabase` ;
+CREATE SCHEMA IF NOT EXISTS `petdatabase` DEFAULT CHARACTER SET utf8 ;
+USE `petdatabase` ;
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`Login`
+-- Table `petdatabase`.`physician`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Login` (
-  `idLogin` INT NOT NULL AUTO_INCREMENT,
-  `userName` VARCHAR(45) NOT NULL,
-  `userAuthorisation` VARCHAR(20) NOT NULL,
-  `userActive` TINYINT(1) NOT NULL,
-  `password` VARCHAR(150) NOT NULL,
-  `key` VARCHAR(45) NOT NULL,
-  `salt` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idLogin`),
-  UNIQUE INDEX `userName_UNIQUE` (`userName` ASC))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
--- Table `PETdatabase`.`Worker`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Worker` (
-  `idWorker` INT NOT NULL AUTO_INCREMENT,
-  `workerFirstName` VARCHAR(45) NOT NULL,
-  `workerSurname` VARCHAR(45) NOT NULL,
-  `workerRole` VARCHAR(20) NOT NULL,
-  `workerActive` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`idWorker`),
-  UNIQUE INDEX `workerName_UNIQUE` (`workerFirstName` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `PETdatabase`.`ErrorType`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`ErrorType` (
-  `idErrorType` INT NOT NULL AUTO_INCREMENT,
-  `errorType` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idErrorType`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `PETdatabase`.`Medication`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Medication` (
-  `idMedication` INT NOT NULL AUTO_INCREMENT,
-  `medicationName` VARCHAR(45) NOT NULL,
-  `medicationType` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idMedication`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `PETdatabase`.`Diagnosis`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Diagnosis` (
-  `idDiagnosis` INT NOT NULL AUTO_INCREMENT,
-  `diagnosis` VARCHAR(150) NULL,
-  PRIMARY KEY (`idDiagnosis`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `PETdatabase`.`Physician`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Physician` (
+CREATE TABLE IF NOT EXISTS `petdatabase`.`physician` (
   `idPhysician` INT NOT NULL,
   `physicianSurname` VARCHAR(45) NOT NULL,
   `physicianFirstName` VARCHAR(45) NOT NULL,
   `providerNumber` VARCHAR(15) NOT NULL,
   `physicianComment` VARCHAR(150) NULL,
+  `diagnosisID` INT NULL,
   PRIMARY KEY (`idPhysician`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`Patient`
+-- Table `petdatabase`.`patient`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Patient` (
+CREATE TABLE IF NOT EXISTS `petdatabase`.`patient` (
   `idPatient` INT NOT NULL,
   `patientHospitalId` VARCHAR(20) NOT NULL,
   `patientSurname` VARCHAR(45) NOT NULL,
   `patientFirstName` VARCHAR(45) NOT NULL,
-  `patientType` VARCHAR(15) NOT NULL,
+  `patientTypeId` INT NOT NULL,
+  `patientDiagnosis` INT NULL,
   PRIMARY KEY (`idPatient`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`Prescription`
+-- Table `petdatabase`.`diagnosis`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Prescription` (
-  `idPrescription` INT NOT NULL AUTO_INCREMENT,
-  `medicationID` INT NOT NULL,
-  `patientID` INT NOT NULL,
-  `physicianID` INT NULL,
-  `diagnosisID` INT NULL,
-  PRIMARY KEY (`idPrescription`),
-  INDEX `idMedication_idx` (`medicationID` ASC),
-  INDEX `idDiagnosis_idx` (`diagnosisID` ASC),
-  INDEX `providerNumber_idx` (`physicianID` ASC),
-  CONSTRAINT `idMedication`
-    FOREIGN KEY (`medicationID`)
-    REFERENCES `PETdatabase`.`Medication` (`idMedication`)
+CREATE TABLE IF NOT EXISTS `petdatabase`.`diagnosis` (
+  `idDiagnosis` INT NOT NULL AUTO_INCREMENT,
+  `diagnosis` VARCHAR(150) NULL DEFAULT NULL,
+  PRIMARY KEY (`idDiagnosis`),
+  CONSTRAINT `diagnosisID`
+    FOREIGN KEY (`idDiagnosis`)
+    REFERENCES `petdatabase`.`physician` (`idPhysician`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `idDiagnosis`
-    FOREIGN KEY (`diagnosisID`)
-    REFERENCES `PETdatabase`.`Diagnosis` (`idDiagnosis`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `idPhysician`
-    FOREIGN KEY (`physicianID`)
-    REFERENCES `PETdatabase`.`Physician` (`idPhysician`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `idPatient`
-    FOREIGN KEY (`patientID`)
-    REFERENCES `PETdatabase`.`Patient` (`idPatient`)
+  CONSTRAINT `patientDiagnosis`
+    FOREIGN KEY (`idDiagnosis`)
+    REFERENCES `petdatabase`.`patient` (`idPatient`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`Severity`
+-- Table `petdatabase`.`worker`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Severity` (
+CREATE TABLE IF NOT EXISTS `petdatabase`.`worker` (
+  `idWorker` INT NOT NULL,
+  `workerFirstName` VARCHAR(45) NOT NULL,
+  `workerSurname` VARCHAR(45) NOT NULL,
+  `workerRole` VARCHAR(20) NOT NULL,
+  `workerActive` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`idWorker`),
+  UNIQUE INDEX `idWorker_UNIQUE` (`idWorker` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `petdatabase`.`errortype`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `petdatabase`.`errortype` (
+  `idErrorType` INT NOT NULL AUTO_INCREMENT,
+  `errorType` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idErrorType`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `petdatabase`.`User`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `petdatabase`.`User` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(200) NOT NULL,
+  `password` VARCHAR(200) NOT NULL,
+  `authlevel` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `petdatabase`.`severity`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `petdatabase`.`severity` (
   `idSeverity` INT NOT NULL AUTO_INCREMENT,
   `level` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`idSeverity`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `petdatabase`.`location`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `petdatabase`.`location` (
+  `idlocation` INT NOT NULL AUTO_INCREMENT,
+  `errorLocation` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`idlocation`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `PETdatabase`.`Error`
+-- Table `petdatabase`.`medication`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PETdatabase`.`Error` (
-  `idError` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `petdatabase`.`medication` (
+  `idMedication` INT NOT NULL AUTO_INCREMENT,
+  `medicationName` VARCHAR(45) NOT NULL,
+  `medicationTypeId` INT NOT NULL,
+  PRIMARY KEY (`idMedication`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `petdatabase`.`error`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `petdatabase`.`error` (
+  `idError` INT NOT NULL,
   `errorDate` DATE NOT NULL,
   `errorTime` TIME(6) NOT NULL,
   `errorTypeId` INT NOT NULL,
-  `errorDetectedLocation` VARCHAR(25) NOT NULL,
+  `locationId` INT NOT NULL,
   `errorCausedByWorker` INT NOT NULL,
   `wasWorkerNotified` TINYINT(1) NOT NULL,
   `wasPhysicianNotified` TINYINT(1) NOT NULL,
   `iimsCompleted` TINYINT(1) NOT NULL,
-  `generalComment` VARCHAR(150) NULL,
+  `generalComment` VARCHAR(150) NULL DEFAULT NULL,
   `severityId` INT NOT NULL,
-  PRIMARY KEY (`idError`),
+  `medicationId` INT NOT NULL,
+  `patientId` INT NOT NULL,
+  `physicianId` INT NULL,
   INDEX `idUser_idx` (`errorCausedByWorker` ASC),
   INDEX `idErrorType_idx` (`errorTypeId` ASC),
   INDEX `idSeverity_idx` (`severityId` ASC),
+  INDEX `idLocation_idx` (`locationId` ASC),
+  INDEX `idMedication_idx` (`medicationId` ASC),
+  INDEX `idPatient_idx` (`patientId` ASC),
+  INDEX `idPhysician_idx` (`physicianId` ASC),
   CONSTRAINT `errorCausedByWorker`
     FOREIGN KEY (`errorCausedByWorker`)
-    REFERENCES `PETdatabase`.`Worker` (`idWorker`)
+    REFERENCES `petdatabase`.`worker` (`idWorker`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `idErrorType`
     FOREIGN KEY (`errorTypeId`)
-    REFERENCES `PETdatabase`.`ErrorType` (`idErrorType`)
+    REFERENCES `petdatabase`.`errortype` (`idErrorType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `idPrescription`
+  CONSTRAINT `id`
     FOREIGN KEY (`idError`)
-    REFERENCES `PETdatabase`.`Prescription` (`idPrescription`)
+    REFERENCES `petdatabase`.`User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `idSeverity`
     FOREIGN KEY (`severityId`)
-    REFERENCES `PETdatabase`.`Severity` (`idSeverity`)
+    REFERENCES `petdatabase`.`severity` (`idSeverity`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idLocation`
+    FOREIGN KEY (`locationId`)
+    REFERENCES `petdatabase`.`location` (`idlocation`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idMedication`
+    FOREIGN KEY (`medicationId`)
+    REFERENCES `petdatabase`.`medication` (`idMedication`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idPatient`
+    FOREIGN KEY (`patientId`)
+    REFERENCES `petdatabase`.`patient` (`idPatient`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idPhysician`
+    FOREIGN KEY (`physicianId`)
+    REFERENCES `petdatabase`.`physician` (`idPhysician`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `petdatabase`.`patienttype`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `petdatabase`.`patienttype` (
+  `idPatientType` INT NOT NULL AUTO_INCREMENT,
+  `patientType` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`idPatientType`),
+  CONSTRAINT `patientTypeId`
+    FOREIGN KEY (`idPatientType`)
+    REFERENCES `petdatabase`.`patient` (`idPatient`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `petdatabase`.`medicationtype`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `petdatabase`.`medicationtype` (
+  `idmedicationtype` INT NOT NULL AUTO_INCREMENT,
+  `medicationType` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`idmedicationtype`),
+  CONSTRAINT `medicationTypeId`
+    FOREIGN KEY (`idmedicationtype`)
+    REFERENCES `petdatabase`.`medication` (`idMedication`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`worker`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (1234, 'Pat', 'Smith', 'Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (2345, 'Timothy', 'Meyers', 'Pharmacist Trainee', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (3456, 'Jessica', 'Noble', 'Supervisor', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (4567, 'Amanda', 'Stait', 'Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`idWorker`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (5678, 'Wang', 'Shu', 'Pharmacist', 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`errortype`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`errortype` (`errorType`) VALUES ('Batch Number');
+INSERT INTO `petdatabase`.`errortype` (`errorType`) VALUES ('Directions');
+INSERT INTO `petdatabase`.`errortype` (`errorType`) VALUES ('Dosage / Strength');
+INSERT INTO `petdatabase`.`errortype` (`errorType`) VALUES ('Expiry Date');
+INSERT INTO `petdatabase`.`errortype` (`errorType`) VALUES ('Form Intravenous');
+INSERT INTO `petdatabase`.`errortype` (`errorType`) VALUES ('Form Per Oral');
+INSERT INTO `petdatabase`.`errortype` (`errorType`) VALUES ('Incorrect Medication');
+INSERT INTO `petdatabase`.`errortype` (`errorType`) VALUES ('Incorrect Patient');
+INSERT INTO `petdatabase`.`errortype` (`errorType`) VALUES ('Incorrect Quantity');
+INSERT INTO `petdatabase`.`errortype` (`errorType`) VALUES ('Other');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`User`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('test@test.com', '12345678', 1);
+INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('frank@test.com', '87654321', 1);
+INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('jules@test.com', 'password', 1);
+INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('admin@test.com', 'super123', 2);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`severity`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Minor');
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Low');
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate-Low');
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate');
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate-Severe');
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Severe');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`location`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`location` (`errorLocation`) VALUES ('Dispensary');
+INSERT INTO `petdatabase`.`location` (`errorLocation`) VALUES ('On the ward');
+INSERT INTO `petdatabase`.`location` (`errorLocation`) VALUES ('Outside hospital');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`patienttype`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`patienttype` (`patientType`) VALUES ('Discharge');
+INSERT INTO `petdatabase`.`patienttype` (`patientType`) VALUES ('Inpatient');
+INSERT INTO `petdatabase`.`patienttype` (`patientType`) VALUES ('Outpatient');
+INSERT INTO `petdatabase`.`patienttype` (`patientType`) VALUES ('Day patient');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`medicationtype`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`medicationtype` (`medicationType`) VALUES ('Inhalation');
+INSERT INTO `petdatabase`.`medicationtype` (`medicationType`) VALUES ('Intravenous');
+INSERT INTO `petdatabase`.`medicationtype` (`medicationType`) VALUES ('Oral');
+INSERT INTO `petdatabase`.`medicationtype` (`medicationType`) VALUES ('Suppository');
+
+COMMIT;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
