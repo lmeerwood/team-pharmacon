@@ -81,4 +81,23 @@ router.post('/patienttype', function (req, res, next) {
     })
 })
 
+// The worker route. The get is for retrieving details and the post is for adding details
+router.get('/worker', function (req, res) {
+  model.worker.findAll({
+    limit: 100
+  }).then(function (errors) {
+    res.send(errors)
+  })
+})
+
+router.post('/worker', function (req, res, next) {
+  model.worker.create(req.body)
+    .then(function (errors) {
+      res.send(errors)
+    })
+    .catch(function (e) {
+      res.send('Ruh-roh!')
+    })
+})
+
 module.exports = router

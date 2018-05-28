@@ -304,7 +304,7 @@
 
 <script>
 import ErrorService from '@/services/ErrorService'
-// import WorkerService from '@/services/WorkerService'
+import WorkerService from '@/services/WorkerService'
 import ErrortypeService from '@/services/ErrortypeService'
 // import SeverityService from '@/services/SeverityService'
 // import MedicationService from '@/services/MedicationService'
@@ -355,6 +355,10 @@ export default {
     message: ''
   }),
   created () {
+    // These go through and retrieve the values from the server to load into the drop
+    // down boxes in the form
+
+    // ErrorType
     ErrortypeService.getAll()
       .then(function (res, err) {
         this.errorTypes = []
@@ -365,7 +369,13 @@ export default {
             text: res.data[i].errorType
           })
         }
+        // Sort the array by the text field rather than the value
+        this.errorTypes.sort(function (a, b) {
+          return a['text'].localeCompare(b['text'])
+        })
       }.bind(this))
+
+    // Patient Type
     PatienttypeService.getAll()
       .then(function (res, err) {
         this.patientTypes = []
@@ -376,6 +386,30 @@ export default {
             text: res.data[i].patientType
           })
         }
+        // Sort the array by the text field rather than the value
+        this.patientTypes.sort(function (a, b) {
+          return a['text'].localeCompare(b['text'])
+        })
+      }.bind(this))
+
+    // Worker
+    WorkerService.getAll()
+      .then(function (res, err) {
+        this.workers = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          if (res.data[i].workerActive) {
+            var name = res.data[i].workerSurname + ', ' + res.data[i].workerFirstName
+            this.workers.push({
+              value: res.data[i].id,
+              text: name
+            })
+          }
+        }
+        // Sort the array by the text field rather than the value
+        this.workers.sort(function (a, b) {
+          return a['text'].localeCompare(b['text'])
+        })
       }.bind(this))
   },
   methods: {

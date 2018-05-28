@@ -2,6 +2,6 @@ import Api from '@/services/Api'
 
 export default {
   getAll () {
-    return Api().post('/api/v1/query/worker')
+    return Api().get('/api/v1/query/worker')
   }
 }
