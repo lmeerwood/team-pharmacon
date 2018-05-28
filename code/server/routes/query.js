@@ -4,15 +4,28 @@ var model = require('../models')
 
 const isAuthenticated = require('../policies/isAuthenticated')
 
-router.get('/', isAuthenticated, function (req, res, next) {
-  res.send(JSON.stringify({
-    'status': 200,
-    'works': 'yes'
-  }))
+router.get('/', function (req, res, next) {
+  model.sequelize
+    .authenticate()
+    .then(() => {
+      res.send(JSON.stringify({
+        'status': 200,
+        'server': 'alive',
+        'database': 'connected'
+      }))
+    })
+    .catch(err => {
+      console.log(err)
+      res.send(JSON.stringify({
+        'status': 500,
+        'server': 'alive',
+        'database': 'disconnected'
+      }))
+    })
 })
 
 // The error route. The get is for retrieving details and the post is for adding details
-router.get('/error', function (req, res) {
+router.get('/error', isAuthenticated, function (req, res) {
   model.errorForm.findAll({
     limit: 100
   }).then(function (errors) {
