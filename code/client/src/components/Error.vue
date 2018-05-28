@@ -311,7 +311,7 @@ import ErrortypeService from '@/services/ErrortypeService'
 // import MedicationtypeService from '@/services/MedicationtypeService'
 // import PhysicianService from '@/services/PhysicianService'
 // import DiagnosisService from '@/services/DiagnosisService'
-// import PatienttypeService from '@/services/PatienttypeService'
+import PatienttypeService from '@/services/PatienttypeService'
 // import PatientService from '@/services/PatientService'
 // import LocationService from '@/services/LocationService'
 
@@ -363,6 +363,17 @@ export default {
           this.errorTypes.push({
             value: res.data[i].id,
             text: res.data[i].errorType
+          })
+        }
+      }.bind(this))
+    PatienttypeService.getAll()
+      .then(function (res, err) {
+        this.patientTypes = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          this.patientTypes.push({
+            value: res.data[i].id,
+            text: res.data[i].patientType
           })
         }
       }.bind(this))

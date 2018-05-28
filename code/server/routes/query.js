@@ -62,4 +62,23 @@ router.post('/errortype', function (req, res, next) {
     })
 })
 
+// The patienttype route. The get is for retrieving details and the post is for adding details
+router.get('/patienttype', function (req, res) {
+  model.patienttype.findAll({
+    limit: 100
+  }).then(function (errors) {
+    res.send(errors)
+  })
+})
+
+router.post('/patienttype', function (req, res, next) {
+  model.patienttype.create(req.body)
+    .then(function (errors) {
+      res.send(errors)
+    })
+    .catch(function (e) {
+      res.send('Ruh-roh!')
+    })
+})
+
 module.exports = router
