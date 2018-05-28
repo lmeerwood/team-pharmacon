@@ -306,7 +306,7 @@
 import ErrorService from '@/services/ErrorService'
 import WorkerService from '@/services/WorkerService'
 import ErrortypeService from '@/services/ErrortypeService'
-// import SeverityService from '@/services/SeverityService'
+import SeverityService from '@/services/SeverityService'
 // import MedicationService from '@/services/MedicationService'
 import MedicationtypeService from '@/services/MedicationtypeService'
 // import PhysicianService from '@/services/PhysicianService'
@@ -404,7 +404,7 @@ export default {
           })
         }
         // Sort the array by the text field rather than the value
-        this.workers.sort(function (a, b) {
+        this.medicationTypes.sort(function (a, b) {
           return a['text'].localeCompare(b['text'])
         })
       }.bind(this))
@@ -421,9 +421,22 @@ export default {
           })
         }
         // Sort the array by the text field rather than the value
-        this.workers.sort(function (a, b) {
+        this.errorLocations.sort(function (a, b) {
           return a['text'].localeCompare(b['text'])
         })
+      }.bind(this))
+
+    // Severity Type
+    SeverityService.getAll()
+      .then(function (res, err) {
+        this.severityLevels = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          this.severityLevels.push({
+            value: res.data[i].id,
+            text: res.data[i].level
+          })
+        }
       }.bind(this))
       
     // Worker
@@ -433,6 +446,7 @@ export default {
         var i
         for (i = 0; i < res.data.length; i++) {
           if (res.data[i].workerActive) {
+            // Combine the worker details into 'Surname, FirstName'
             var name = res.data[i].workerSurname + ', ' + res.data[i].workerFirstName
             this.workers.push({
               value: res.data[i].id,

@@ -138,4 +138,23 @@ router.post('/locations', function (req, res, next) {
     })
 })
 
+// The severity levels route. The get is for retrieving details and the post is for adding details
+router.get('/severity', function (req, res) {
+  model.severity.findAll({
+    limit: 100
+  }).then(function (errors) {
+    res.send(errors)
+  })
+})
+
+router.post('/severity', function (req, res, next) {
+  model.severity.create(req.body)
+    .then(function (errors) {
+      res.send(errors)
+    })
+    .catch(function (e) {
+      res.send('Ruh-roh!')
+    })
+})
+
 module.exports = router
