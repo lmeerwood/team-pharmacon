@@ -31,6 +31,17 @@
               <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
+                    label="Patient MRN"
+                    v-model="patientId"
+                    :rules="[() => !!patientId || 'This field is required']"
+                    required
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field
                     label="Patient First Name"
                     v-model="patientFirstName"
                     :rules="[() => !!patientFirstName || 'This field is required']"
@@ -45,17 +56,6 @@
                     label="Patient Surname"
                     v-model="patientSurname"
                     :rules="[() => !!patientSurname || 'This field is required']"
-                    required
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Patient MRN"
-                    v-model="patientId"
-                    :rules="[() => !!patientId || 'This field is required']"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -95,12 +95,23 @@
 
               <v-layout row>
                 <v-flex xs8 offset-xs2>
+                  <v-text-field
+                    label="Medication Given"
+                    v-model="medication"
+                    :rules="[() => !!medication || 'This field is required']"
+                    required
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
-                    :items="medications"
-                    :rules="[() => medication.length > 0 || 'You must select one']"
-                    label="Select Medication"
-                    v-model="medication"
+                    :items="medicationTypes"
+                    :rules="[() => medicationType.length > 0 || 'You must select one']"
+                    label="Select Medication Type"
+                    v-model="medicationType"
                     autocomplete
                     cache-items
                     chips
@@ -141,7 +152,7 @@
               </v-layout>
               <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="workerNotified" :mandatory="false" row=true>
+                  <v-radio-group v-model="workerNotified" :mandatory="false" row="row">
                     <v-radio label="Yes" value=true></v-radio>
                     <v-radio label="No" value=false></v-radio>
                   </v-radio-group>
@@ -171,7 +182,7 @@
               </v-layout>
               <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="iimsCompleted" row=true>
+                  <v-radio-group v-model="iimsCompleted" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
                     <v-radio label="No" value="false"></v-radio>
                   </v-radio-group>
@@ -201,7 +212,7 @@
               </v-layout>
               <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasPhysicianNotified" row=true>
+                  <v-radio-group v-model="wasPhysicianNotified" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
                     <v-radio label="No" value="false"></v-radio>
                   </v-radio-group>
@@ -269,7 +280,7 @@
                   >Submit
                   </v-btn>
                   <v-btn
-                    round color="primary"
+                    round color="secondary"
                     dark
                     @click="clear">
                     clear
@@ -293,84 +304,47 @@
 
 <script>
 import ErrorService from '@/services/ErrorService'
+// import WorkerService from '@/services/WorkerService'
+import ErrortypeService from '@/services/ErrortypeService'
+// import SeverityService from '@/services/SeverityService'
+// import MedicationService from '@/services/MedicationService'
+// import MedicationtypeService from '@/services/MedicationtypeService'
+// import PhysicianService from '@/services/PhysicianService'
+// import DiagnosisService from '@/services/DiagnosisService'
+// import PatienttypeService from '@/services/PatienttypeService'
+// import PatientService from '@/services/PatientService'
+// import LocationService from '@/services/LocationService'
 
 export default {
   data: () => ({
     menu: false,
     msg: 'Error Form',
     loading: false,
-    patientTypes: [
-      { text: 'Discharge', value: 'Discharge' },
-      { text: 'Inpatient', value: 'Inpatient' },
-      { text: 'Outpatient', value: 'Outpatient' },
-      { text: 'Day patient', value: 'Day patient' }
-    ],
-    workers: [
-      { text: 'Pat Smith', value: 'Pat Smith' },
-      { text: 'Timothy Myers', value: 'Timothy Myers' },
-      { text: 'Jessica Noble', value: 'Jessica Noble' },
-      { text: 'Amanda Stait', value: 'Amanda Stait' },
-      { text: 'Wang Shu', value: 'Wang Shu' }
-    ],
-    errorTypes: [
-      { text: 'Batch Number', value: 'Batch Number' },
-      { text: 'Directions', value: 'Directions' },
-      { text: 'Dosage / Strength', value: 'Dosage / Strength' },
-      { text: 'Expiry Date', value: 'Expiry Date' },
-      { text: 'Form Intravenous', value: 'Form Intravenous' },
-      { text: 'Form Per Oral', value: 'Form Per Oral' },
-      { text: 'Incorrect Medication', value: 'Incorrect Medication' },
-      { text: 'Incorrect Patient', value: 'Incorrect Patient' },
-      { text: 'Incorrect Quantity', value: 'Incorrect Quantity' },
-      { text: 'Other', value: 'Other' }
-    ],
-    errorLocations: [
-      { text: 'Dispensary', value: 'Dispensary' },
-      { text: 'On the ward', value: 'On the ward' },
-      { text: 'Outside hospital', value: 'Outside hospital' }
-    ],
-    medications: [
-      { text: '5 mg Acetaminophen USP - Oral', value: '5 mg Acetaminophen USP - Oral' },
-      { text: '7.5 mg Acetaminophen USP - Oral', value: '7.5 mg Acetaminophen USP - Oral' },
-      { text: '10 mg Acetaminophen USP - Oral', value: '10 mg Acetaminophen USP - Oral' },
-      { text: 'Isotretinoin - Oral', value: 'Isotretinoin - Oral' },
-      { text: 'Ambien - Oral', value: 'Ambien - Oral' },
-      { text: 'Diclofenac Sodium - Oral', value: 'Diclofenac Sodium - Oral' },
-      { text: 'Mustargen - Intravenous', value: 'Mustargen - Intravenous' },
-      { text: 'Sulfamethoxazole and trimethoprim - Oral', value: 'Sulfamethoxazole and trimethoprim - Oral' },
-      { text: 'Sodium Fluoride - Oral', value: 'Sodium Fluoride - Oral' },
-      { text: 'Ceftriaxone - Intravenous', value: 'Ceftriaxone - Intravenous' },
-      { text: 'Claforan - Intravenous', value: 'Claforan - Intravenous' },
-      { text: 'Albuterol Sulfate Inhalation Solution - Inhalation', value: 'Albuterol Sulfate Inhalation Solution - Inhalation' },
-      { text: 'Azathioprine - Oral', value: 'Azathioprine - Oral' },
-      { text: 'CitraNatal Harmony 2.1 - Oral', value: 'CitraNatal Harmony 2.1 - Oral' },
-      { text: 'Hydrocodone Bitartrate and Acetaminophen - Oral', value: 'Hydrocodone Bitartrate and Acetaminophen - Oral' },
-      { text: 'Tinnitus - Oral', value: 'Tinnitus - Oral' },
-      { text: 'Atovaquone and Proguanil Hydrochloride - Oral', value: 'Atovaquone and Proguanil Hydrochloride - Oral' },
-      { text: 'Succimer - Oral', value: 'Succimer - Oral' }
-    ],
-    severityLevels: [
-      { text: 'Minor', value: 'Minor' },
-      { text: 'Low', value: 'Low' },
-      { text: 'Moderate-Low', value: 'Moderate-Low' },
-      { text: 'Moderate', value: 'Moderate' },
-      { text: 'Moderate-Severe', value: 'Moderate-Severe' },
-      { text: 'Severe', value: 'Severe' }
-    ],
+
+    // Variables to hold drop down box values
+    errorLocations: [],
+    patientTypes: [],
+    errorTypes: [],
+    medicationTypes: [],
+    workers: [],
+    severityLevels: [],
+
+    // Variables to store inputted values
     valid: true,
     date: '',
     time: '',
+    patientId: '',
     patientFirstName: '',
     patientSurname: '',
-    patientId: '',
     patientType: '',
     errorType: '',
+    medication: '',
+    medicationType: '',
     errorComment: '',
     workerAtFault: '',
     workerNotified: false,
     errorLocation: '',
     iimsCompleted: false,
-    medication: '',
     severity: '',
     wasPhysicianNotified: false,
     physicianFirstName: '',
@@ -380,7 +354,19 @@ export default {
     diagnosis: '',
     message: ''
   }),
-
+  created () {
+    ErrortypeService.getAll()
+      .then(function (res, err) {
+        this.errorTypes = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          this.errorTypes.push({
+            value: res.data[i].id,
+            text: res.data[i].errorType
+          })
+        }
+      }.bind(this))
+  },
   methods: {
     async submit () {
       if (this.validForm()) {
@@ -389,21 +375,22 @@ export default {
           var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
           var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
           await ErrorService.logError({
-            date: this.date.valueOf(),
-            time: this.time,
+            errorDate: this.date.valueOf(),
+            errorTime: this.time,
+            patientId: this.patientId,
             patientFirstName: this.patientFirstName,
             PatientSurname: this.patientSurname,
-            patientId: this.patientId,
             patientType: this.patientType.valueOf(),
             errorType: this.errorType.valueOf(),
-            errorComment: this.errorComment,
-            workerAtFault: this.workerAtFault.valueOf(),
-            workerNotified: workerNotified,
-            location: this.errorLocation.valueOf(),
-            iimsCompleted: iimsCompleted,
             medication: this.medication.valueOf(),
-            severity: this.severity.valueOf(),
-            physicianNotified: wasPhysicianNotified,
+            medicationType: this.medicationType.valueOf(),
+            generalComment: this.errorComment,
+            errorCausedByWorker: this.workerAtFault.valueOf(),
+            wasWorkerNotified: workerNotified,
+            errorLocation: this.errorLocation.valueOf(),
+            iimsCompleted: iimsCompleted,
+            level: this.severity.valueOf(),
+            wasPhysicianNotified: wasPhysicianNotified,
             physicianFirstName: this.physicianFirstName,
             physicianSurname: this.physicianSurname,
             providerNumber: this.providerNumber,

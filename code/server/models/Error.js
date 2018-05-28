@@ -1,26 +1,18 @@
-
 module.exports = (sequelize, DataTypes) => {
-  const Error = sequelize.define('errorForm', {
-    date: DataTypes.STRING,
-    time: DataTypes.STRING,
-    patientFirstName: DataTypes.STRING,
-    patientSurname: DataTypes.STRING,
-    patientId: DataTypes.STRING,
-    patientType: DataTypes.STRING,
-    errorType: DataTypes.STRING,
-    errorComment: DataTypes.STRING,
-    workerAtFault: DataTypes.STRING,
-    workerNotified: DataTypes.BOOLEAN,
-    location: DataTypes.STRING,
+  const Error = sequelize.define('error', {
+    errorDate: DataTypes.STRING,
+    errorTime: DataTypes.STRING,
+    errorTypeId: DataTypes.INTEGER,
+    locationId: DataTypes.INTEGER,
+    errorCausedByWoker: DataTypes.INTEGER,
+    wasWorkerNotified: DataTypes.BOOLEAN,
+    wasPhysicianNotified: DataTypes.BOOLEAN,
     iimsCompleted: DataTypes.BOOLEAN,
-    medication: DataTypes.STRING,
-    severity: DataTypes.STRING,
-    physicianNotified: DataTypes.BOOLEAN,
-    physicianFirstName: DataTypes.STRING,
-    physicianSurname: DataTypes.STRING,
-    providerNumber: DataTypes.STRING,
-    physicianComments: DataTypes.STRING,
-    dianosis: DataTypes.STRING // TODO: fix this error in database
+    generalComment: DataTypes.STRING,
+    severityId: DataTypes.INTEGER,
+    medicationId: DataTypes.INTEGER,
+    patientId: DataTypes.INTEGER,
+    physicianId: DataTypes.INTEGER
   },
   {
     freezeTableName: true,
