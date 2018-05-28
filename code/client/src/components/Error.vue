@@ -66,7 +66,7 @@
                   <v-select
                     :loading="loading"
                     :items="patientTypes"
-                    :rules="[() => patientType.length > 0 || 'You must select one']"
+                    :rules="[() => patientType > 0 || 'You must select one']"
                     label="Select Patient Type"
                     v-model="patientType"
                     autocomplete
@@ -82,7 +82,7 @@
                   <v-select
                     :loading="loading"
                     :items="errorTypes"
-                    :rules="[() => errorType.length > 0 || 'You must select one']"
+                    :rules="[() => errorType > 0 || 'You must select one']"
                     v-model="errorType"
                     label='Select an Error Type'
                     autocomplete
@@ -109,7 +109,7 @@
                   <v-select
                     :loading="loading"
                     :items="medicationTypes"
-                    :rules="[() => medicationType.length > 0 || 'You must select one']"
+                    :rules="[() => medicationType > 0 || 'You must select one']"
                     label="Select Medication Type"
                     v-model="medicationType"
                     autocomplete
@@ -134,7 +134,7 @@
                   <v-select
                     :loading="loading"
                     :items="workers"
-                    :rules="[() => workerAtFault.length > 0 || 'You must select one']"
+                    :rules="[() => workerAtFault > 0 || 'You must select one']"
                     label="Select Person Who Made Error"
                     v-model="workerAtFault"
                     autocomplete
@@ -164,9 +164,9 @@
                   <v-select
                     :loading="loading"
                     :items="errorLocations"
-                    :rules="[() => errorLocation.length > 0 || 'You must select one']"
+                    :rules="[() => errorLocation > 0 || 'You must select one']"
                     v-model="errorLocation"
-                    label='Where did the error occur?'
+                    label='Where was error detected?'
                     autocomplete
                     cache-items
                     chips
@@ -194,7 +194,7 @@
                   <v-select
                     :loading="loading"
                     :items="severityLevels"
-                    :rules="[() => severity.length > 0 || 'You must select one']"
+                    :rules="[() => severity > 0 || 'You must select one']"
                     v-model="severity"
                     label='Select Severity Level'
                     autocomplete
@@ -222,6 +222,16 @@
               <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
+                    label="Physician Provider Number"
+                    v-model="providerNumber"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field
                     label="Physician First Name"
                     v-model="physicianFirstName"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
@@ -234,16 +244,6 @@
                   <v-text-field
                     label="Physician Surname"
                     v-model="physicianSurname"
-                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Physician Provider Number"
-                    v-model="providerNumber"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
                 </v-flex>
