@@ -308,7 +308,7 @@ import WorkerService from '@/services/WorkerService'
 import ErrortypeService from '@/services/ErrortypeService'
 // import SeverityService from '@/services/SeverityService'
 // import MedicationService from '@/services/MedicationService'
-// import MedicationtypeService from '@/services/MedicationtypeService'
+import MedicationtypeService from '@/services/MedicationtypeService'
 // import PhysicianService from '@/services/PhysicianService'
 // import DiagnosisService from '@/services/DiagnosisService'
 import PatienttypeService from '@/services/PatienttypeService'
@@ -388,6 +388,23 @@ export default {
         }
         // Sort the array by the text field rather than the value
         this.patientTypes.sort(function (a, b) {
+          return a['text'].localeCompare(b['text'])
+        })
+      }.bind(this))
+
+    // Medication Type
+    MedicationtypeService.getAll()
+      .then(function (res, err) {
+        this.medicationTypes = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          this.medicationTypes.push({
+            value: res.data[i].id,
+            text: res.data[i].medicationType
+          })
+        }
+        // Sort the array by the text field rather than the value
+        this.workers.sort(function (a, b) {
           return a['text'].localeCompare(b['text'])
         })
       }.bind(this))
