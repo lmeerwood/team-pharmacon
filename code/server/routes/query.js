@@ -119,4 +119,23 @@ router.post('/medicationtype', function (req, res, next) {
     })
 })
 
+// The medication type route. The get is for retrieving details and the post is for adding details
+router.get('/locations', function (req, res) {
+  model.location.findAll({
+    limit: 100
+  }).then(function (errors) {
+    res.send(errors)
+  })
+})
+
+router.post('/locations', function (req, res, next) {
+  model.location.create(req.body)
+    .then(function (errors) {
+      res.send(errors)
+    })
+    .catch(function (e) {
+      res.send('Ruh-roh!')
+    })
+})
+
 module.exports = router

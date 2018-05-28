@@ -313,7 +313,7 @@ import MedicationtypeService from '@/services/MedicationtypeService'
 // import DiagnosisService from '@/services/DiagnosisService'
 import PatienttypeService from '@/services/PatienttypeService'
 // import PatientService from '@/services/PatientService'
-// import LocationService from '@/services/LocationService'
+import LocationService from '@/services/LocationService'
 
 export default {
   data: () => ({
@@ -408,7 +408,24 @@ export default {
           return a['text'].localeCompare(b['text'])
         })
       }.bind(this))
-
+      
+    // Location Type
+    LocationService.getAll()
+      .then(function (res, err) {
+        this.errorLocations = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          this.errorLocations.push({
+            value: res.data[i].id,
+            text: res.data[i].errorLocation
+          })
+        }
+        // Sort the array by the text field rather than the value
+        this.workers.sort(function (a, b) {
+          return a['text'].localeCompare(b['text'])
+        })
+      }.bind(this))
+      
     // Worker
     WorkerService.getAll()
       .then(function (res, err) {
