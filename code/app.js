@@ -15,9 +15,9 @@ server.listen(port, hostname, () => {
 });
 
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "pharmac0n"
+    host: "18.188.218.170",
+    user: "pet_user",
+    password: "password"
   });
   
   con.connect(function(err) {
