@@ -66,7 +66,7 @@
                   <v-select
                     :loading="loading"
                     :items="patientTypes"
-                    :rules="[() => patientType.length > 0 || 'You must select one']"
+                    :rules="[() => patientType > 0 || 'You must select one']"
                     label="Select Patient Type"
                     v-model="patientType"
                     autocomplete
@@ -82,7 +82,7 @@
                   <v-select
                     :loading="loading"
                     :items="errorTypes"
-                    :rules="[() => errorType.length > 0 || 'You must select one']"
+                    :rules="[() => errorType > 0 || 'You must select one']"
                     v-model="errorType"
                     label='Select an Error Type'
                     autocomplete
@@ -109,7 +109,7 @@
                   <v-select
                     :loading="loading"
                     :items="medicationTypes"
-                    :rules="[() => medicationType.length > 0 || 'You must select one']"
+                    :rules="[() => medicationType > 0 || 'You must select one']"
                     label="Select Medication Type"
                     v-model="medicationType"
                     autocomplete
@@ -134,7 +134,7 @@
                   <v-select
                     :loading="loading"
                     :items="workers"
-                    :rules="[() => workerAtFault.length > 0 || 'You must select one']"
+                    :rules="[() => workerAtFault > 0 || 'You must select one']"
                     label="Select Person Who Made Error"
                     v-model="workerAtFault"
                     autocomplete
@@ -164,9 +164,9 @@
                   <v-select
                     :loading="loading"
                     :items="errorLocations"
-                    :rules="[() => errorLocation.length > 0 || 'You must select one']"
+                    :rules="[() => errorLocation > 0 || 'You must select one']"
                     v-model="errorLocation"
-                    label='Where did the error occur?'
+                    label='Where was error detected?'
                     autocomplete
                     cache-items
                     chips
@@ -194,7 +194,7 @@
                   <v-select
                     :loading="loading"
                     :items="severityLevels"
-                    :rules="[() => severity.length > 0 || 'You must select one']"
+                    :rules="[() => severity > 0 || 'You must select one']"
                     v-model="severity"
                     label='Select Severity Level'
                     autocomplete
@@ -222,6 +222,16 @@
               <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
+                    label="Physician Provider Number"
+                    v-model="providerNumber"
+                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field
                     label="Physician First Name"
                     v-model="physicianFirstName"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
@@ -234,16 +244,6 @@
                   <v-text-field
                     label="Physician Surname"
                     v-model="physicianSurname"
-                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Physician Provider Number"
-                    v-model="providerNumber"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
                 </v-flex>
@@ -304,16 +304,16 @@
 
 <script>
 import ErrorService from '@/services/ErrorService'
-// import WorkerService from '@/services/WorkerService'
+import WorkerService from '@/services/WorkerService'
 import ErrortypeService from '@/services/ErrortypeService'
-// import SeverityService from '@/services/SeverityService'
+import SeverityService from '@/services/SeverityService'
 // import MedicationService from '@/services/MedicationService'
-// import MedicationtypeService from '@/services/MedicationtypeService'
+import MedicationtypeService from '@/services/MedicationtypeService'
 // import PhysicianService from '@/services/PhysicianService'
 // import DiagnosisService from '@/services/DiagnosisService'
-// import PatienttypeService from '@/services/PatienttypeService'
+import PatienttypeService from '@/services/PatienttypeService'
 // import PatientService from '@/services/PatientService'
-// import LocationService from '@/services/LocationService'
+import LocationService from '@/services/LocationService'
 
 export default {
   data: () => ({
@@ -355,6 +355,10 @@ export default {
     message: ''
   }),
   created () {
+    // These go through and retrieve the values from the server to load into the drop
+    // down boxes in the form
+
+    // ErrorType
     ErrortypeService.getAll()
       .then(function (res, err) {
         this.errorTypes = []
@@ -365,6 +369,95 @@ export default {
             text: res.data[i].errorType
           })
         }
+        // Sort the array by the text field rather than the value
+        this.errorTypes.sort(function (a, b) {
+          return a['text'].localeCompare(b['text'])
+        })
+      }.bind(this))
+
+    // Patient Type
+    PatienttypeService.getAll()
+      .then(function (res, err) {
+        this.patientTypes = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          this.patientTypes.push({
+            value: res.data[i].id,
+            text: res.data[i].patientType
+          })
+        }
+        // Sort the array by the text field rather than the value
+        this.patientTypes.sort(function (a, b) {
+          return a['text'].localeCompare(b['text'])
+        })
+      }.bind(this))
+
+    // Medication Type
+    MedicationtypeService.getAll()
+      .then(function (res, err) {
+        this.medicationTypes = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          this.medicationTypes.push({
+            value: res.data[i].id,
+            text: res.data[i].medicationType
+          })
+        }
+        // Sort the array by the text field rather than the value
+        this.medicationTypes.sort(function (a, b) {
+          return a['text'].localeCompare(b['text'])
+        })
+      }.bind(this))
+      
+    // Location Type
+    LocationService.getAll()
+      .then(function (res, err) {
+        this.errorLocations = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          this.errorLocations.push({
+            value: res.data[i].id,
+            text: res.data[i].errorLocation
+          })
+        }
+        // Sort the array by the text field rather than the value
+        this.errorLocations.sort(function (a, b) {
+          return a['text'].localeCompare(b['text'])
+        })
+      }.bind(this))
+
+    // Severity Type
+    SeverityService.getAll()
+      .then(function (res, err) {
+        this.severityLevels = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          this.severityLevels.push({
+            value: res.data[i].id,
+            text: res.data[i].level
+          })
+        }
+      }.bind(this))
+      
+    // Worker
+    WorkerService.getAll()
+      .then(function (res, err) {
+        this.workers = []
+        var i
+        for (i = 0; i < res.data.length; i++) {
+          if (res.data[i].workerActive) {
+            // Combine the worker details into 'Surname, FirstName'
+            var name = res.data[i].workerSurname + ', ' + res.data[i].workerFirstName
+            this.workers.push({
+              value: res.data[i].id,
+              text: name
+            })
+          }
+        }
+        // Sort the array by the text field rather than the value
+        this.workers.sort(function (a, b) {
+          return a['text'].localeCompare(b['text'])
+        })
       }.bind(this))
   },
   methods: {
