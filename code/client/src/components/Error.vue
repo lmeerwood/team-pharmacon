@@ -408,7 +408,7 @@ export default {
           return a['text'].localeCompare(b['text'])
         })
       }.bind(this))
-      
+
     // Location Type
     LocationService.getAll()
       .then(function (res, err) {
@@ -438,7 +438,7 @@ export default {
           })
         }
       }.bind(this))
-      
+
     // Worker
     WorkerService.getAll()
       .then(function (res, err) {
