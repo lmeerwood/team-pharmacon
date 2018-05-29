@@ -96,7 +96,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `petdatabase`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `petdatabase`.`user` (
+CREATE TABLE IF NOT EXISTS `petdatabase`.`User` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(200) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
