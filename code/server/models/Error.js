@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Error.associate = function (models) {
+    Error.belongsTo(models.errortype)
   }
 
   return Error
