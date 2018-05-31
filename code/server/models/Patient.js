@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     patientHospitalId: DataTypes.STRING,
     patientFirstName: DataTypes.STRING,
     patientSurname: DataTypes.STRING,
-    patientTypeId: DataTypes.INTEGER,
     patientDiagnosis: DataTypes.INTEGER
   },
   {
@@ -12,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Patient.associate = function (models) {
-
+    Patient.belongsTo(models.patienttype)
+    Patient.hasMany(models.error)
+    Patient.hasMany(models.diagnosis)
   }
 
   return Patient

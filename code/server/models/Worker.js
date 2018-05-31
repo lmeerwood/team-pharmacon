@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Worker.associate = function (models) {
+    Worker.hasMany(models.error)
   }
 
   return Worker

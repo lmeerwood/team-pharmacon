@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Errortype.associate = function (models) {
+    Errortype.hasMany(models.error)
   }
 
   return Errortype

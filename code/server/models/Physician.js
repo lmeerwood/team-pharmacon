@@ -3,8 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     physicianSurname: DataTypes.STRING,
     physicianFirstName: DataTypes.STRING,
     providerNumber: DataTypes.STRING,
-    physicianComment: DataTypes.STRING,
-    diagnosisID: DataTypes.INTEGER
+    physicianComment: DataTypes.STRING
   },
   {
     freezeTableName: true,
@@ -12,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Physician.associate = function (models) {
+    Physician.hasMany(models.error)
+    Physician.hasMany(models.diagnosis)
   }
 
   return Physician

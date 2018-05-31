@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Patienttype.associate = function (models) {
+    Patienttype.hasMany(models.patient)
   }
 
   return Patienttype

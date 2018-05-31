@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Location.associate = function (models) {
+    Location.hasMany(models.error)
   }
 
   return Location

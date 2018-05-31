@@ -2,17 +2,11 @@ module.exports = (sequelize, DataTypes) => {
   const Error = sequelize.define('error', {
     errorDate: DataTypes.STRING,
     errorTime: DataTypes.STRING,
-    errorTypeId: DataTypes.INTEGER,
     locationId: DataTypes.INTEGER,
-    errorCausedByWoker: DataTypes.INTEGER,
     wasWorkerNotified: DataTypes.BOOLEAN,
     wasPhysicianNotified: DataTypes.BOOLEAN,
     iimsCompleted: DataTypes.BOOLEAN,
-    generalComment: DataTypes.STRING,
-    severityId: DataTypes.INTEGER,
-    medicationId: DataTypes.INTEGER,
-    patientId: DataTypes.INTEGER,
-    physicianId: DataTypes.INTEGER
+    generalComment: DataTypes.STRING
   },
   {
     freezeTableName: true,
@@ -21,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
 
   Error.associate = function (models) {
     Error.belongsTo(models.errortype)
+    Error.belongsTo(models.severity)
+    Error.belongsTo(models.medication)
+    Error.belongsTo(models.physician)
+    Error.belongsTo(models.patient)
+    Error.belongsTo(models.location)
+    Error.belongsTo(models.worker, {foreignKey: 'errorCausedByWorker'})
   }
 
   return Error

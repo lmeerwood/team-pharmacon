@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Severity.associate = function (models) {
+    Severity.hasMany(models.error)
   }
 
   return Severity

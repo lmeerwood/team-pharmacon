@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   MedicationType.associate = function (models) {
+    MedicationType.hasMany(models.medication)
   }
 
   return MedicationType
