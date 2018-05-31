@@ -28,15 +28,15 @@ router.get('/', function (req, res, next) {
 router.get('/error', isAuthenticated, function (req, res) {
   model.errorForm.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/error', function (req, res, next) {
   model.errorForm.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -47,15 +47,15 @@ router.post('/error', function (req, res, next) {
 router.get('/errortype', function (req, res) {
   model.errortype.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/errortype', function (req, res, next) {
   model.errortype.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -66,15 +66,15 @@ router.post('/errortype', function (req, res, next) {
 router.get('/patienttype', function (req, res) {
   model.patienttype.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/patienttype', function (req, res, next) {
   model.patienttype.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -85,15 +85,15 @@ router.post('/patienttype', function (req, res, next) {
 router.get('/worker', function (req, res) {
   model.worker.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/worker', function (req, res, next) {
   model.worker.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -104,15 +104,15 @@ router.post('/worker', function (req, res, next) {
 router.get('/medicationtype', function (req, res) {
   model.medicationtype.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/medicationtype', function (req, res, next) {
   model.medicationtype.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -123,15 +123,15 @@ router.post('/medicationtype', function (req, res, next) {
 router.get('/locations', function (req, res) {
   model.location.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/locations', function (req, res, next) {
   model.location.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -142,15 +142,15 @@ router.post('/locations', function (req, res, next) {
 router.get('/severity', function (req, res) {
   model.severity.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/severity', function (req, res, next) {
   model.severity.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
