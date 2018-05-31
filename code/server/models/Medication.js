@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Error = sequelize.define('medication', {
+  const Medication = sequelize.define('medication', {
     medicationName: DataTypes.STRING,
     medicationTypeId: DataTypes.INTEGER
   },
@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false
   })
 
-  Error.associate = function (models) {
+  Medication.associate = function (models) {
   }
 
-  return Error
+  return Medication
 }

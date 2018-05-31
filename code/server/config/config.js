@@ -7,7 +7,7 @@ module.exports = {
     password: process.env.DB_PASS || 'password',
     options: {
       dialect: 'mysql',
-      host: process.env.HOST || '127.0.0.1',
+      host: process.env.DB_HOST || '127.0.0.1',
       pool: {
         max: 10,
         min: 0,
