@@ -1,5 +1,5 @@
-const model = require('../models')
+// const model = require('../models')
 
-module.exports = function (req, res, next) {
-  
-}
+// module.exports = function (req, res, next) {
+
+// }

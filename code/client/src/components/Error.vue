@@ -11,20 +11,55 @@
 
               <v-layout row>
                 <v-flex xs8 offset-xs1>
+                  <v-menu
+                  ref="datePicker"
+                  :close-on-content-click="false"
+                  v-model="datePicker"
+                  :nudge-right="40"
+                  :return-value.sync="date"
+                  lazy
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  min-width="290px"
+                >
                   <v-text-field
-                    label="Date yyyy-mm-dd"
+                    slot="activator"
                     v-model="date"
+                    label="Date of Error"
+                    prepend-icon="event"
                     :rules="[() => !!date || 'This field is required']"
                     required
+                    readonly
                   ></v-text-field>
+                  <v-date-picker v-model="date" @input="$refs.datePicker.save(date)"></v-date-picker>
+                </v-menu>
                 </v-flex>
                 <v-flex xs8 offset-xs1>
-                  <v-text-field
-                    label="Time hh:ss"
-                    v-model="time"
-                    :rules="[() => !!time || 'This field is required']"
-                    required
-                  ></v-text-field>
+                  <v-menu
+                    ref="timePicker"
+                    :close-on-content-click="false"
+                    v-model="timePicker"
+                    :nudge-right="40"
+                    :return-value.sync="time"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    max-width="290px"
+                    min-width="290px"
+                  >
+                    <v-text-field
+                      slot="activator"
+                      v-model="time"
+                      label="Time of Error"
+                      prepend-icon="access_time"
+                      :rules="[() => !!time || 'This field is required']"
+                      required
+                      readonly
+                    ></v-text-field>
+                    <v-time-picker format="24hr" v-model="time" @change="$refs.timePicker.save(time)"></v-time-picker>
+                  </v-menu>
                 </v-flex>
               </v-layout>
 
@@ -329,10 +364,14 @@ export default {
     workers: [],
     severityLevels: [],
 
+    // Variables to hold menu helpers
+    datePicker: false,
+    timePicker: false,
+
     // Variables to store inputted values
     valid: true,
     date: '',
-    time: '',
+    time: null,
     patientId: '',
     patientFirstName: '',
     patientSurname: '',
@@ -472,17 +511,17 @@ export default {
             errorTime: this.time,
             patientId: this.patientId,
             patientFirstName: this.patientFirstName,
-            PatientSurname: this.patientSurname,
+            patientSurname: this.patientSurname,
             patientType: this.patientType.valueOf(),
-            errorType: this.errorType.valueOf(),
-            medication: this.medication.valueOf(),
-            medicationType: this.medicationType.valueOf(),
+            errortypeId: this.errorType.valueOf(),
+            medicationName: this.medication.valueOf(),
+            medicationtypeId: this.medicationType.valueOf(),
             generalComment: this.errorComment,
             errorCausedByWorker: this.workerAtFault.valueOf(),
             wasWorkerNotified: workerNotified,
-            errorLocation: this.errorLocation.valueOf(),
+            locationId: this.errorLocation.valueOf(),
             iimsCompleted: iimsCompleted,
-            severity: this.severity.valueOf(),
+            severityId: this.severity.valueOf(),
             wasPhysicianNotified: wasPhysicianNotified,
             physicianFirstName: this.physicianFirstName,
             physicianSurname: this.physicianSurname,

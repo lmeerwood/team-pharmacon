@@ -34,40 +34,38 @@ router.get('/error', isAuthenticated, function (req, res) {
 })
 
 router.post('/error', function (req, res, next) {
-
   /**
    * This is a longer route due to the fact we need to
    * check if the entries from linking tables are created yet.
    * If they are, we use those, if they aren't we create them.
    * Some of them will be updated with newer values.
    */
-  async function addError(req, res, next) {
-
+  async function addError (req, res, next) {
     // Check if the patient already exist.
     var patient = await model.patient.findOrCreate({
       where: {
         patientHospitalId: req.body.patientId
       }
     })
-    .spread((patient, created) => {
-      patient.updateAttributes({
-        patientFirstName: req.body.patientFirstName,
-        patientSurname: req.body.patientSurname,
-        patienttypeId: req.body.patientType
+      .spread((patient, created) => {
+        patient.updateAttributes({
+          patientFirstName: req.body.patientFirstName,
+          patientSurname: req.body.patientSurname,
+          patienttypeId: req.body.patientType
+        })
+        return patient
       })
-      return patient
-    })
 
     // Check if the medication already exist.
     var medication = await model.medication.findOrCreate({
       where: {
         medicationName: req.body.medicationName,
-        medicationtypeId: req.body.medicationType
+        medicationtypeId: req.body.medicationtypeId
       }
     })
-    .spread((medication, created) => {
-      return medication
-    })
+      .spread((medication, created) => {
+        return medication
+      })
 
     // Check if the physician already exist.
     var physician = await model.physician.findOrCreate({
@@ -75,23 +73,23 @@ router.post('/error', function (req, res, next) {
         providerNumber: req.body.providerNumber
       }
     })
-    .spread((physician, created) => {
-      if (created) {
-        physician.updateAttributes({
-          physicianSurname: req.body.physicianSurname,
-          physicianFirstName: req.body.physicianFirstName
-        }).then(() => {return physician})
-      } else {
-        return physician
-      }
-    })
+      .spread((physician, created) => {
+        if (created) {
+          physician.updateAttributes({
+            physicianSurname: req.body.physicianSurname,
+            physicianFirstName: req.body.physicianFirstName
+          }).then(() => { return physician })
+        } else {
+          return physician
+        }
+      })
 
     // Now that the relating entries in other tables exist, make the error
 
     var error = await model.error.create({
       errorDate: req.body.errorDate,
       errorTime: req.body.errorTime,
-      locationId: req.body.errorLocation,
+      locationId: req.body.locationId,
       wasWorkerNotified: req.body.wasWorkerNotified,
       wasPhysicianNotified: req.body.wasPhysicianNotified,
       iimsCompleted: req.body.iimsCompleted,
@@ -100,21 +98,20 @@ router.post('/error', function (req, res, next) {
       severityId: req.body.severityId,
       errorCausedByWorker: req.body.errorCausedByWorker
     })
-    
+
     error.setPhysician(physician)
-    .then(() => {
-      error.setMedication(medication)
       .then(() => {
-        error.setPatient(patient)
-        .then(() => {
-          res.send(error)
-        })
+        error.setMedication(medication)
+          .then(() => {
+            error.setPatient(patient)
+              .then(() => {
+                res.send(error)
+              })
+          })
       })
-    })
   }
 
   addError(req, res, next)
-
 })
 
 // The errortype route. The get is for retrieving details and the post is for adding details
@@ -132,7 +129,7 @@ router.post('/errortype', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred while creating an error type. ' + e)
     })
 })
 
@@ -151,7 +148,7 @@ router.post('/patienttype', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred while creating a patient type! ' + e)
     })
 })
 
@@ -170,7 +167,7 @@ router.post('/worker', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred creating a new worker! ' + e)
     })
 })
 
@@ -189,7 +186,7 @@ router.post('/medicationtype', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred creating a new medication type! ' + e)
     })
 })
 
@@ -208,7 +205,7 @@ router.post('/locations', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred creating a new location! ' + e)
     })
 })
 
@@ -227,7 +224,7 @@ router.post('/severity', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred creating a new severity level! ' + e)
     })
 })
 
