@@ -7,7 +7,7 @@ echo Checked out into dev;
 
 # Start Web Server
 cd ~/pharmacy_app/code/server
-npm start
+npm start &
 echo Web Server Started;
 
 
