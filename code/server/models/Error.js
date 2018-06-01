@@ -22,6 +22,5 @@ module.exports = (sequelize, DataTypes) => {
     Error.belongsTo(models.location, {as: 'Location'})
     Error.belongsTo(models.worker, {as: 'Worker', foreignKey: 'errorCausedByWorker'})
   }
-
   return Error
 }
