@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Error.associate = function (models) {
-    Error.belongsTo(models.errortype)
-    Error.belongsTo(models.severity)
-    Error.belongsTo(models.medication)
-    Error.belongsTo(models.physician)
-    Error.belongsTo(models.patient)
-    Error.belongsTo(models.location)
-    Error.belongsTo(models.worker, {foreignKey: 'errorCausedByWorker'})
+    Error.belongsTo(models.errortype, {as: 'ErrorType'})
+    Error.belongsTo(models.severity, {as: 'Severity'})
+    Error.belongsTo(models.medication, {as: 'Medication'})
+    Error.belongsTo(models.physician, {as: 'Physician'})
+    Error.belongsTo(models.patient, {as: 'Patient'})
+    Error.belongsTo(models.location, {as: 'Location'})
+    Error.belongsTo(models.worker, {as: 'Worker', foreignKey: 'errorCausedByWorker'})
   }
 
   return Error
