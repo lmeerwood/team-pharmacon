@@ -1,4 +1,4 @@
-const {User} = require('../models')
+const {login} = require('../models')
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
@@ -13,7 +13,7 @@ module.exports = {
   async login (req, res) {
     try {
       const {email, password} = req.body
-      const user = await User.findOne({
+      const user = await login.findOne({
         where: {
           email: email
         }
@@ -38,6 +38,8 @@ module.exports = {
         token: jwtSignUser(userJson)
       })
     } catch (err) {
+      console.log(err)
+      console.log('Failed login')
       res.status(500).send({
         error: 'An error has occured trying to log in'
       })

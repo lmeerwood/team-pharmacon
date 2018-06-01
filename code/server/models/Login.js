@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Error = sequelize.define('login', {
+  const Login = sequelize.define('login', {
     email: {
       type: DataTypes.STRING,
       unique: true
@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false
   })
 
-  Error.prototype.comparePassword = function (password) {
+  Login.prototype.comparePassword = function (password) {
     return password === this.password
   }
 
-  Error.associate = function (models) {
+  Login.associate = function (models) {
   }
 
-  return Error
+  return Login
 }

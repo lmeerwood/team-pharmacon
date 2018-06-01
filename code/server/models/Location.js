@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Error = sequelize.define('location', {
+  const Location = sequelize.define('location', {
     errorLocation: DataTypes.STRING
   },
   {
@@ -7,8 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false
   })
 
-  Error.associate = function (models) {
+  Location.associate = function (models) {
+    Location.hasMany(models.error)
   }
 
-  return Error
+  return Location
 }

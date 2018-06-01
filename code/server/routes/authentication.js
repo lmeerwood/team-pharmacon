@@ -14,7 +14,7 @@ function jwtSignUser (user) {
 router.post('/login', function (req, res) {
   try {
     const {email, password} = req.body
-    model.User.findOne({
+    model.login.findOne({
       where: {
         email: email
       }

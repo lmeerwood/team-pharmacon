@@ -96,7 +96,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `petdatabase`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `petdatabase`.`User` (
+CREATE TABLE IF NOT EXISTS `petdatabase`.`login` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(200) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
@@ -277,14 +277,14 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `petdatabase`.`User`
+-- Data for table `petdatabase`.`login`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petdatabase`;
-INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('test@test.com', '12345678', 1);
-INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('frank@test.com', '87654321', 1);
-INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('jules@test.com', 'password', 1);
-INSERT INTO `petdatabase`.`User` (`email`, `password`, `authlevel`) VALUES ('admin@test.com', 'super123', 2);
+INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('test@test.com', '12345678', 1);
+INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('frank@test.com', '87654321', 1);
+INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('jules@test.com', 'password', 1);
+INSERT INTO `petdatabase`.`login` (`email`, `password`, `authlevel`) VALUES ('admin@test.com', 'super123', 2);
 
 COMMIT;
 

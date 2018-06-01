@@ -482,7 +482,7 @@ export default {
             wasWorkerNotified: workerNotified,
             errorLocation: this.errorLocation.valueOf(),
             iimsCompleted: iimsCompleted,
-            level: this.severity.valueOf(),
+            severity: this.severity.valueOf(),
             wasPhysicianNotified: wasPhysicianNotified,
             physicianFirstName: this.physicianFirstName,
             physicianSurname: this.physicianSurname,

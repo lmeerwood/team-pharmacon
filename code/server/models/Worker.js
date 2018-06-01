@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Error = sequelize.define('worker', {
+  const Worker = sequelize.define('worker', {
     workerFirstName: DataTypes.STRING,
     workerSurname: DataTypes.STRING,
     WorkerRole: DataTypes.STRING,
@@ -11,8 +11,9 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false
   })
 
-  Error.associate = function (models) {
+  Worker.associate = function (models) {
+    Worker.hasMany(models.error)
   }
 
-  return Error
+  return Worker
 }

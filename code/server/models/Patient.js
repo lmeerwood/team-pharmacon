@@ -1,9 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const Error = sequelize.define('patient', {
+  const Patient = sequelize.define('patient', {
     patientHospitalId: DataTypes.STRING,
     patientFirstName: DataTypes.STRING,
     patientSurname: DataTypes.STRING,
-    patientTypeId: DataTypes.INTEGER,
     patientDiagnosis: DataTypes.INTEGER
   },
   {
@@ -11,8 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false
   })
 
-  Error.associate = function (models) {
+  Patient.associate = function (models) {
+    Patient.belongsTo(models.patienttype)
+    Patient.hasMany(models.error)
+    Patient.hasMany(models.diagnosis)
   }
 
-  return Error
+  return Patient
 }

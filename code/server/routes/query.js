@@ -28,34 +28,108 @@ router.get('/', function (req, res, next) {
 router.get('/error', isAuthenticated, function (req, res) {
   model.errorForm.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/error', function (req, res, next) {
-  model.errorForm.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+
+  /**
+   * This is a longer route due to the fact we need to
+   * check if the entries from linking tables are created yet.
+   * If they are, we use those, if they aren't we create them.
+   * Some of them will be updated with newer values.
+   */
+  async function addError(req, res, next) {
+
+    // Check if the patient already exist.
+    var patient = await model.patient.findOrCreate({
+      where: {
+        patientHospitalId: req.body.patientId
+      }
     })
-    .catch(function (e) {
-      res.send('Ruh-roh!')
+    .spread((patient, created) => {
+      patient.updateAttributes({
+        patientFirstName: req.body.patientFirstName,
+        patientSurname: req.body.patientSurname,
+        patienttypeId: req.body.patientType
+      })
+      return patient
     })
+
+    // Check if the medication already exist.
+    var medication = await model.medication.findOrCreate({
+      where: {
+        medicationName: req.body.medicationName,
+        medicationtypeId: req.body.medicationType
+      }
+    })
+    .spread((medication, created) => {
+      return medication
+    })
+
+    // Check if the physician already exist.
+    var physician = await model.physician.findOrCreate({
+      where: {
+        providerNumber: req.body.providerNumber
+      }
+    })
+    .spread((physician, created) => {
+      if (created) {
+        physician.updateAttributes({
+          physicianSurname: req.body.physicianSurname,
+          physicianFirstName: req.body.physicianFirstName
+        }).then(() => {return physician})
+      } else {
+        return physician
+      }
+    })
+
+    // Now that the relating entries in other tables exist, make the error
+
+    var error = await model.error.create({
+      errorDate: req.body.errorDate,
+      errorTime: req.body.errorTime,
+      locationId: req.body.errorLocation,
+      wasWorkerNotified: req.body.wasWorkerNotified,
+      wasPhysicianNotified: req.body.wasPhysicianNotified,
+      iimsCompleted: req.body.iimsCompleted,
+      generalComment: req.body.generalComment,
+      errortypeId: req.body.errortypeId,
+      severityId: req.body.severityId,
+      errorCausedByWorker: req.body.errorCausedByWorker
+    })
+    
+    error.setPhysician(physician)
+    .then(() => {
+      error.setMedication(medication)
+      .then(() => {
+        error.setPatient(patient)
+        .then(() => {
+          res.send(error)
+        })
+      })
+    })
+  }
+
+  addError(req, res, next)
+
 })
 
 // The errortype route. The get is for retrieving details and the post is for adding details
 router.get('/errortype', function (req, res) {
   model.errortype.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/errortype', function (req, res, next) {
   model.errortype.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -66,15 +140,15 @@ router.post('/errortype', function (req, res, next) {
 router.get('/patienttype', function (req, res) {
   model.patienttype.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/patienttype', function (req, res, next) {
   model.patienttype.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -85,15 +159,15 @@ router.post('/patienttype', function (req, res, next) {
 router.get('/worker', function (req, res) {
   model.worker.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/worker', function (req, res, next) {
   model.worker.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -104,15 +178,15 @@ router.post('/worker', function (req, res, next) {
 router.get('/medicationtype', function (req, res) {
   model.medicationtype.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/medicationtype', function (req, res, next) {
   model.medicationtype.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -123,15 +197,15 @@ router.post('/medicationtype', function (req, res, next) {
 router.get('/locations', function (req, res) {
   model.location.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/locations', function (req, res, next) {
   model.location.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')
@@ -142,15 +216,15 @@ router.post('/locations', function (req, res, next) {
 router.get('/severity', function (req, res) {
   model.severity.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/severity', function (req, res, next) {
   model.severity.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
       res.send('Ruh-roh!')

@@ -1,15 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
-  const Error = sequelize.define('medication', {
-    medicationName: DataTypes.STRING,
-    medicationTypeId: DataTypes.INTEGER
+  const Medication = sequelize.define('medication', {
+    medicationName: DataTypes.STRING
   },
   {
     freezeTableName: true,
     timestamps: false
   })
 
-  Error.associate = function (models) {
+  Medication.associate = function (models) {
+    Medication.hasMany(models.error)
+    Medication.belongsTo(models.medicationtype)
   }
 
-  return Error
+  return Medication
 }

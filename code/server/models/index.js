@@ -18,7 +18,6 @@ fs
   )
   .forEach((file) => {
     const model = sequelize.import(path.join(__dirname, file))
-    console.log(model)
     db[model.name] = model
   })
 
@@ -27,6 +26,8 @@ Object.keys(db).forEach(function (modelName) {
     db[modelName].associate(db)
   }
 })
+
+// sequelize.sync()
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize
