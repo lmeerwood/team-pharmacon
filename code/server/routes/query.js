@@ -129,7 +129,7 @@ router.post('/errortype', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred while creating an error type. ' + e)
     })
 })
 
@@ -148,7 +148,7 @@ router.post('/patienttype', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred while creating a patient type! ' + e)
     })
 })
 
@@ -167,7 +167,7 @@ router.post('/worker', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred creating a new worker! ' + e)
     })
 })
 
@@ -186,7 +186,7 @@ router.post('/medicationtype', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred creating a new medication type! ' + e)
     })
 })
 
@@ -205,7 +205,7 @@ router.post('/locations', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred creating a new location! ' + e)
     })
 })
 
@@ -224,7 +224,7 @@ router.post('/severity', function (req, res, next) {
       res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred creating a new severity level! ' + e)
     })
 })
 
