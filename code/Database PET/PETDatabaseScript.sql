@@ -18,7 +18,7 @@ USE `petdatabase` ;
 -- Table `petdatabase`.`physician`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `petdatabase`.`physician` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `physicianSurname` VARCHAR(45) NOT NULL,
   `physicianFirstName` VARCHAR(45) NOT NULL,
   `providerNumber` VARCHAR(15) NOT NULL,
@@ -33,7 +33,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `petdatabase`.`patient`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `petdatabase`.`patient` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `patientHospitalId` VARCHAR(20) NOT NULL,
   `patientSurname` VARCHAR(45) NOT NULL,
   `patientFirstName` VARCHAR(45) NOT NULL,
@@ -146,7 +146,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `petdatabase`.`error`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `petdatabase`.`error` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `errorDate` DATE NOT NULL,
   `errorTime` TIME(6) NOT NULL,
   `errorTypeId` INT NOT NULL,
