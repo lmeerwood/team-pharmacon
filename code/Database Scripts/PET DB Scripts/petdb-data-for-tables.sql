@@ -2,6 +2,7 @@ use petdatabase;
 -- -----------------------------------------------------
 -- disable foreign keys checksum table
 -- -----------------------------------------------------
+
 SET FOREIGN_KEY_CHECKS=0;
 COMMIT;
 
