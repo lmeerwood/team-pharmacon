@@ -7,6 +7,14 @@ SET FOREIGN_KEY_CHECKS=0;
 COMMIT;
 
 -- -----------------------------------------------------
+-- Change patient table to auto increment
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+ALTER TABLE patient MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+-- -----------------------------------------------------
 -- Data for table `petdatabase`.`medication`
 -- -----------------------------------------------------
 START TRANSACTION;
