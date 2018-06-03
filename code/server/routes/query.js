@@ -45,16 +45,19 @@ router.post('/error', function (req, res, next) {
     var patient = await model.patient.findOrCreate({
       where: {
         patientHospitalId: req.body.patientId
+      },
+      defaults: {
+        patientFirstName: req.body.patientFirstName,
+        patientSurname: req.body.patientSurname,
+        patienttypeId: req.body.patientType
       }
     })
       .spread((patient, created) => {
-        patient.updateAttributes({
-          patientFirstName: req.body.patientFirstName,
-          patientSurname: req.body.patientSurname,
-          patienttypeId: req.body.patientType
-        })
         return patient
       })
+
+    var patientid = patient.id
+    console.log(patientid)
 
     // Check if the medication already exist.
     var medication = await model.medication.findOrCreate({
@@ -71,22 +74,19 @@ router.post('/error', function (req, res, next) {
     var physician = await model.physician.findOrCreate({
       where: {
         providerNumber: req.body.providerNumber
+      },
+      defaults: {
+        physicianSurname: req.body.physicianSurname,
+        physicianFirstName: req.body.physicianFirstName
       }
     })
       .spread((physician, created) => {
-        if (created) {
-          physician.updateAttributes({
-            physicianSurname: req.body.physicianSurname,
-            physicianFirstName: req.body.physicianFirstName
-          }).then(() => { return physician })
-        } else {
-          return physician
-        }
+        return physician
       })
 
     // Now that the relating entries in other tables exist, make the error
 
-    var error = await model.error.create({
+    model.error.create({
       errorDate: req.body.errorDate,
       errorTime: req.body.errorTime,
       locationId: req.body.locationId,
@@ -96,18 +96,18 @@ router.post('/error', function (req, res, next) {
       generalComment: req.body.generalComment,
       errortypeId: req.body.errortypeId,
       severityId: req.body.severityId,
-      errorCausedByWorker: req.body.errorCausedByWorker
+      errorCausedByWorker: req.body.errorCausedByWorker,
+      medicationId: medication.id,
+      patientId: patient.id,
+      physicianId: physician.id
     })
-
-    error.setPhysician(physician)
       .then(() => {
-        error.setMedication(medication)
-          .then(() => {
-            error.setPatient(patient)
-              .then(() => {
-                res.send(error)
-              })
-          })
+        res.send('success')
+      }
+      )
+      .catch((error) => {
+        res.status(500)
+        res.send('error has occurred: ' + error)
       })
   }
 

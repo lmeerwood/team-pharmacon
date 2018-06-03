@@ -178,11 +178,6 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`error` (
     REFERENCES `petdatabase`.`errortype` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `idLogin`
-    FOREIGN KEY (`id`)
-    REFERENCES `petdatabase`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `idSeverity`
     FOREIGN KEY (`severityId`)
     REFERENCES `petdatabase`.`severity` (`id`)
