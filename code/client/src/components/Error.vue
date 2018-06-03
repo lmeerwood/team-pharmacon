@@ -305,6 +305,17 @@
               </v-layout>
 
               <v-layout row>
+                <v-flex xs12 >
+                <v-alert :value="errorMessage" type="error">
+                  {{ errorMessage }}
+                </v-alert>
+                <v-alert :value="message" type="success">
+                  {{ message }}
+                </v-alert>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-btn
                     round
@@ -320,12 +331,6 @@
                     @click="clear">
                     clear
                   </v-btn>
-                </v-flex>
-              </v-layout>
-
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <p>{{ message }}</p>
                 </v-flex>
               </v-layout>
 
@@ -355,6 +360,8 @@ export default {
     menu: false,
     msg: 'Error Form',
     loading: false,
+    errorMessage: '',
+    message: '',
 
     // Variables to hold drop down box values
     errorLocations: [],
@@ -390,8 +397,7 @@ export default {
     physicianSurname: '',
     providerNumber: '',
     physicianComment: '',
-    diagnosis: '',
-    message: ''
+    diagnosis: ''
   }),
   created () {
     // These go through and retrieve the values from the server to load into the drop
@@ -501,6 +507,8 @@ export default {
   },
   methods: {
     async submit () {
+      this.errorMessage = ''
+      this.message = ''
       if (this.validForm()) {
         try {
           var wasPhysicianNotified = (this.wasPhysicianNotified.valueOf() === 'true') ? 1 : 0
@@ -532,15 +540,16 @@ export default {
           this.clear()
           this.message = 'Form submitted successfully!'
         } catch (error) {
-          this.message = error.response.data.error
+          this.errorMessage = error.response.data.error
         }
       } else {
-        this.message = 'There was an error with your form.'
+        this.errorMessage = 'There was an error with your form.'
       }
     },
     clear: function () {
       this.$refs.form.reset()
       this.message = ''
+      this.errorMessage = ''
     },
     validForm: function () {
       return this.$refs.form.validate()

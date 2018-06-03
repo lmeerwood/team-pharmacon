@@ -9,6 +9,13 @@
         <fieldset class="white">
           <v-form v-model="valid" ref="form" lazy-validation>
           <v-container fluid>
+          <v-layout row>
+              <v-flex xs12 >
+                <v-alert :value="true" type="error">
+                  Please note: This form is a non-functional placeholder
+                </v-alert>
+              </v-flex>
+            </v-layout>
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
