@@ -5,7 +5,6 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items v-if="authlevel !== 0" >
-      <v-btn :to="{name:'Main'}" v-if="authlevel === 2" flat>Main</v-btn>
       <v-btn :to="{name:'Error'}" flat>Log Error</v-btn>
       <v-btn :to="{name:'Physician'}" v-if="authlevel === 2" flat>Manage Physicians</v-btn>
       <v-btn href="http://18.188.218.170:17050" v-if="authlevel === 2" flat>Reporting</v-btn>
@@ -26,7 +25,7 @@ export default {
   methods: {
     logout: function () {
       this.$store.dispatch('logout')
-      this.$router.push('/')
+      this.$router.push('/login')
     }
   }
 }

@@ -82,7 +82,9 @@
           </div>
 
           <br/>
-          <div class="danger-alert" v-html="error" />
+          <v-alert :value="error" type="error" v-html='error'>
+            This is a error alert.
+          </v-alert>
           <br/>
 
           </v-form>
@@ -152,6 +154,7 @@ export default {
     },
     clear () {
       this.$refs.form.reset()
+      this.error = ''
     }
   }
 }
