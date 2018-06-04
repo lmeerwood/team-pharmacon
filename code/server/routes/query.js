@@ -4,77 +4,227 @@ var model = require('../models')
 
 const isAuthenticated = require('../policies/isAuthenticated')
 
-router.get('/', isAuthenticated, function (req, res, next) {
-  res.send(JSON.stringify({
-    'status': 200,
-    'works': 'yes'
-  }))
-})
-
-// The physician route. The get is for retrieving details and the post is for adding details
-router.get('/physician', function (req, res, next) {
-  res.locals.connection.query('SELECT * from `petdatabase`.`physician`;', function (error, results) {
-    if (error) {
-      res.status(500)
-      res.send(JSON.stringify({
-        'status': 500,
-        'error': error.stack,
-        'response': null
-      }))
-    } else {
+router.get('/', function (req, res, next) {
+  model.sequelize
+    .authenticate()
+    .then(() => {
       res.send(JSON.stringify({
         'status': 200,
-        'error': null,
-        'response': results
+        'server': 'alive',
+        'database': 'connected'
       }))
-    }
-  })
-})
-
-router.post('/physician', function (req, res, next) {
-  var name = req.body.name
-  var number = req.body.number
-  var comment = req.body.comment
-
-  var query = 'INSERT INTO `petdatabase`.`physician` (physicianName, providerNumber, physicianComment)' +
-    ` VALUES ('${name}', '${number}', '${comment}');`
-
-  console.log(query)
-
-  res.locals.connection.query(query, function (error, results) {
-    if (error) {
-      res.status(500)
+    })
+    .catch(err => {
+      console.log(err)
       res.send(JSON.stringify({
         'status': 500,
-        'error': error.stack,
-        'response': null
+        'server': 'alive',
+        'database': 'disconnected'
       }))
-    } else {
-      res.send(JSON.stringify({
-        'status': 200,
-        'error': null,
-        'response': results
-      }))
-    }
-  })
+    })
 })
 
 // The error route. The get is for retrieving details and the post is for adding details
-router.get('/error', function (req, res) {
+router.get('/error', isAuthenticated, function (req, res) {
   model.errorForm.findAll({
     limit: 100
-  }).then(function (errors) {
-    res.send(errors)
+  }).then(function (qres) {
+    res.send(qres)
   })
 })
 
 router.post('/error', function (req, res, next) {
-  model.errorForm.create(req.body)
-    .then(function (errors) {
-      res.send(errors)
+  /**
+   * This is a longer route due to the fact we need to
+   * check if the entries from linking tables are created yet.
+   * If they are, we use those, if they aren't we create them.
+   * Some of them will be updated with newer values.
+   */
+  async function addError (req, res, next) {
+    // Check if the patient already exist.
+    var patient = await model.patient.findOrCreate({
+      where: {
+        patientHospitalId: req.body.patientId
+      },
+      defaults: {
+        patientFirstName: req.body.patientFirstName,
+        patientSurname: req.body.patientSurname,
+        patienttypeId: req.body.patientType
+      }
+    })
+      .spread((patient, created) => {
+        return patient
+      })
+
+    var patientid = patient.id
+    console.log(patientid)
+
+    // Check if the medication already exist.
+    var medication = await model.medication.findOrCreate({
+      where: {
+        medicationName: req.body.medicationName,
+        medicationtypeId: req.body.medicationtypeId
+      }
+    })
+      .spread((medication, created) => {
+        return medication
+      })
+
+    // Check if the physician already exist.
+    var physician = await model.physician.findOrCreate({
+      where: {
+        providerNumber: req.body.providerNumber
+      },
+      defaults: {
+        physicianSurname: req.body.physicianSurname,
+        physicianFirstName: req.body.physicianFirstName
+      }
+    })
+      .spread((physician, created) => {
+        return physician
+      })
+
+    // Now that the relating entries in other tables exist, make the error
+
+    model.error.create({
+      errorDate: req.body.errorDate,
+      errorTime: req.body.errorTime,
+      locationId: req.body.locationId,
+      wasWorkerNotified: req.body.wasWorkerNotified,
+      wasPhysicianNotified: req.body.wasPhysicianNotified,
+      iimsCompleted: req.body.iimsCompleted,
+      generalComment: req.body.generalComment,
+      errortypeId: req.body.errortypeId,
+      severityId: req.body.severityId,
+      errorCausedByWorker: req.body.errorCausedByWorker,
+      medicationId: medication.id,
+      patientId: patient.id,
+      physicianId: physician.id
+    })
+      .then(() => {
+        res.send('success')
+      }
+      )
+      .catch((error) => {
+        res.status(500)
+        res.send('error has occurred: ' + error)
+      })
+  }
+
+  addError(req, res, next)
+})
+
+// The errortype route. The get is for retrieving details and the post is for adding details
+router.get('/errortype', function (req, res) {
+  model.errortype.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/errortype', function (req, res, next) {
+  model.errortype.create(req.body)
+    .then(function (qres) {
+      res.send(qres)
     })
     .catch(function (e) {
-      res.send('Ruh-roh!')
+      res.send('An error occurred while creating an error type. ' + e)
+    })
+})
+
+// The patienttype route. The get is for retrieving details and the post is for adding details
+router.get('/patienttype', function (req, res) {
+  model.patienttype.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/patienttype', function (req, res, next) {
+  model.patienttype.create(req.body)
+    .then(function (qres) {
+      res.send(qres)
+    })
+    .catch(function (e) {
+      res.send('An error occurred while creating a patient type! ' + e)
+    })
+})
+
+// The worker route. The get is for retrieving details and the post is for adding details
+router.get('/worker', function (req, res) {
+  model.worker.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/worker', function (req, res, next) {
+  model.worker.create(req.body)
+    .then(function (qres) {
+      res.send(qres)
+    })
+    .catch(function (e) {
+      res.send('An error occurred creating a new worker! ' + e)
+    })
+})
+
+// The medication type route. The get is for retrieving details and the post is for adding details
+router.get('/medicationtype', function (req, res) {
+  model.medicationtype.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/medicationtype', function (req, res, next) {
+  model.medicationtype.create(req.body)
+    .then(function (qres) {
+      res.send(qres)
+    })
+    .catch(function (e) {
+      res.send('An error occurred creating a new medication type! ' + e)
+    })
+})
+
+// The medication type route. The get is for retrieving details and the post is for adding details
+router.get('/locations', function (req, res) {
+  model.location.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/locations', function (req, res, next) {
+  model.location.create(req.body)
+    .then(function (qres) {
+      res.send(qres)
+    })
+    .catch(function (e) {
+      res.send('An error occurred creating a new location! ' + e)
+    })
+})
+
+// The severity levels route. The get is for retrieving details and the post is for adding details
+router.get('/severity', function (req, res) {
+  model.severity.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/severity', function (req, res, next) {
+  model.severity.create(req.body)
+    .then(function (qres) {
+      res.send(qres)
+    })
+    .catch(function (e) {
+      res.send('An error occurred creating a new severity level! ' + e)
     })
 })
 

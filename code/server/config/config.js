@@ -2,12 +2,12 @@
 module.exports = {
   port: process.env.PORT || 8080,
   db: {
-    database: process.env.DB_TABLE || 'PETdatabase',
+    database: process.env.DB_TABLE || 'petdatabase',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASS || 'password',
     options: {
       dialect: 'mysql',
-      host: process.env.HOST || 'localhost',
+      host: process.env.DB_HOST || '18.188.218.170',
       pool: {
         max: 10,
         min: 0,

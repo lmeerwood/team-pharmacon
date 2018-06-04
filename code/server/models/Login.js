@@ -1,6 +1,5 @@
-
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const Login = sequelize.define('login', {
     email: {
       type: DataTypes.STRING,
       unique: true
@@ -12,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false
   })
 
-  User.prototype.comparePassword = function (password) {
+  Login.prototype.comparePassword = function (password) {
     return password === this.password
   }
 
-  User.associate = function (models) {
+  Login.associate = function (models) {
   }
 
-  return User
+  return Login
 }
