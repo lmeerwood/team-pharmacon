@@ -399,35 +399,37 @@ export default {
     physicianComment: '',
     diagnosis: ''
   }),
-  created () {
+   created () {
     // Retrieve specific error and load into the form.
-    ErrorService.getError(this.$route.query.errorId)
-      .then(function (res, err) {
-        var wasPhysicianNotified = (res.data.wasPhysicianNotified.valueOf() === 1) ? 'true' : 'false'
-        var iimsCompleted = (res.data.iimsCompleted.valueOf() === 1) ? 'true' : 'false'
-        var workerNotified = (res.data.workerNotified.valueOf() === 1) ? 'true' : 'false'
-        this.date = res.data.date
-        this.time = res.data.time
-        this.patientId = res.data.patientId
-        this.patientFirstName = res.data.patientFirstName
-        this.patientSurname = res.data.patientSurname
-        this.patientType = res.data.patientType
-        this.errorType = res.data.errorType
-        this.medication = res.data.medication
-        this.medicationType = res.data.medicationType
-        this.errorComment = res.data.errorComment
-        this.workerAtFault = res.data.workerAtFault
-        this.workerNotified = workerNotified
-        this.errorLocation = res.data.errorLocation
-        this.iimsCompleted = iimsCompleted
-        this.severity = res.data.severity
-        this.wasPhysicianNotified = wasPhysicianNotified
-        this.physicianFirstName = res.data.physicianFirstName
-        this.physicianSurname = res.data.physicianSurname
-        this.providerNumber = res.data.providerNumber
-        this.physicianComment = res.data.physicianComment
-        this.diagnosis = res.data.diagnosis
-      }.bind(this))
+    if (this.$route.query.errorId) {
+      ErrorService.getError(this.$route.query.errorId)
+        .then(function (res, err) {
+          var wasPhysicianNotified = (res.data.wasPhysicianNotified.valueOf() === 1) ? 'true' : 'false'
+          var iimsCompleted = (res.data.iimsCompleted.valueOf() === 1) ? 'true' : 'false'
+          var workerNotified = (res.data.workerNotified.valueOf() === 1) ? 'true' : 'false'
+          this.date = res.data.date
+          this.time = res.data.time
+          this.patientId = res.data.patientId
+          this.patientFirstName = res.data.patientFirstName
+          this.patientSurname = res.data.patientSurname
+          this.patientType = res.data.patientType
+          this.errorType = res.data.errorType
+          this.medication = res.data.medication
+          this.medicationType = res.data.medicationType
+          this.errorComment = res.data.errorComment
+          this.workerAtFault = res.data.workerAtFault
+          this.workerNotified = workerNotified
+          this.errorLocation = res.data.errorLocation
+          this.iimsCompleted = iimsCompleted
+          this.severity = res.data.severity
+          this.wasPhysicianNotified = wasPhysicianNotified
+          this.physicianFirstName = res.data.physicianFirstName
+          this.physicianSurname = res.data.physicianSurname
+          this.providerNumber = res.data.providerNumber
+          this.physicianComment = res.data.physicianComment
+          this.diagnosis = res.data.diagnosis
+        }.bind(this))
+    }
 
     // These go through and retrieve the values from the server to load into the drop
     // down boxes in the form
