@@ -401,7 +401,7 @@ export default {
   }),
   created () {
     // Retrieve specific error and load into the form.
-    ErrorService.get('error.id = 11')
+    ErrorService.getError(11)
       .then(function (res, err) {
         var wasPhysicianNotified = (res.data.wasPhysicianNotified.valueOf() === 1) ? 'true' : 'false'
         var iimsCompleted = (res.data.iimsCompleted.valueOf() === 1) ? 'true' : 'false'
@@ -427,7 +427,7 @@ export default {
         this.providerNumber = res.data.providerNumber
         this.physicianComment = res.data.physicianComment
         this.diagnosis = res.data.diagnosis
-      })
+      }.bind(this))
 
     // These go through and retrieve the values from the server to load into the drop
     // down boxes in the form
