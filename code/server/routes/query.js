@@ -29,7 +29,19 @@ router.get('/error/:id', isAuthenticated, function (req, res) {
   model.error.find({
     where: {
       id: req.params.id
-    }
+    },
+    include: [
+      // model.diagnosis,
+      model.errortype,
+      model.location,
+      model.medication,
+      // model.medicationtype,
+      model.patient,
+      // model.patienttype,
+      model.physician,
+      model.severity,
+      model.worker
+    ]
   }).then(function (qres) {
     res.send(qres)
   })
