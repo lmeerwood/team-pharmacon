@@ -25,7 +25,7 @@ router.get('/', function (req, res, next) {
 })
 
 // The error update route. The get is for retrieving details for a specific error and the post is for updating details
-router.get('/error/:id', function (req, res) { // router.get('/error/:id', isAuthenticated, function (req, res) {
+router.get('/error/:id', isAuthenticated, function (req, res) {
   model.error.find({
     where: {
       id: req.params.id

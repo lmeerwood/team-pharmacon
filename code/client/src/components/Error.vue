@@ -401,7 +401,7 @@ export default {
   }),
   created () {
     // Retrieve specific error and load into the form.
-    ErrorService.getError(11)
+    ErrorService.getError(this.$route.query.errorId)
       .then(function (res, err) {
         var wasPhysicianNotified = (res.data.wasPhysicianNotified.valueOf() === 1) ? 'true' : 'false'
         var iimsCompleted = (res.data.iimsCompleted.valueOf() === 1) ? 'true' : 'false'
