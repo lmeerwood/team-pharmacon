@@ -133,9 +133,13 @@ router.post('/error/:id', function (req, res, next) {
 })
 
 // The error route. The get is for retrieving details and the post is for adding details
-router.get('/error', isAuthenticated, function (req, res) {
+router.get('/error', function (req, res) {
   model.error.findAll({
-    limit: 100
+    include: [
+      model.patient,
+      model.medication,
+      model.physician
+    ]
   }).then(function (qres) {
     res.send(qres)
   })
