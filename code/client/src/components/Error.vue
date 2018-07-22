@@ -428,7 +428,7 @@ export default {
           this.physicianSurname = res.data.physicianSurname
           this.providerNumber = res.data.providerNumber
           this.physicianComment = res.data.physicianComment
-          this.diagnosis = res.data.diagnosis.diagnosis
+          this.diagnosis = res.data.diagnosis
         }.bind(this))
     }
 
