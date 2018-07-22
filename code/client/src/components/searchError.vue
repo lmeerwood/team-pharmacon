@@ -91,6 +91,11 @@ export default {
           }
         }
       }.bind(this))
+  },
+  methods: {
+    editItem (id) {
+      this.$router.push('/error?errorId=' + id)
+    }
   }
 }
 </script>
