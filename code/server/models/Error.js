@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     Error.belongsTo(models.physician)
     Error.belongsTo(models.patient)
     Error.belongsTo(models.location)
-    Error.belongsTo(models.worker, {foreignKey: 'errorCausedByWorker'})
+   Error.belongsTo(models.worker, {foreignKey: 'errorCausedByWorker'})
   }
   return Error
 }
