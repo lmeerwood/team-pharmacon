@@ -10,7 +10,7 @@
             <v-container fluid>
 
               <v-layout row>
-                <v-flex xs8 offset-xs1>
+                <v-flex xs8 offset-xs1 v-if="show_DatePicker">
                   <v-menu
                   ref="datePicker"
                   :close-on-content-click="false"
@@ -35,7 +35,7 @@
                   <v-date-picker v-model="date" @input="$refs.datePicker.save(date)"></v-date-picker>
                 </v-menu>
                 </v-flex>
-                <v-flex xs8 offset-xs1>
+                <v-flex xs8 offset-xs1 v-if="show_TimePicker">
                   <v-menu
                     ref="timePicker"
                     :close-on-content-click="false"
@@ -63,7 +63,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_PatientMRN">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Patient MRN"
@@ -74,7 +74,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_PatientFirstName">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Patient First Name"
@@ -85,7 +85,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_PatientSurname">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Patient Surname"
@@ -96,7 +96,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_PatientType">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
@@ -112,7 +112,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_ErrorType">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
@@ -128,7 +128,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_Medication">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Medication Given"
@@ -139,7 +139,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_MedicationType">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
@@ -155,7 +155,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_ErrorComment">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Error Description or General Comment"
@@ -164,7 +164,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_WorkerAtFault">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
@@ -180,12 +180,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_WorkerNotified">
                 <v-flex xs8 offset-xs2>
                   <h4>Was the person notified?</h4>
                 </v-flex>
               </v-layout>
-              <v-layout row>
+              <v-layout row v-if="show_WorkerNotified">
                 <v-flex xs8 offset-xs2>
                   <v-radio-group v-model="workerNotified" :mandatory="false" row="row">
                     <v-radio label="Yes" value=true></v-radio>
@@ -194,7 +194,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_ErrorLocation">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
@@ -210,12 +210,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_IIMSCompleted">
                 <v-flex xs8 offset-xs2>
                   <h4>Was an IIMS completed?</h4>
                 </v-flex>
               </v-layout>
-              <v-layout row>
+              <v-layout row v-if="show_IIMSCompleted">
                 <v-flex xs8 offset-xs2>
                   <v-radio-group v-model="iimsCompleted" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
@@ -224,7 +224,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_Severity">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
@@ -240,12 +240,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_WasPhysicianNotified">
                 <v-flex xs8 offset-xs2>
                   <h4>Was the physician notified?</h4>
                 </v-flex>
               </v-layout>
-              <v-layout row>
+              <v-layout row v-if="show_WasPhysicianNotified">
                 <v-flex xs8 offset-xs2>
                   <v-radio-group v-model="wasPhysicianNotified" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
@@ -254,7 +254,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_ProviderNumber">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Provider Number"
@@ -264,7 +264,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_PhysicianFirstName">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician First Name"
@@ -274,7 +274,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_PhysicianSurname">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Surname"
@@ -284,7 +284,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_PhysicianComment">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Comments"
@@ -294,7 +294,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row>
+              <v-layout row v-if="show_Diagnosis">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Diagnosis"
@@ -374,6 +374,29 @@ export default {
     // Variables to hold menu helpers
     datePicker: false,
     timePicker: false,
+
+    // Variables to hide/show fields
+    show_DatePicker: true,
+    show_TimePicker: true,
+    show_PatientMRN: true,
+    show_PatientFirstName: true,
+    show_PatientSurname: true,
+    show_PatientType: true,
+    show_ErrorType: true,
+    show_Medication: true,
+    show_MedicationType: true,
+    show_ErrorComment: true,
+    show_WorkerAtFault: true,
+    show_WorkerNotified: true,
+    show_ErrorLocation: true,
+    show_IIMSCompleted: true,
+    show_Severity: true,
+    show_WasPhysicianNotified: true,
+    show_ProviderNumber: true,
+    show_PhysicianFirstName: true,
+    show_PhysicianSurname: true,
+    show_PhysicianComment: true,
+    show_Diagnosis: true,
 
     // Variables to store inputted values
     valid: true,
