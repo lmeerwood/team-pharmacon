@@ -6,5 +6,9 @@ export default {
   },
   getAll () {
     return Api().get('/api/v1/query/error')
+  },
+  getError (errorId) {
+    var url = '/api/v1/query/error/' + errorId
+    return Api().get(url)
   }
 }
