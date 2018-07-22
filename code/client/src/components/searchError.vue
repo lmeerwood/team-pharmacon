@@ -23,6 +23,15 @@
         <td class="text-xs-center">{{ props.item.errorTime }}</td>
         <td class="text-xs-center">{{ props.item.patientName }}</td>
         <td class="text-xs-center">{{ props.item.physicianName }}</td>
+        <td class="justify-left layout px-0">
+          <v-icon
+            small
+            class="mr-2"
+            @click="editItem(props.item.id)"
+          >
+            edit
+          </v-icon>
+        </td>
       </template>
       <v-alert slot="no-results" :value="true" color="error" icon="warning">
         Your search for "{{ search }}" found no results.
