@@ -413,7 +413,7 @@ export default {
           this.patientId = res.data.patient.patientHospitalId
           this.patientFirstName = res.data.patient.patientFirstName
           this.patientSurname = res.data.patient.patientSurname
-          this.patientType = res.data.patient.patientType 
+          this.patientType = res.data.patient.patientType
           this.errorType = res.data.errortype.errorType
           this.medication = res.data.medication.medicationName
           this.medicationType = res.data.medication.medicationType
