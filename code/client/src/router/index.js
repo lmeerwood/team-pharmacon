@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Main from '@/components/Main'
 import Error from '@/components/Error'
+import toggleError from '@/components/toggleError'
 import Login from '@/components/Login'
 import Physician from '@/components/Physician'
 import viewPhysician from '@/components/viewPhysician'
@@ -39,6 +40,11 @@ var router = new Router({
       path: '/physician/view',
       name: 'viewPhysician',
       component: viewPhysician
+    },
+    {
+      path: '/editform',
+      name: 'toggleError',
+      component: toggleError
     }
   ]
 })
