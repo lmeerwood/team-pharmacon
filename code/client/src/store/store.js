@@ -15,7 +15,8 @@ export default new Vuex.Store({
       authlevel: 0,
       email: ''
     },
-    isUserLoggedIn: false
+    isUserLoggedIn: false,
+    showFields: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
   },
   mutations: {
     setToken (state, token) {
@@ -30,6 +31,9 @@ export default new Vuex.Store({
         authlevel: 0,
         email: ''
       }
+    },
+    setFields (state, showFields) {
+      state.showFields = showFields
     }
   },
   actions: {
@@ -45,12 +49,17 @@ export default new Vuex.Store({
       console.log('logging out')
       commit('clearUser')
       commit('setToken', null)
+    },
+    setFields ({commit}, showFields) {
+      console.log('Changing error form fields')
+      commit('setFields', showFields)
     }
   },
   getters: {
     auth: state => {
       console.log('Someone wants the user ' + state.user.authlevel)
       return state.user.authlevel
-    }
+    },
+    showFields: state => state.showFields
   }
 })
