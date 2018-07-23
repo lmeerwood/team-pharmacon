@@ -407,13 +407,22 @@ export default {
           var wasPhysicianNotified = (res.data.wasPhysicianNotified.valueOf() === 1) ? 'true' : 'false'
           var iimsCompleted = (res.data.iimsCompleted.valueOf() === 1) ? 'true' : 'false'
           var workerNotified = (res.data.wasWorkerNotified.valueOf() === 1) ? 'true' : 'false'
-          var workerName = (res.data.worker.workerSurname + ', ' + res.data.worker.workerFirstName)
+          var i
+          for (i = 0; i < res.data.length; i++) {
+            if (res.data[i].workerAtFault) {
+              var workerName = (res.data.worker[i].workerSurname + ', ' + res.data.worker[i].workerFirstName)
+              this.workers.push({
+                text: workerName
+              })
+            }
+          }
+
           this.date = res.data.errorDate
           this.time = res.data.errorTime
           this.patientId = res.data.patient.patientHospitalId
           this.patientFirstName = res.data.patient.patientFirstName
           this.patientSurname = res.data.patient.patientSurname
-          this.patientType = res.data.patient.patientType 
+          this.patientType = res.data.patient.patientType
           this.errorType = res.data.errortype.errorType
           this.medication = res.data.medication.medicationName
           this.medicationType = res.data.medication.medicationType
