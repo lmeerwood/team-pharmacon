@@ -11,16 +11,190 @@
 
               <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <h4>{{ errorForm }}</h4>
-                </v-flex>
-                </v-layout>
-
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
                   <h4>Show Date field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-switch v-model="errorForm" value=true input-value=true></v-switch>
+                  <v-checkbox v-model="showFields[0]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Time field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[1]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Patient MRN field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[2]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Patient First Name field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[3]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show DPatient Surname field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[4]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Patient Type field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[5]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Error Type field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[6]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Medication Given field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[7]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Medication Type field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[8]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Error Description/General Comment field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[9]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Person At Fault field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[10]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Was that person notified field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[11]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Error Location field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[12]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show IIMS Completed field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[13]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Was Severity Level field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[14]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Physician Notified field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[15]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Physician Provider Number field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[16]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Physician First Name field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[17]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Physician Surname field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[18]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Physician Comments field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[19]"></v-checkbox>
+                </v-flex>
+              </v-layout>
+              <v-layout row>
+
+                <v-flex xs8 offset-xs2>
+                  <h4>Show Diagnosis field?</h4>
+                </v-flex>
+                <v-flex xs8 offset-xs2>
+                  <v-checkbox v-model="showFields[20]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -41,14 +215,8 @@
                     round
                     color="primary"
                     dark
-                    @click="submit"
+                    @click="setFields(showFields)"
                   >Submit
-                  </v-btn>
-                  <v-btn
-                    round color="secondary"
-                    dark
-                    @click="reset">
-                    reset
                   </v-btn>
                 </v-flex>
               </v-layout>
@@ -74,12 +242,16 @@ export default {
     msg: 'Edit Error Form',
     loading: false,
     errorMessage: '',
-    message: '',
-    errorForm: []
+    message: ''
 
-  })
+  }),
+
+  methods: mapActions([
+    'setFields'
+  ])
 
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
