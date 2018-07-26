@@ -227,6 +227,36 @@ router.post('/error', function (req, res, next) {
         res.status(500)
         res.send('error has occurred: ' + error)
       })
+
+    var errorId = req.body.errorId
+    var values = {
+      errorDate: req.body.errorDate,
+      errorTime: req.body.errorTime,
+      locationId: req.body.locationId,
+      wasWorkerNotified: req.body.wasWorkerNotified,
+      wasPhysicianNotified: req.body.wasPhysicianNotified,
+      iimsCompleted: req.body.iimsCompleted,
+      generalComment: req.body.generalComment,
+      errortypeId: req.body.errortypeId,
+      severityId: req.body.severityId,
+      errorCausedByWorker: req.body.errorCausedByWorker,
+      medicationId: medication.id,
+      patientId: patient.id,
+      physicianId: physician.id
+    }
+    var selector = {
+      where: { errorId: errorId }
+    }
+
+    model.error.update(values, selector)
+      .then(() => {
+        res.send('success')
+      }
+      )
+      .catch((error) => {
+        res.status(500)
+        res.send('error has occurred: ' + error)
+      })
   }
 
   addError(req, res, next)

@@ -59,6 +59,7 @@
                       readonly
                     ></v-text-field>
                     <v-time-picker format="24hr" v-model="time" @change="$refs.timePicker.save(time)"></v-time-picker>
+                    debugger
                   </v-menu>
                 </v-flex>
               </v-layout>
@@ -403,8 +404,9 @@ export default {
     if (this.$route.query.errorId) {
       ErrorService.getError(this.$route.query.errorId)
         .then(function (res, err) {
+          var errorId = this.$route.query.errorId
           this.date = res.data.errorDate
-          this.time = res.data.errorTime
+          this.time = res.data.errorTime.split(':',2).join(':')
           this.patientId = res.data.patient.patientHospitalId
           this.patientFirstName = res.data.patient.patientFirstName
           this.patientSurname = res.data.patient.patientSurname
