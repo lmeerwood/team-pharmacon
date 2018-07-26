@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Worker.associate = function (models) {
-    Worker.hasMany(models.error)
+    Worker.hasMany(models.error, {foreignKey: 'errorCausedByWorker'})
   }
 
   return Worker

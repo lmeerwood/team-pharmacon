@@ -24,28 +24,41 @@ router.get('/', function (req, res, next) {
     })
 })
 
-// The error route. The get is for retrieving details and the post is for adding details
-router.get('/error', isAuthenticated, function (req, res) {
-  model.errorForm.findAll({
-    limit: 100
+// The error update route. The get is for retrieving details for a specific error and the post is for updating details
+router.get('/error/:id', isAuthenticated, function (req, res) {
+  model.error.find({
+    where: {
+      id: req.params.id
+    },
+    include: [
+      // model.diagnosis,
+      model.errortype,
+      model.location,
+      model.medication,
+      // model.medicationtype,
+      model.patient,
+      // model.patienttype,
+      model.physician,
+      model.severity,
+      model.worker
+    ]
   }).then(function (qres) {
     res.send(qres)
   })
 })
 
-router.post('/error', function (req, res, next) {
+router.post('/error/:id', function (req, res, next) {
   /**
-   * This is a longer route due to the fact we need to
-   * check if the entries from linking tables are created yet.
-   * If they are, we use those, if they aren't we create them.
-   * Some of them will be updated with newer values.
+   * As with the create error, some details may have to be created.
+   * This function checks to see if it exists first, and if not, creates it.
    */
-  async function addError (req, res, next) {
+  async function updateError (req, res, next) {
     // Check if the patient already exist.
     var patient = await model.patient.findOrCreate({
       where: {
         patientHospitalId: req.body.patientId
       },
+      // create new patient
       defaults: {
         patientFirstName: req.body.patientFirstName,
         patientSurname: req.body.patientSurname,
@@ -64,6 +77,10 @@ router.post('/error', function (req, res, next) {
       where: {
         medicationName: req.body.medicationName,
         medicationtypeId: req.body.medicationtypeId
+      },
+      // create new medication
+      defaults: {
+        medicationName: req.body.medication
       }
     })
       .spread((medication, created) => {
@@ -75,6 +92,107 @@ router.post('/error', function (req, res, next) {
       where: {
         providerNumber: req.body.providerNumber
       },
+      // create new physician
+      defaults: {
+        physicianSurname: req.body.physicianSurname,
+        physicianFirstName: req.body.physicianFirstName
+      }
+    })
+      .spread((physician, created) => {
+        return physician
+      })
+
+    // Now that the relating entries in other tables exist, make the error
+
+    model.error.update({
+      errorDate: req.body.errorDate,
+      errorTime: req.body.errorTime,
+      locationId: req.body.locationId,
+      wasWorkerNotified: req.body.wasWorkerNotified,
+      wasPhysicianNotified: req.body.wasPhysicianNotified,
+      iimsCompleted: req.body.iimsCompleted,
+      generalComment: req.body.generalComment,
+      errortypeId: req.body.errortypeId,
+      severityId: req.body.severityId,
+      errorCausedByWorker: req.body.errorCausedByWorker,
+      medicationId: medication.id,
+      patientId: patient.id,
+      physicianId: physician.id
+    })
+      .then(() => {
+        res.send('success')
+      }
+      )
+      .catch((error) => {
+        res.status(500)
+        res.send('error has occurred: ' + error)
+      })
+  }
+
+  updateError(req, res, next)
+})
+
+// The error route. The get is for retrieving details and the post is for adding details
+router.get('/error', function (req, res) {
+  model.error.findAll({
+    include: [
+      model.patient,
+      model.medication,
+      model.physician
+    ]
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/error', function (req, res, next) {
+  /**
+   * This is a longer route due to the fact we need to
+   * check if the entries from linking tables are created yet.
+   * If they are, we use those, if they aren't we create them.
+   * Some of them will be updated with newer values.
+   */
+  async function addError (req, res, next) {
+    // Check if the patient already exist.
+    var patient = await model.patient.findOrCreate({
+      where: {
+        patientHospitalId: req.body.patientId
+      },
+      // create new patient
+      defaults: {
+        patientFirstName: req.body.patientFirstName,
+        patientSurname: req.body.patientSurname,
+        patienttypeId: req.body.patientType
+      }
+    })
+      .spread((patient, created) => {
+        return patient
+      })
+
+    var patientid = patient.id
+    console.log(patientid)
+
+    // Check if the medication already exist.
+    var medication = await model.medication.findOrCreate({
+      where: {
+        medicationName: req.body.medicationName,
+        medicationtypeId: req.body.medicationtypeId
+      },
+      // create new medication
+      defaults: {
+        medicationName: req.body.medication
+      }
+    })
+      .spread((medication, created) => {
+        return medication
+      })
+
+    // Check if the physician already exist.
+    var physician = await model.physician.findOrCreate({
+      where: {
+        providerNumber: req.body.providerNumber
+      },
+      // create new physician
       defaults: {
         physicianSurname: req.body.physicianSurname,
         physicianFirstName: req.body.physicianFirstName

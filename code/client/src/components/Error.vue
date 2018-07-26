@@ -404,6 +404,47 @@ export default {
     diagnosis: ''
   }),
   created () {
+    // Retrieve specific error and load into the form.
+    if (this.$route.query.errorId) {
+      ErrorService.getError(this.$route.query.errorId)
+        .then(function (res, err) {
+          var wasPhysicianNotified = (res.data.wasPhysicianNotified.valueOf() === 1) ? 'true' : 'false'
+          var iimsCompleted = (res.data.iimsCompleted.valueOf() === 1) ? 'true' : 'false'
+          var workerNotified = (res.data.wasWorkerNotified.valueOf() === 1) ? 'true' : 'false'
+          var i
+          for (i = 0; i < res.data.length; i++) {
+            if (res.data[i].workerAtFault) {
+              var workerName = (res.data.worker[i].workerSurname + ', ' + res.data.worker[i].workerFirstName)
+              this.workers.push({
+                text: workerName
+              })
+            }
+          }
+
+          this.date = res.data.errorDate
+          this.time = res.data.errorTime
+          this.patientId = res.data.patient.patientHospitalId
+          this.patientFirstName = res.data.patient.patientFirstName
+          this.patientSurname = res.data.patient.patientSurname
+          this.patientType = res.data.patient.patientType
+          this.errorType = res.data.errortype.errorType
+          this.medication = res.data.medication.medicationName
+          this.medicationType = res.data.medication.medicationType
+          this.errorComment = res.data.generalComment
+          this.workerAtFault = workerName
+          this.workerNotified = workerNotified
+          this.errorLocation = res.data.location.errorLocation
+          this.iimsCompleted = iimsCompleted
+          this.severity = res.data.severity.level
+          this.wasPhysicianNotified = wasPhysicianNotified
+          this.physicianFirstName = res.data.physicianFirstName
+          this.physicianSurname = res.data.physicianSurname
+          this.providerNumber = res.data.providerNumber
+          this.physicianComment = res.data.physicianComment
+          this.diagnosis = res.data.diagnosis
+        }.bind(this))
+    }
+
     // These go through and retrieve the values from the server to load into the drop
     // down boxes in the form
 
