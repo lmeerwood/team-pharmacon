@@ -45,4 +45,15 @@ router.post('/login', function (req, res) {
   }
 })
 
+// TODO: Add authentication
+router.post('/login/create', function (req, res) {
+  model.login.create(req.body)
+    .then(function (qres) {
+      res.send(qres)
+    })
+    .catch(function (e) {
+      res.send('An error occurred creating a new login! ' + e)
+    })
+})
+
 module.exports = router
