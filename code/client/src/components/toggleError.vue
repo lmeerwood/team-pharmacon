@@ -279,6 +279,7 @@ export default {
     reset: function () {
       this.$store.commit('resetFields')
       this.showFieldArray = this.showFields.slice()
+      this.message = 'Form reset to default!'
     },
 
     arraysAreEqual: function () {
