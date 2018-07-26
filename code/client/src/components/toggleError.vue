@@ -10,17 +10,6 @@
 
               <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <h4>{{showFieldArray}}</h4>
-                </v-flex>
-              </v-layout>
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <h4>{{showFields}}</h4>
-                </v-flex>
-              </v-layout>
-
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
                   <h4>Show Date field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
@@ -57,7 +46,7 @@
 
               <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <h4>Show DPatient Surname field?</h4>
+                  <h4>Show Patient Surname field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
                   <v-checkbox v-model="showFieldArray[4]"></v-checkbox>
@@ -279,49 +268,31 @@ export default {
     submit: function () {
       this.$store.commit('setFields', this.showFieldArray)
       this.showFieldArray = this.showFields.slice()
-      console.log('showFields is: ' + this.showFields)
-      console.log('showFieldArray is: ' + this.showFieldArray)
       this.message = 'Form updated!'
     },
 
     undo: function () {
-      console.log('showFields is: ' + this.showFields)
-      console.log('showFieldArray is: ' + this.showFieldArray)
       this.showFieldArray = this.showFields.slice()
-      console.log('showFields is: ' + this.showFields)
-      console.log('showFieldArray is: ' + this.showFieldArray)
-
       this.message = 'Undo success!'
     },
 
     reset: function () {
       this.$store.commit('resetFields')
-      console.log('showFields is: ' + this.showFields)
       this.showFieldArray = this.showFields.slice()
-      console.log('showFieldArray is: ' + this.showFieldArray)
     },
 
     arraysAreEqual: function () {
-      console.log('Checking arrays are equal')
-      console.log('showFields is: ' + this.showFields)
-      console.log('showFieldArray is: ' + this.showFieldArray)
-
       for (var i in this.showFieldArray) {
-        console.log('Comparing Field ' + i + 'is not equal: ' + this.showFieldArray[i] + 'vs' + this.showFields[i])
         if (this.showFieldArray[i] !== this.showFields[i]) {
-          console.log('Field ' + i + 'is not equal: ' + this.showFieldArray[i] + 'vs' + this.showFields[i])
           return false
         }
       }
-      console.log('Arrays are equal')
       return true
     }
   },
 
   created () {
-    console.log('showFields is: ' + this.showFields)
     this.showFieldArray = this.showFields.slice()
-    console.log('showFieldArray is: ' + this.showFieldArray)
   }
 }
 
