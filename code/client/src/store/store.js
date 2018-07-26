@@ -34,6 +34,9 @@ export default new Vuex.Store({
     },
     setFields (state, showFields) {
       state.showFields = showFields
+    },
+    resetFields (state) {
+      state.showFields = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
     }
   },
   actions: {
@@ -53,6 +56,10 @@ export default new Vuex.Store({
     setFields ({commit}, showFields) {
       console.log('Changing error form fields')
       commit('setFields', showFields)
+    },
+    resetFields ({commit}) {
+      console.log('Resetting to default - show all error form fields')
+      commit('resetFields')
     }
   },
   getters: {

@@ -6,15 +6,25 @@
           {{msg}}
         </h1>
         <fieldset class="white">
-          <v-form v-model="valid" ref="form" lazy-validation>
             <v-container fluid>
+
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>{{showFieldArray}}</h4>
+                </v-flex>
+              </v-layout>
+              <v-layout row>
+                <v-flex xs8 offset-xs2>
+                  <h4>{{showFields}}</h4>
+                </v-flex>
+              </v-layout>
 
               <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <h4>Show Date field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[0]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[0]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -23,7 +33,7 @@
                   <h4>Show Time field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[1]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[1]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -32,7 +42,7 @@
                   <h4>Show Patient MRN field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[2]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[2]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -41,7 +51,7 @@
                   <h4>Show Patient First Name field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[3]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[3]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -50,7 +60,7 @@
                   <h4>Show DPatient Surname field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[4]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[4]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -59,7 +69,7 @@
                   <h4>Show Patient Type field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[5]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[5]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -68,7 +78,7 @@
                   <h4>Show Error Type field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[6]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[6]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -77,7 +87,7 @@
                   <h4>Show Medication Given field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[7]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[7]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -86,7 +96,7 @@
                   <h4>Show Medication Type field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[8]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[8]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -95,7 +105,7 @@
                   <h4>Show Error Description/General Comment field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[9]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[9]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -104,7 +114,7 @@
                   <h4>Show Person At Fault field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[10]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[10]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -113,7 +123,7 @@
                   <h4>Show Was that person notified field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[11]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[11]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -122,7 +132,7 @@
                   <h4>Show Error Location field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[12]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[12]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -131,7 +141,7 @@
                   <h4>Show IIMS Completed field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[13]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[13]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -140,7 +150,7 @@
                   <h4>Show Was Severity Level field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[14]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[14]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -149,7 +159,7 @@
                   <h4>Show Physician Notified field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[15]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[15]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -158,7 +168,7 @@
                   <h4>Show Physician Provider Number field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[16]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[16]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -167,7 +177,7 @@
                   <h4>Show Physician First Name field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[17]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[17]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -176,7 +186,7 @@
                   <h4>Show Physician Surname field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[18]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[18]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -185,7 +195,7 @@
                   <h4>Show Physician Comments field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[19]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[19]"></v-checkbox>
                 </v-flex>
               </v-layout>
               <v-layout row>
@@ -194,7 +204,7 @@
                   <h4>Show Diagnosis field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="showFields[20]"></v-checkbox>
+                  <v-checkbox v-model="showFieldArray[20]"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -215,14 +225,28 @@
                     round
                     color="primary"
                     dark
-                    @click="setFields(showFields)"
+                    @click="submit()"
                   >Submit
                   </v-btn>
+                  <v-btn
+                    round color="secondary"
+                    dark
+                    @click="reset()"
+                    >
+                    Reset to Default
+                  </v-btn>
+                  <v-btn
+                    round color="secondary"
+                    dark
+                    @click="undo()"
+                    :disabled = arraysAreEqual()
+                    >
+                    Undo Changes
+                  </v-btn>
+
                 </v-flex>
               </v-layout>
-
             </v-container>
-          </v-form>
         </fieldset>
       </section>
     </v-flex>
@@ -233,6 +257,7 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+
   computed: mapGetters([
     'showFields'
   ]),
@@ -242,14 +267,62 @@ export default {
     msg: 'Edit Error Form',
     loading: false,
     errorMessage: '',
-    message: ''
-
+    message: '',
+    showFieldArray: []
   }),
 
-  methods: mapActions([
-    'setFields'
-  ])
+  methods: {
+    ...mapActions([
+      'setFields',
+      'resetFields']),
 
+    submit: function () {
+      this.$store.commit('setFields', this.showFieldArray)
+      this.showFieldArray = this.showFields.slice()
+      console.log('showFields is: ' + this.showFields)
+      console.log('showFieldArray is: ' + this.showFieldArray)
+      this.message = 'Form updated!'
+    },
+
+    undo: function () {
+      console.log('showFields is: ' + this.showFields)
+      console.log('showFieldArray is: ' + this.showFieldArray)
+      this.showFieldArray = this.showFields.slice()
+      console.log('showFields is: ' + this.showFields)
+      console.log('showFieldArray is: ' + this.showFieldArray)
+
+      this.message = 'Undo success!'
+    },
+
+    reset: function () {
+      this.$store.commit('resetFields')
+      console.log('showFields is: ' + this.showFields)
+      this.showFieldArray = this.showFields.slice()
+      console.log('showFieldArray is: ' + this.showFieldArray)
+    },
+
+    arraysAreEqual: function () {
+      console.log('Checking arrays are equal')
+      console.log('showFields is: ' + this.showFields)
+      console.log('showFieldArray is: ' + this.showFieldArray)
+
+      for (var i in this.showFieldArray) {
+        console.log('Comparing Field ' + i + 'is not equal: ' + this.showFieldArray[i] + 'vs' + this.showFields[i])
+        if (this.showFieldArray[i] !== this.showFields[i]) {
+          console.log('Field ' + i + 'is not equal: ' + this.showFieldArray[i] + 'vs' + this.showFields[i])
+          return false
+        }
+      }
+      console.log('Arrays are equal')
+      return true
+    }
+  },
+
+  created () {
+    console.log('showFields is: ' + this.showFields)
+    this.showFieldArray = this.showFields.slice()
+    console.log('showFieldArray is: ' + this.showFieldArray)
+  }
 }
 
 </script>
