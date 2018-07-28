@@ -537,36 +537,46 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
-
-      if (this.validForm()) {
+      var wasPhysicianNotified = (this.wasPhysicianNotified.valueOf() === 'true') ? 1 : 0
+      var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
+      var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
+      var errorId = { errorId: this.errorId.valueOf }
+      var values = {
+        errorDate: this.date.valueOf(),
+        errorTime: this.time,
+        patientId: this.patientId,
+        patientFirstName: this.patientFirstName,
+        patientSurname: this.patientSurname,
+        patientType: this.patientType.valueOf(),
+        errortypeId: this.errorType.valueOf(),
+        medicationName: this.medication.valueOf(),
+        medicationtypeId: this.medicationType.valueOf(),
+        generalComment: this.errorComment,
+        errorCausedByWorker: this.workerAtFault.valueOf(),
+        wasWorkerNotified: workerNotified,
+        locationId: this.errorLocation.valueOf(),
+        iimsCompleted: iimsCompleted,
+        severityId: this.severity.valueOf(),
+        wasPhysicianNotified: wasPhysicianNotified,
+        physicianFirstName: this.physicianFirstName,
+        physicianSurname: this.physicianSurname,
+        providerNumber: this.providerNumber,
+        physicianComment: this.physicianComment,
+        diagnosis: this.diagnosis
+      }
+      if (this.validForm() && errorId != null) {
         try {
           debugger
-          var wasPhysicianNotified = (this.wasPhysicianNotified.valueOf() === 'true') ? 1 : 0
-          var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
-          var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
-          await ErrorService.logError({
-            errorDate: this.date.valueOf(),
-            errorTime: this.time,
-            patientId: this.patientId,
-            patientFirstName: this.patientFirstName,
-            patientSurname: this.patientSurname,
-            patientType: this.patientType.valueOf(),
-            errortypeId: this.errorType.valueOf(),
-            medicationName: this.medication.valueOf(),
-            medicationtypeId: this.medicationType.valueOf(),
-            generalComment: this.errorComment,
-            errorCausedByWorker: this.workerAtFault.valueOf(),
-            wasWorkerNotified: workerNotified,
-            locationId: this.errorLocation.valueOf(),
-            iimsCompleted: iimsCompleted,
-            severityId: this.severity.valueOf(),
-            wasPhysicianNotified: wasPhysicianNotified,
-            physicianFirstName: this.physicianFirstName,
-            physicianSurname: this.physicianSurname,
-            providerNumber: this.providerNumber,
-            physicianComment: this.physicianComment,
-            diagnosis: this.diagnosis
-          })
+          await ErrorService.updateError(errorId, values)
+          this.clear()
+          this.message = 'Form submitted successfully!'
+        } catch (error) {
+          this.errorMessage = error.response.data.error
+        }
+      } if (this.validForm()) {
+        try {
+          debugger
+          await ErrorService.logError(values)
           this.clear()
           this.message = 'Form submitted successfully!'
         } catch (error) {
