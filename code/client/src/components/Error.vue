@@ -566,7 +566,6 @@ export default {
       }
       if (this.validForm() && errorId != null) {
         try {
-          debugger
           await ErrorService.updateError(errorId, values)
           this.clear()
           this.message = 'Form submitted successfully!'
