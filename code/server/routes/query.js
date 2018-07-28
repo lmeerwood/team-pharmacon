@@ -121,7 +121,7 @@ router.post('/error/:id', function (req, res, next) {
       physicianId: physician.id
     }
     var selector = {
-      where: { errorId: errorId }
+      where: { id: errorId }
     }
 
     model.error.update(values, selector)

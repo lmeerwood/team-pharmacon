@@ -540,7 +540,7 @@ export default {
       var wasPhysicianNotified = (this.wasPhysicianNotified.valueOf() === 'true') ? 1 : 0
       var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
       var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
-      var errorId = { errorId: this.errorId.valueOf }
+      var errorId = this.$route.query.errorId
       var values = {
         errorDate: this.date.valueOf(),
         errorTime: this.time,
@@ -575,7 +575,6 @@ export default {
         }
       } if (this.validForm()) {
         try {
-          debugger
           await ErrorService.logError(values)
           this.clear()
           this.message = 'Form submitted successfully!'
