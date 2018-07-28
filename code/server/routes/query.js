@@ -55,37 +55,17 @@ router.post('/error/:id', function (req, res, next) {
   async function updateError (req, res, next) {
     // Check if the patient already exist.
     var patient = await model.patient.upsert({
-      where: {
-        patientHospitalId: req.body.patientId
-      },
-      // create new patient
-      defaults: {
-        patientFirstName: req.body.patientFirstName,
-        patientSurname: req.body.patientSurname,
-        patienttypeId: req.body.patientType
-      }
-    }).then(function (updatedData) {
-      console.log(updatedData)
-      if (updatedData) {
-        console.log('Successfully updated')
-        return res.status(200).send('New data written')
-      } else {
-        console.log('Data did not change from the original')
-        return res.status(200).res.send('Nothing changed')
-      }
-    }).catch((error) => {
-      console.log('Error: ' + error)
-      return res.status(500).end('unexpected error')
+      patientHospitalId: req.body.patientId,
+      patientFirstName: req.body.patientFirstName,
+      patientSurname: req.body.patientSurname,
+      patienttypeId: req.body.patientType
     })
-      .spread((patient, created) => {
-        return patient
-      })
 
     var patientid = patient.id
     console.log(patientid)
 
     // Check if the medication already exist.
-    var medication = await model.medication.upsert({
+    var medication = await model.medication.findOrCreate({
       where: {
         medicationName: req.body.medicationName,
         medicationtypeId: req.body.medicationtypeId
@@ -94,25 +74,13 @@ router.post('/error/:id', function (req, res, next) {
       defaults: {
         medicationName: req.body.medication
       }
-    }).then(function (updatedData) {
-      console.log(updatedData)
-      if (updatedData) {
-        console.log('Successfully updated')
-        return res.status(200).send('New data written')
-      } else {
-        console.log('Data did not change from the original')
-        return res.status(200).res.send('Nothing changed')
-      }
-    }).catch((error) => {
-      console.log('Error: ' + error)
-      return res.status(500).end('unexpected error')
     })
       .spread((medication, created) => {
         return medication
       })
 
     // Check if the physician already exist.
-    var physician = await model.physician.upsert({
+    var physician = await model.physician.findOrCreate({
       where: {
         providerNumber: req.body.providerNumber
       },
@@ -121,18 +89,6 @@ router.post('/error/:id', function (req, res, next) {
         physicianSurname: req.body.physicianSurname,
         physicianFirstName: req.body.physicianFirstName
       }
-    }).then(function (updatedData) {
-      console.log(updatedData)
-      if (updatedData) {
-        console.log('Successfully updated')
-        return res.status(200).send('New data written')
-      } else {
-        console.log('Data did not change from the original')
-        return res.status(200).res.send('Nothing changed')
-      }
-    }).catch((error) => {
-      console.log('Error: ' + error)
-      return res.status(500).end('unexpected error')
     })
       .spread((physician, created) => {
         return physician
@@ -153,7 +109,7 @@ router.post('/error/:id', function (req, res, next) {
       severityId: req.body.severityId,
       errorCausedByWorker: req.body.errorCausedByWorker,
       medicationId: medication.id,
-      patientId: patient.id,
+      patientId: req.body.patientId,
       physicianId: physician.id
     }
     var selector = {
