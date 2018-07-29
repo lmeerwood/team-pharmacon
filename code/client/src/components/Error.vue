@@ -541,6 +541,7 @@ export default {
       var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
       var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
       var errorId = this.$route.query.errorId
+      var newError = this.$route.query
       var values = {
         errorDate: this.date.valueOf(),
         errorTime: this.time,
@@ -568,15 +569,16 @@ export default {
         try {
           await ErrorService.updateError(errorId, values)
           this.clear()
-          this.message = 'Form submitted successfully!'
+          this.message = 'Record updated successfully!'
         } catch (error) {
           this.errorMessage = error.response.data.error
         }
       } if (this.validForm()) {
+        debugger
         try {
           await ErrorService.logError(values)
           this.clear()
-          this.message = 'Form submitted successfully!'
+          this.message = 'Record submitted successfully!'
         } catch (error) {
           this.errorMessage = error.response.data.error
         }

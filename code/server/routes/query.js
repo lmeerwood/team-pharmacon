@@ -79,6 +79,9 @@ router.post('/error/:id', function (req, res, next) {
         return medication
       })
 
+    var medicationId = medication.id
+    console.log(medicationId)
+
     // Check if the physician already exist.
     var physician = await model.physician.findOrCreate({
       where: {
@@ -94,23 +97,26 @@ router.post('/error/:id', function (req, res, next) {
         return physician
       })
 
+    var physicianId = physician.id
+    console.log(physicianId)
+
     // Now that the relating entries in other tables exist, make the error
 
     var errorId = req.params.id
     var values = {
       errorDate: req.body.errorDate,
       errorTime: req.body.errorTime,
-      locationId: req.body.locationId,
       wasWorkerNotified: req.body.wasWorkerNotified,
       wasPhysicianNotified: req.body.wasPhysicianNotified,
       iimsCompleted: req.body.iimsCompleted,
       generalComment: req.body.generalComment,
       errortypeId: req.body.errortypeId,
       severityId: req.body.severityId,
-      errorCausedByWorker: req.body.errorCausedByWorker,
-      medicationId: medication.id,
+      medicationId: medicationId,
+      physicianId: physicianId,
       patientId: req.body.patientId,
-      physicianId: physician.id
+      locationId: req.body.locationId,
+      errorCausedByWorker: req.body.errorCausedByWorker
     }
     var selector = {
       where: { id: errorId }
@@ -118,7 +124,7 @@ router.post('/error/:id', function (req, res, next) {
 
     model.error.update(values, selector)
       .then(() => {
-        res.send('success')
+        res.send('Updated')
       })
       .catch((error) => {
         res.status(500)
