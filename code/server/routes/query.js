@@ -54,15 +54,18 @@ router.post('/error/:id', function (req, res, next) {
    */
   async function updateError (req, res, next) {
     // Check if the patient already exist.
-    var patient = await model.patient.upsert({
+    await model.patient.upsert({
       patientHospitalId: req.body.patientId,
       patientFirstName: req.body.patientFirstName,
       patientSurname: req.body.patientSurname,
       patienttypeId: req.body.patientType
     })
 
-    var patientid = patient.id
-    console.log(patientid)
+    var patient = await model.patient.find({
+      where: {
+        patientHospitalId: req.body.patientId
+      }
+    })
 
     // Check if the medication already exist.
     var medication = await model.medication.findOrCreate({
@@ -114,7 +117,7 @@ router.post('/error/:id', function (req, res, next) {
       severityId: req.body.severityId,
       medicationId: medicationId,
       physicianId: physicianId,
-      patientId: req.body.patientId,
+      patientId: patient.id,
       locationId: req.body.locationId,
       errorCausedByWorker: req.body.errorCausedByWorker
     }

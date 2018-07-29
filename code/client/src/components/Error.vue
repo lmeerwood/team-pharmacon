@@ -573,8 +573,7 @@ export default {
         } catch (error) {
           this.errorMessage = error.response.data.error
         }
-      } if (this.validForm()) {
-        debugger
+      } else if (this.validForm()) {
         try {
           await ErrorService.logError(values)
           this.clear()
