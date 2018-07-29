@@ -541,7 +541,6 @@ export default {
       var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
       var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
       var errorId = this.$route.query.errorId
-      var newError = this.$route.query
       var values = {
         errorDate: this.date.valueOf(),
         errorTime: this.time,
