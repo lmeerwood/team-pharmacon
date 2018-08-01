@@ -188,8 +188,8 @@
               <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-radio-group v-model="workerNotified" :mandatory="false" row="row">
-                    <v-radio label="Yes" value=true></v-radio>
-                    <v-radio label="No" value=false></v-radio>
+                    <v-radio label="Yes" value="true"></v-radio>
+                    <v-radio label="No" value="false"></v-radio>
                   </v-radio-group>
                 </v-flex>
               </v-layout>
@@ -333,7 +333,6 @@
                   </v-btn>
                 </v-flex>
               </v-layout>
-
             </v-container>
           </v-form>
         </fieldset>
@@ -404,39 +403,27 @@ export default {
     if (this.$route.query.errorId) {
       ErrorService.getError(this.$route.query.errorId)
         .then(function (res, err) {
-          var wasPhysicianNotified = (res.data.wasPhysicianNotified.valueOf() === 1) ? 'true' : 'false'
-          var iimsCompleted = (res.data.iimsCompleted.valueOf() === 1) ? 'true' : 'false'
-          var workerNotified = (res.data.wasWorkerNotified.valueOf() === 1) ? 'true' : 'false'
-          var i
-          for (i = 0; i < res.data.length; i++) {
-            if (res.data[i].workerAtFault) {
-              var workerName = (res.data.worker[i].workerSurname + ', ' + res.data.worker[i].workerFirstName)
-              this.workers.push({
-                text: workerName
-              })
-            }
-          }
-
+          this.errorId = this.$route.query.errorId
           this.date = res.data.errorDate
-          this.time = res.data.errorTime
+          this.time = res.data.errorTime.split(':', 2).join(':')
           this.patientId = res.data.patient.patientHospitalId
           this.patientFirstName = res.data.patient.patientFirstName
           this.patientSurname = res.data.patient.patientSurname
-          this.patientType = res.data.patient.patientType
-          this.errorType = res.data.errortype.errorType
+          this.patientType = res.data.patient.patienttypeId
+          this.errorType = res.data.errortype.id
           this.medication = res.data.medication.medicationName
-          this.medicationType = res.data.medication.medicationType
+          this.medicationType = res.data.medication.medicationtypeId
           this.errorComment = res.data.generalComment
-          this.workerAtFault = workerName
-          this.workerNotified = workerNotified
-          this.errorLocation = res.data.location.errorLocation
-          this.iimsCompleted = iimsCompleted
-          this.severity = res.data.severity.level
-          this.wasPhysicianNotified = wasPhysicianNotified
-          this.physicianFirstName = res.data.physicianFirstName
-          this.physicianSurname = res.data.physicianSurname
-          this.providerNumber = res.data.providerNumber
-          this.physicianComment = res.data.physicianComment
+          this.workerAtFault = res.data.worker.id
+          this.workerNotified = res.data.wasWorkerNotified ? 'true' : 'false'
+          this.errorLocation = res.data.location.id
+          this.iimsCompleted = res.data.iimsCompleted ? 'true' : 'false'
+          this.severity = res.data.severity.id
+          this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
+          this.physicianFirstName = res.data.physician.physicianFirstName
+          this.physicianSurname = res.data.physician.physicianSurname
+          this.providerNumber = res.data.physician.providerNumber
+          this.physicianComment = res.data.physician.physicianComment
           this.diagnosis = res.data.diagnosis
         }.bind(this))
     }
@@ -550,36 +537,46 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
-      if (this.validForm()) {
+      var wasPhysicianNotified = (this.wasPhysicianNotified.valueOf() === 'true') ? 1 : 0
+      var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
+      var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
+      var errorId = this.$route.query.errorId
+      var values = {
+        errorDate: this.date.valueOf(),
+        errorTime: this.time,
+        patientId: this.patientId,
+        patientFirstName: this.patientFirstName,
+        patientSurname: this.patientSurname,
+        patientType: this.patientType.valueOf(),
+        errortypeId: this.errorType.valueOf(),
+        medicationName: this.medication.valueOf(),
+        medicationtypeId: this.medicationType.valueOf(),
+        generalComment: this.errorComment,
+        errorCausedByWorker: this.workerAtFault.valueOf(),
+        wasWorkerNotified: workerNotified,
+        locationId: this.errorLocation.valueOf(),
+        iimsCompleted: iimsCompleted,
+        severityId: this.severity.valueOf(),
+        wasPhysicianNotified: wasPhysicianNotified,
+        physicianFirstName: this.physicianFirstName,
+        physicianSurname: this.physicianSurname,
+        providerNumber: this.providerNumber,
+        physicianComment: this.physicianComment,
+        diagnosis: this.diagnosis
+      }
+      if (this.validForm() && errorId != null) {
         try {
-          var wasPhysicianNotified = (this.wasPhysicianNotified.valueOf() === 'true') ? 1 : 0
-          var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
-          var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
-          await ErrorService.logError({
-            errorDate: this.date.valueOf(),
-            errorTime: this.time,
-            patientId: this.patientId,
-            patientFirstName: this.patientFirstName,
-            patientSurname: this.patientSurname,
-            patientType: this.patientType.valueOf(),
-            errortypeId: this.errorType.valueOf(),
-            medicationName: this.medication.valueOf(),
-            medicationtypeId: this.medicationType.valueOf(),
-            generalComment: this.errorComment,
-            errorCausedByWorker: this.workerAtFault.valueOf(),
-            wasWorkerNotified: workerNotified,
-            locationId: this.errorLocation.valueOf(),
-            iimsCompleted: iimsCompleted,
-            severityId: this.severity.valueOf(),
-            wasPhysicianNotified: wasPhysicianNotified,
-            physicianFirstName: this.physicianFirstName,
-            physicianSurname: this.physicianSurname,
-            providerNumber: this.providerNumber,
-            physicianComment: this.physicianComment,
-            diagnosis: this.diagnosis
-          })
+          await ErrorService.updateError(errorId, values)
           this.clear()
-          this.message = 'Form submitted successfully!'
+          this.message = 'Record updated successfully!'
+        } catch (error) {
+          this.errorMessage = error.response.data.error
+        }
+      } else if (this.validForm()) {
+        try {
+          await ErrorService.logError(values)
+          this.clear()
+          this.message = 'Record submitted successfully!'
         } catch (error) {
           this.errorMessage = error.response.data.error
         }
