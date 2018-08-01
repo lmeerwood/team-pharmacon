@@ -7,6 +7,7 @@ import Physician from '@/components/Physician'
 import viewPhysician from '@/components/viewPhysician'
 import searchError from '@/components/searchError'
 import store from '@/store/store'
+import Worker from '@/components/Worker'
 
 Vue.use(Router)
 
@@ -45,6 +46,11 @@ var router = new Router({
       path: '/searchError',
       name: 'searchError',
       component: searchError
+    },
+    {
+      path: '/worker',
+      name: 'Worker',
+      component: Worker
     }
   ]
 })

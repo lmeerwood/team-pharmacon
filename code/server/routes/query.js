@@ -25,20 +25,17 @@ router.get('/', function (req, res, next) {
 })
 
 // The worker update route. The get is for retrieving details for a specific error and the post is for updating details
-router.get('worker/:id', isAuthenticated, function (req, res) {
+router.get('/worker/:id', isAuthenticated, function (req, res) {
   model.worker.find({
     where: {
       id: req.params.id
-    },
-    include: [
-      model.worker
-    ]
+    }
   }).then(function (qres) {
     res.send(qres)
   })
 })
 
-router.post('worker/:id', function (req, res, next) {
+router.post('/worker/:id', function (req, res, next) {
   /**
    * As with the create error, some details may have to be created.
    * This function checks to see if it exists first, and if not, creates it.
