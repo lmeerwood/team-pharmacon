@@ -46,8 +46,8 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Worker's Position"
-                    :rules="[() => !!workerRole || 'This field is required']"
-                    v-model="workerRole"
+                    :rules="[() => !!WorkerRole || 'This field is required']"
+                    v-model="WorkerRole"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -126,7 +126,7 @@ export default {
     workerId: null,
     workerFirstName: '',
     workerSurname: '',
-    workerRole: '',
+    WorkerRole: '',
     workerActive: false
   }),
   created () {
@@ -140,7 +140,7 @@ export default {
           this.workerId = this.$route.query.workerId
           this.workerFirstName = res.data.workerFirstName
           this.workerSurname = res.data.patient.workerSurname
-          this.workerRole = res.data.patient.workerRole
+          this.WorkerRole = res.data.patient.WorkerRole
           this.workerActive = workerActive
         }.bind(this))
     }
@@ -150,29 +150,20 @@ export default {
       debugger
       this.errorMessage = ''
       this.message = ''
-      var workerId = this.id
+      var workerId = this.workerId
       var workerActive = (this.workerActive.valueOf() === 'true') ? 1 : 0
       var values = {
-        id: this.workerId,
+        id: workerId,
         workerFirstName: this.workerFirstName,
         workerSurname: this.workerSurname,
-        workerRole: this.workerRole,
+        WorkerRole: this.WorkerRole,
         workerActive: workerActive
       }
-      if (this.validForm() && workerId != null) {
+      if (this.validForm()) {
         try {
           await WorkerService.updateWorker(workerId, values)
           this.clear()
           this.message = 'Record updated successfully!'
-        } catch (error) {
-          this.errorMessage = error.response.data.worker
-        }
-      } else if (this.validForm()) {
-        debugger
-        try {
-          await WorkerService.logError(values)
-          this.clear()
-          this.message = 'Record submitted successfully!'
         } catch (error) {
           this.errorMessage = error.response.data.worker
         }

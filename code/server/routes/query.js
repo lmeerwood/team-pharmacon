@@ -36,19 +36,21 @@ router.get('/worker/:id', isAuthenticated, function (req, res) {
 })
 
 router.post('/worker/:id', function (req, res, next) {
-  /**
-   * As with the create error, some details may have to be created.
-   * This function checks to see if it exists first, and if not, creates it.
-   */
   async function updateWorker (req, res, next) {
-    model.worker.update({
+    var workerId = req.params.id
+    var values = {
+      id: workerId,
       workerFirstName: req.body.workerFirstName,
       workerSurname: req.body.workerSurname,
-      workerRole: req.body.workerRole,
+      WorkerRole: req.body.WorkerRole,
       workerActive: req.body.workerActive
-    })
+    }
+    var selector = {
+      where: { id: workerId }
+    }
+    model.worker.upsert(values, selector)
       .then(() => {
-        res.send('success')
+        res.send('Updated')
       })
       .catch((error) => {
         res.status(500)
@@ -326,7 +328,7 @@ router.post('/worker', function (req, res, next) {
       id: req.body.workerId,
       workerFirstName: req.body.workerFirstName,
       workerSurname: req.body.workerSurname,
-      workerRole: req.body.workerRole,
+      WorkerRole: req.body.WorkerRole,
       workerActive: req.body.workerActive
     })
       .then(() => {
