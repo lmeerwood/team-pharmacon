@@ -13,9 +13,9 @@
               <v-flex xs8 offset-xs2>
               <v-text-field
                 label="Worker's ID number"
-                :rules="[() => !!id || 'This field is required']"
+                :rules="[() => !!workerId || 'This field is required']"
                 required
-                v-model="id"
+                v-model="workerId"
               ></v-text-field>
               </v-flex>
               </v-layout>
@@ -123,7 +123,7 @@ export default {
 
     // Variables to store input values
     valid: true,
-    id: null,
+    workerId: null,
     workerFirstName: '',
     workerSurname: '',
     workerRole: '',
@@ -131,64 +131,50 @@ export default {
   }),
   created () {
     // Retrieve specific worker and load into the form.
-    if (this.$route.query.id) {
-      WorkerService.getWorker(this.$route.query.id)
+    if (this.$route.query.workerId) {
+      debugger
+      WorkerService.getWorker(this.$route.query.workerId)
         .then(function (res, err) {
           var workerActive = (res.data.workerActive.valueOf() === 1) ? 'true' : 'false'
 
-          this.id = res.data.id
+          this.workerId = this.$route.query.workerId
           this.workerFirstName = res.data.workerFirstName
           this.workerSurname = res.data.patient.workerSurname
           this.workerRole = res.data.patient.workerRole
           this.workerActive = workerActive
         }.bind(this))
     }
-
-    // These go through and retrieve the values from the server to load into the
-    // textfields in the form
-
-    // Worker
-    WorkerService.getAll()
-      .then(function (res, err) {
-        this.workers = []
-        var i
-        for (i = 0; i < res.data.length; i++) {
-          if (res.data[i].workerActive) {
-            // Combine the worker details into 'Surname, FirstName'
-            var name = res.data[i].workerSurname + ', ' + res.data[i].workerFirstName
-            this.workers.push({
-              value: res.data[i].id,
-              text: name
-            })
-          }
-        }
-        // Sort the array by the text field rather than the value
-        this.workers.sort(function (a, b) {
-          return a['text'].localeCompare(b['text'])
-        })
-      }.bind(this))
   },
   methods: {
     async submit () {
+      debugger
       this.errorMessage = ''
       this.message = ''
-      if (this.validForm()) {
+      var workerId = this.id
+      var workerActive = (this.workerActive.valueOf() === 'true') ? 1 : 0
+      var values = {
+        id: this.workerId,
+        workerFirstName: this.workerFirstName,
+        workerSurname: this.workerSurname,
+        workerRole: this.workerRole,
+        workerActive: workerActive
+      }
+      if (this.validForm() && workerId != null) {
         try {
-          var workerActive = (res.data.workerActive.valueOf() === 1) ? 'true' : 'false'
-
-          await WorkerService.logError({
-            id: this.id,
-            workerFirstName: this.workerFirstName,
-            workerSurname: this.workerSurname,
-            patientFirstName: this.patientFirstName,
-            patientSurname: this.patientSurname,
-            workerRole: this.workerRole,
-            workerActive: workerActive
-          })
+          await WorkerService.updateWorker(workerId, values)
           this.clear()
-          this.message = 'Form submitted successfully!'
+          this.message = 'Record updated successfully!'
         } catch (error) {
-          this.errorMessage = error.response.data.error
+          this.errorMessage = error.response.data.worker
+        }
+      } else if (this.validForm()) {
+        debugger
+        try {
+          await WorkerService.logError(values)
+          this.clear()
+          this.message = 'Record submitted successfully!'
+        } catch (error) {
+          this.errorMessage = error.response.data.worker
         }
       } else {
         this.errorMessage = 'There was an error with your form.'

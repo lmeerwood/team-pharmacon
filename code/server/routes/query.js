@@ -319,14 +319,26 @@ router.get('/worker', function (req, res) {
   })
 })
 
+// add worker
 router.post('/worker', function (req, res, next) {
-  model.worker.create(req.body)
-    .then(function (qres) {
-      res.send(qres)
+  async function addWorker (req, res, next) {
+    model.worker.create({
+      id: req.body.workerId,
+      workerFirstName: req.body.workerFirstName,
+      workerSurname: req.body.workerSurname,
+      workerRole: req.body.workerRole,
+      workerActive: req.body.workerActive
     })
-    .catch(function (e) {
-      res.send('An error occurred creating a new worker! ' + e)
-    })
+      .then(() => {
+        res.send('success')
+      })
+      .catch((error) => {
+        res.status(500)
+        res.send('An error occurred creating a new worker! ' + error)
+      })
+  }
+
+  addWorker(req, res, next)
 })
 
 // The medication type route. The get is for retrieving details and the post is for adding details
