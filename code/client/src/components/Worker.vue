@@ -139,8 +139,8 @@ export default {
 
           this.workerId = this.$route.query.workerId
           this.workerFirstName = res.data.workerFirstName
-          this.workerSurname = res.data.patient.workerSurname
-          this.WorkerRole = res.data.patient.WorkerRole
+          this.workerSurname = res.data.workerSurname
+          this.WorkerRole = res.data.WorkerRole
           this.workerActive = workerActive
         }.bind(this))
     }

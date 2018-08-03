@@ -80,7 +80,6 @@ export default {
   },
   methods: {
     editItem (id) {
-      debugger
       this.$router.push('/worker?workerId=' + id)
     }
   }
