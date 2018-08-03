@@ -6,6 +6,7 @@ import Login from '@/components/Login'
 import Physician from '@/components/Physician'
 import viewPhysician from '@/components/viewPhysician'
 import searchError from '@/components/searchError'
+import searchWorker from '@/components/searchWorker'
 import store from '@/store/store'
 import Worker from '@/components/Worker'
 
@@ -51,6 +52,11 @@ var router = new Router({
       path: '/worker',
       name: 'Worker',
       component: Worker
+    },
+    {
+      path: '/searchWorker',
+      name: 'searchWorker',
+      component: searchWorker
     }
   ]
 })

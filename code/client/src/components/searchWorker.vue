@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      Search Errors
+      Search Workers
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -13,16 +13,15 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="errors"
+      :items="workers"
       :search="search"
     >
       <template slot="items" slot-scope="props">
         <td>{{ props.item.id }}</td>
-        <td class="text-xs-center">{{ props.item.generalComment }}</td>
-        <td class="text-xs-center">{{ props.item.errorDate }}</td>
-        <td class="text-xs-center">{{ props.item.errorTime }}</td>
-        <td class="text-xs-center">{{ props.item.patientName }}</td>
-        <td class="text-xs-center">{{ props.item.physicianName }}</td>
+        <td class="text-xs-center">{{ props.item.workerFirstName }}</td>
+        <td class="text-xs-center">{{ props.item.workerSurname }}</td>
+        <td class="text-xs-center">{{ props.item.WorkerRole }}</td>
+        <td class="text-xs-center">{{ props.item.workerActive }}</td>
         <td class="justify-left layout px-0">
           <v-icon
             small
@@ -41,60 +40,48 @@
 </template>
 
 <script>
-import Error from '@/services/ErrorService'
+import Worker from '@/services/WorkerService'
 export default {
   data: () => ({
     search: '',
-    errors: [],
+    workers: [],
     id: '',
     generalComment: '',
     carbs: '',
     protein: '',
     headers: [
       {
-        text: 'Error ID',
+        text: 'Worker ID',
         align: 'left',
         sortable: true,
         value: 'id'
       },
-      { text: 'General Comment', align: 'center', value: 'generalComment' },
-      { text: 'Error Date', align: 'center', value: 'errorDate' },
-      { text: 'Error Time', align: 'center', value: 'errorTime' },
-      { text: 'Patient', align: 'center', value: 'patientName' },
-      { text: 'Physician', align: 'center', value: 'physicianName' }
+      { text: 'First Name', align: 'center', value: 'workerFirstName' },
+      { text: 'Surname', align: 'center', value: 'workerSurname' },
+      { text: 'Role', align: 'center', value: 'WorkerRole' },
+      { text: 'Active', align: 'center', value: 'workerActive' }
     ]
   }),
   created () {
-    Error.getAll()
+    Worker.getAll()
       .then(function (res, err) {
         var i
         for (i = 0; i < res.data.length; i++) {
           console.log(res.data)
-          if (res.data[i].physician) {
-            this.errors.push({
-              id: res.data[i].id,
-              generalComment: res.data[i].generalComment,
-              errorDate: res.data[i].errorDate,
-              errorTime: res.data[i].errorTime,
-              patientName: res.data[i].patient.patientFirstName + ' ' + res.data[i].patient.patientSurname,
-              physicianName: res.data[i].physician.physicianFirstName + ' ' + res.data[i].physician.physicianSurname
-            })
-          } else {
-            this.errors.push({
-              id: res.data[i].id,
-              generalComment: res.data[i].generalComment,
-              errorDate: res.data[i].errorDate,
-              errorTime: res.data[i].errorTime,
-              patientName: res.data[i].patient.patientFirstName + ' ' + res.data[i].patient.patientSurname,
-              physicianName: ' '
-            })
-          }
+          this.workers.push({
+            id: res.data[i].id,
+            workerFirstName: res.data[i].workerFirstName,
+            workerSurname: res.data[i].workerSurname,
+            WorkerRole: res.data[i].WorkerRole,
+            workerActive: res.data[i].workerActive
+          })
         }
       }.bind(this))
   },
   methods: {
     editItem (id) {
-      this.$router.push('/error?errorId=' + id)
+      debugger
+      this.$router.push('/worker?workerId=' + id)
     }
   }
 }
