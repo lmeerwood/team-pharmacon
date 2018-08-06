@@ -135,22 +135,21 @@ export default {
       debugger
       WorkerService.getWorker(this.$route.query.workerId)
         .then(function (res, err) {
-          var workerActive = (res.data.workerActive.valueOf() === 1) ? 'true' : 'false'
-
           this.workerId = this.$route.query.workerId
           this.workerFirstName = res.data.workerFirstName
           this.workerSurname = res.data.workerSurname
           this.WorkerRole = res.data.WorkerRole
-          this.workerActive = workerActive
+          this.workerActive = res.data.workerActive ? 'true' : 'false'
         }.bind(this))
     }
   },
   methods: {
     async submit () {
-      debugger
       this.errorMessage = ''
       this.message = ''
       var workerId = this.workerId
+      var worker = WorkerService.getWorker(workerId)
+      debugger
       var workerActive = (this.workerActive.valueOf() === 'true') ? 1 : 0
       var values = {
         id: workerId,
@@ -159,11 +158,20 @@ export default {
         WorkerRole: this.WorkerRole,
         workerActive: workerActive
       }
-      if (this.validForm()) {
+      if (this.validForm() && workerId === worker) {
+        debugger
         try {
           await WorkerService.updateWorker(workerId, values)
           this.clear()
           this.message = 'Record updated successfully!'
+        } catch (error) {
+          this.errorMessage = error.response.data.worker
+        }
+      } else if (this.validForm()) {
+        try {
+          await WorkerService.addWorker(values)
+          this.clear()
+          this.message = 'Record added successfully!'
         } catch (error) {
           this.errorMessage = error.response.data.worker
         }

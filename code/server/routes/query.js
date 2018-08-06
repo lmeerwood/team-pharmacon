@@ -48,7 +48,7 @@ router.post('/worker/:id', function (req, res, next) {
     var selector = {
       where: { id: workerId }
     }
-    model.worker.upsert(values, selector)
+    model.worker.update(values, selector)
       .then(() => {
         res.send('Updated')
       })
@@ -59,6 +59,46 @@ router.post('/worker/:id', function (req, res, next) {
   }
 
   updateWorker(req, res, next)
+})
+
+// The worker route. The get is for retrieving details and the post is for adding details
+router.get('/worker', function (req, res) {
+  model.worker.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/worker', function (req, res, next) {
+  async function addWorker (req, res, next) {
+    var worker = await model.worker.find({
+      where: {
+        id: req.body.workerId
+      }
+    }).spread((worker) => {
+      return worker
+    })
+    if (worker === null) {
+      model.worker.create({
+        id: req.body.workerId,
+        workerFirstName: req.body.workerFirstName,
+        workerSurname: req.body.workerSurname,
+        WorkerRole: req.body.WorkerRole,
+        workerActive: req.body.workerActive
+      })
+        .then(function (qres) {
+          res.send('success')
+        })
+        .catch(function (e) {
+          res.status(500)
+          res.send('An error occurred while creating an worker type: ' + e)
+        })
+    } else {
+      res.send('Worker ' + worker + ' already exists. Check Worker Id or update current worker')
+    }
+  }
+  addWorker(req, res, next)
 })
 
 // The error update route. The get is for retrieving details for a specific error and the post is for updating details
