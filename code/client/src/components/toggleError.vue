@@ -246,7 +246,7 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-
+  // Imports the existing hidden/shown state of all fields from the store.
   computed: mapGetters([
     'showFields'
   ]),
@@ -261,27 +261,32 @@ export default {
   }),
 
   methods: {
+    // Maps the store mutations.
     ...mapActions([
       'setFields',
       'resetFields']),
 
+    // Mutates the store with the updated field hidden/shown values.
     submit: function () {
       this.$store.commit('setFields', this.showFieldArray)
       this.showFieldArray = this.showFields.slice()
       this.message = 'Form updated!'
     },
 
+    // Reverts all unsubmitted changes.
     undo: function () {
       this.showFieldArray = this.showFields.slice()
       this.message = 'Undo success!'
     },
 
+    // Reverts store to default state - all fields enabled.
     reset: function () {
       this.$store.commit('resetFields')
       this.showFieldArray = this.showFields.slice()
       this.message = 'Form reset to default!'
     },
 
+    // Checks whether changes have been made to the fields - used to show/hide Undo button.
     arraysAreEqual: function () {
       for (var i in this.showFieldArray) {
         if (this.showFieldArray[i] !== this.showFields[i]) {
@@ -291,7 +296,7 @@ export default {
       return true
     }
   },
-
+  // On page creation, sets the checkboxes to a copy of the status from the store.
   created () {
     this.showFieldArray = this.showFields.slice()
   }

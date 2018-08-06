@@ -356,6 +356,8 @@ import LocationService from '@/services/LocationService'
 import {mapGetters} from 'vuex'
 
 export default {
+
+  // This gets the array telling which fields should and shouldn't be hidden from the store.
   computed: mapGetters([
     'showFields'
   ]),
