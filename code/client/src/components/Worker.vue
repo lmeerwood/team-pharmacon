@@ -158,14 +158,7 @@ export default {
         workerActive: workerActive
       }
 
-      if (this.validForm() && workerId != this.$route.query.workerId) {
-        try {
-          this.clear()
-          this.errorMessage = 'Worker Id already created and cannot be changed or re-used!'
-        } catch (error) {
-          this.errorMessage = error.response.data.worker
-        }
-      } else if (this.validForm() && worker != null) {
+      if (this.validForm() && worker != null) {
         try {
           await WorkerService.updateWorker(workerId, values)
           this.clear()
