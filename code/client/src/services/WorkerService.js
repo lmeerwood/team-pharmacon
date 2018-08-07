@@ -1,7 +1,7 @@
 import Api from '@/services/Api'
 
 export default {
-  logError (worker) {
+  logWorker (worker) {
     return Api().post('/api/v1/query/worker', worker)
   },
   getAll () {

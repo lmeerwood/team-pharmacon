@@ -72,32 +72,22 @@ router.get('/worker', function (req, res) {
 
 router.post('/worker', function (req, res, next) {
   async function addWorker (req, res, next) {
-    var worker = await model.worker.find({
-      where: {
-        id: req.body.workerId
-      }
-    }).spread((worker) => {
-      return worker
+    model.worker.create({
+      id: req.body.id,
+      workerFirstName: req.body.workerFirstName,
+      workerSurname: req.body.workerSurname,
+      WorkerRole: req.body.WorkerRole,
+      workerActive: req.body.workerActive
     })
-    if (worker === null) {
-      model.worker.create({
-        id: req.body.workerId,
-        workerFirstName: req.body.workerFirstName,
-        workerSurname: req.body.workerSurname,
-        WorkerRole: req.body.WorkerRole,
-        workerActive: req.body.workerActive
+      .then(() => {
+        res.send('success')
       })
-        .then(function (qres) {
-          res.send('success')
-        })
-        .catch(function (e) {
-          res.status(500)
-          res.send('An error occurred while creating an worker type: ' + e)
-        })
-    } else {
-      res.send('Worker ' + worker + ' already exists. Check Worker Id or update current worker')
-    }
+      .catch((error) => {
+        res.status(500)
+        res.send('An error occurred while creating an worker type: ' + error)
+      })
   }
+
   addWorker(req, res, next)
 })
 

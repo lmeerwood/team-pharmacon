@@ -127,12 +127,12 @@ export default {
     workerFirstName: '',
     workerSurname: '',
     WorkerRole: '',
-    workerActive: false
+    workerActive: false,
+    currentWorker: ''
   }),
   created () {
     // Retrieve specific worker and load into the form.
     if (this.$route.query.workerId) {
-      debugger
       WorkerService.getWorker(this.$route.query.workerId)
         .then(function (res, err) {
           this.workerId = this.$route.query.workerId
@@ -148,8 +148,7 @@ export default {
       this.errorMessage = ''
       this.message = ''
       var workerId = this.workerId
-      var worker = WorkerService.getWorker(workerId)
-      debugger
+      var worker = this.$route.query.workerId
       var workerActive = (this.workerActive.valueOf() === 'true') ? 1 : 0
       var values = {
         id: workerId,
@@ -158,8 +157,15 @@ export default {
         WorkerRole: this.WorkerRole,
         workerActive: workerActive
       }
-      if (this.validForm() && workerId === worker) {
-        debugger
+
+      if (this.validForm() && workerId != this.$route.query.workerId) {
+        try {
+          this.clear()
+          this.errorMessage = 'Worker Id already created and cannot be changed or re-used!'
+        } catch (error) {
+          this.errorMessage = error.response.data.worker
+        }
+      } else if (this.validForm() && worker != null) {
         try {
           await WorkerService.updateWorker(workerId, values)
           this.clear()
@@ -169,7 +175,7 @@ export default {
         }
       } else if (this.validForm()) {
         try {
-          await WorkerService.addWorker(values)
+          await WorkerService.logWorker(values)
           this.clear()
           this.message = 'Record added successfully!'
         } catch (error) {
