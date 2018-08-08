@@ -2,12 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Main from '@/components/Main'
 import Error from '@/components/Error'
+import toggleError from '@/components/toggleError'
 import Login from '@/components/Login'
 import User from '@/components/User'
 import Physician from '@/components/Physician'
 import viewPhysician from '@/components/viewPhysician'
 import searchError from '@/components/searchError'
+import searchWorker from '@/components/searchWorker'
 import store from '@/store/store'
+import Worker from '@/components/Worker'
 
 Vue.use(Router)
 
@@ -51,6 +54,21 @@ var router = new Router({
       path: '/user',
       name: 'User',
       component: User
+    },
+    {
+      path: '/worker',
+      name: 'Worker',
+      component: Worker
+    },
+    {
+      path: '/searchWorker',
+      name: 'searchWorker',
+      component: searchWorker
+    },
+    {
+      path: '/editform',
+      name: 'toggleError',
+      component: toggleError
     }
   ]
 })

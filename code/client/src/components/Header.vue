@@ -6,7 +6,11 @@
     <v-spacer></v-spacer>
     <v-toolbar-items v-if="authlevel !== 0" >
       <v-btn :to="{name:'Error'}" flat>Log Error</v-btn>
+      <v-btn :to="{name:'searchError'}" v-if="authlevel === 2" flat>Search Errors</v-btn>
+      <v-btn :to="{name:'Worker'}" v-if="authlevel === 2" flat>Manage Workers</v-btn>
+      <v-btn :to="{name:'searchWorker'}" v-if="authlevel === 2" flat>Search Workers</v-btn>
       <v-btn :to="{name:'Physician'}" v-if="authlevel === 2" flat>Manage Physicians</v-btn>
+      <v-btn :to="{name:'toggleError'}" v-if="authlevel === 2" flat>Edit Form</v-btn>
       <v-btn href="http://18.188.218.170:17050" v-if="authlevel === 2" flat>Reporting</v-btn>
       <v-btn :to="{name:'searchError'}" v-if="authlevel === 2" flat>Search Errors</v-btn>
       <v-btn :to="{name:'User'}" v-if="authlevel === 2" flat>Add User</v-btn>
