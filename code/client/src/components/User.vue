@@ -45,7 +45,6 @@
                 </v-flex>
               </v-layout>
 
-
               <v-layout row>
                 <v-flex xs12 >
                 <v-alert :value="errorMessage" type="error">
@@ -103,7 +102,7 @@ export default {
           await UserService.create({
             email: this.login,
             password: this.password,
-            authlevel: this.authlevel,
+            authlevel: this.authlevel
           })
           this.clear()
           this.authlevel = '1'
