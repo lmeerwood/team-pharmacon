@@ -24,6 +24,73 @@ router.get('/', function (req, res, next) {
     })
 })
 
+// The worker update route. The get is for retrieving details for a specific worker and the post is for updating details
+router.get('/worker/:id', isAuthenticated, function (req, res) {
+  model.worker.find({
+    where: {
+      id: req.params.id
+    }
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/worker/:id', function (req, res, next) {
+  async function updateWorker (req, res, next) {
+    var workerId = req.params.id
+    var values = {
+      id: workerId,
+      workerFirstName: req.body.workerFirstName,
+      workerSurname: req.body.workerSurname,
+      WorkerRole: req.body.WorkerRole,
+      workerActive: req.body.workerActive
+    }
+    var selector = {
+      where: { id: workerId }
+    }
+    model.worker.update(values, selector)
+      .then(() => {
+        res.send('Updated')
+      })
+      .catch((error) => {
+        res.status(500)
+        res.send('error has occurred: ' + error)
+      })
+  }
+
+  updateWorker(req, res, next)
+})
+
+// The worker route. The get is for retrieving details and the post is for adding details
+router.get('/worker', function (req, res) {
+  model.worker.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/worker', function (req, res, next) {
+  async function addWorker (req, res, next) {
+    model.worker.create({
+      id: req.body.id,
+      workerFirstName: req.body.workerFirstName,
+      workerSurname: req.body.workerSurname,
+      WorkerRole: req.body.WorkerRole,
+      workerActive: req.body.workerActive
+    })
+      .then(() => {
+        res.send('success')
+      })
+      .catch((error) => {
+        res.status(500)
+        res.send('An error occurred while creating an worker type: ' + error)
+      })
+  }
+
+  addWorker(req, res, next)
+})
+
 // The error update route. The get is for retrieving details for a specific error and the post is for updating details
 router.get('/error/:id', isAuthenticated, function (req, res) {
   model.error.find({
@@ -284,14 +351,26 @@ router.get('/worker', function (req, res) {
   })
 })
 
+// add worker
 router.post('/worker', function (req, res, next) {
-  model.worker.create(req.body)
-    .then(function (qres) {
-      res.send(qres)
+  async function addWorker (req, res, next) {
+    model.worker.create({
+      id: req.body.workerId,
+      workerFirstName: req.body.workerFirstName,
+      workerSurname: req.body.workerSurname,
+      WorkerRole: req.body.WorkerRole,
+      workerActive: req.body.workerActive
     })
-    .catch(function (e) {
-      res.send('An error occurred creating a new worker! ' + e)
-    })
+      .then(() => {
+        res.send('success')
+      })
+      .catch((error) => {
+        res.status(500)
+        res.send('An error occurred creating a new worker! ' + error)
+      })
+  }
+
+  addWorker(req, res, next)
 })
 
 // The medication type route. The get is for retrieving details and the post is for adding details
