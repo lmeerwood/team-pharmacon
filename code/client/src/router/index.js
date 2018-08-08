@@ -4,6 +4,7 @@ import Main from '@/components/Main'
 import Error from '@/components/Error'
 import toggleError from '@/components/toggleError'
 import Login from '@/components/Login'
+import User from '@/components/User'
 import Physician from '@/components/Physician'
 import viewPhysician from '@/components/viewPhysician'
 import searchError from '@/components/searchError'
@@ -48,6 +49,11 @@ var router = new Router({
       path: '/searchError',
       name: 'searchError',
       component: searchError
+    },
+    {
+      path: '/user',
+      name: 'User',
+      component: User
     },
     {
       path: '/worker',
