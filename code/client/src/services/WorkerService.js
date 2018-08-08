@@ -14,5 +14,9 @@ export default {
   updateWorker (workerId, worker) {
     var url = '/api/v1/query/worker/' + workerId
     return Api().post(url, worker)
+  },
+  isWorkerValid (workerId) {
+    var url = '/api/v1/query/worker/isvalid/' + workerId
+    return Api().get(url)
   }
 }

@@ -147,6 +147,7 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
+      this.currentWorker = ''
       var workerId = this.workerId
       var worker = this.$route.query.workerId
       var workerActive = (this.workerActive.valueOf() === 'true') ? 1 : 0
@@ -157,8 +158,18 @@ export default {
         WorkerRole: this.WorkerRole,
         workerActive: workerActive
       }
-
-      if (this.validForm() && worker != null) {
+      debugger
+      var currentWorker = WorkerService.isWorkerValid(workerId)
+      console.log('1 Current Worker: ' + currentWorker)
+      debugger
+      if (this.validForm() && currentWorker !== 'false') {
+        console.log('2 Current Worker: ' + currentWorker)
+        try {
+          this.errorMessage = 'Worker ID already exists, please check your input'
+        } catch (error) {
+          this.errorMessage = error.response.data.worker
+        }
+      } else if (this.validForm() && worker !== null) {
         try {
           await WorkerService.updateWorker(workerId, values)
           this.clear()
@@ -166,7 +177,8 @@ export default {
         } catch (error) {
           this.errorMessage = error.response.data.worker
         }
-      } else if (this.validForm()) {
+      } else if (this.validForm() && currentWorker === false) {
+        console.log('3 Current Worker: ' + currentWorker)
         try {
           await WorkerService.logWorker(values)
           this.clear()
