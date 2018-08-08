@@ -10,5 +10,9 @@ export default {
   getError (errorId) {
     var url = '/api/v1/query/error/' + errorId
     return Api().get(url)
+  },
+  updateError (errorId, error) {
+    var url = '/api/v1/query/error/' + errorId
+    return Api().post(url, error)
   }
 }
