@@ -24,7 +24,7 @@ router.get('/', function (req, res, next) {
     })
 })
 
-// The worker update route. The get is for retrieving details for a specific error and the post is for updating details
+// The worker update route. The get is for retrieving details for a specific worker and the post is for updating details
 router.get('/worker/:id', isAuthenticated, function (req, res) {
   model.worker.find({
     where: {
