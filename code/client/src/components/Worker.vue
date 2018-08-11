@@ -158,18 +158,14 @@ export default {
         WorkerRole: this.WorkerRole,
         workerActive: workerActive
       }
-      debugger
-      var currentWorker = WorkerService.isWorkerValid(workerId)
-      console.log('1 Current Worker: ' + currentWorker)
-      debugger
-      if (this.validForm() && currentWorker !== 'false') {
-        console.log('2 Current Worker: ' + currentWorker)
+      var currentWorker = await WorkerService.isWorkerValid(workerId)
+      if (this.validForm() && currentWorker.data) {
         try {
           this.errorMessage = 'Worker ID already exists, please check your input'
         } catch (error) {
           this.errorMessage = error.response.data.worker
         }
-      } else if (this.validForm() && worker !== null) {
+      } else if (this.validForm() && worker !== undefined) {
         try {
           await WorkerService.updateWorker(workerId, values)
           this.clear()
@@ -177,8 +173,8 @@ export default {
         } catch (error) {
           this.errorMessage = error.response.data.worker
         }
-      } else if (this.validForm() && currentWorker === false) {
-        console.log('3 Current Worker: ' + currentWorker)
+        debugger
+      } else if (this.validForm()) {
         try {
           await WorkerService.logWorker(values)
           this.clear()
