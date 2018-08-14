@@ -35,6 +35,17 @@ router.get('/worker/:id', isAuthenticated, function (req, res) {
   })
 })
 
+// Check to see if the worker exists - returns true if worker ID exists, false otherwise
+router.get('/worker/isvalid/:id', isAuthenticated, function (req, res) {
+  model.worker.find({
+    where: {
+      id: req.params.id
+    }
+  }).then(function (qres) {
+    res.send(qres !== null)
+  })
+})
+
 router.post('/worker/:id', function (req, res, next) {
   async function updateWorker (req, res, next) {
     var workerId = req.params.id

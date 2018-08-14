@@ -14,6 +14,7 @@
               <v-text-field
                 label="Worker's ID number"
                 :rules="[() => !!workerId || 'This field is required']"
+                :disabled="this.$route.query.workerId !== undefined"
                 required
                 v-model="workerId"
               ></v-text-field>
@@ -147,6 +148,7 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
+      this.currentWorker = ''
       var workerId = this.workerId
       var worker = this.$route.query.workerId
       var workerActive = (this.workerActive.valueOf() === 'true') ? 1 : 0
@@ -157,8 +159,14 @@ export default {
         WorkerRole: this.WorkerRole,
         workerActive: workerActive
       }
-
-      if (this.validForm() && worker != null) {
+      var currentWorker = await WorkerService.isWorkerValid(workerId)
+      if (this.validForm() && currentWorker.data && worker === undefined) {
+        try {
+          this.errorMessage = 'Worker ID already exists, please check your input'
+        } catch (error) {
+          this.errorMessage = error.response.data.worker
+        }
+      } else if (this.validForm() && worker !== undefined) {
         try {
           await WorkerService.updateWorker(workerId, values)
           this.clear()
