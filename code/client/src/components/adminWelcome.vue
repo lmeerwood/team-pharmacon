@@ -15,58 +15,74 @@
           </div>
         </section>
         <section>
-          <v-layout align-space-around justify-space-between column>
-            <v-flex xs4>
-            <v-btn
-              round color="primary"
-              dark
-              :to="{name: 'Error'}">
-              Log Error
-            </v-btn>
-            <v-btn  
-              round color="primary"
-              dark
-              :to="{name: 'searchError'}">
-              Search Errors
-            </v-btn>
-            <v-btn  
-              round color="primary"
-              dark
-              :to="{name: 'searchWorker'}">
-              Search Workers
-            </v-btn>
-            <v-btn
-              round color="primary"
-              dark
-              :to="{name: 'Worker'}">
-              Manage Workers
-            </v-btn>
-            <v-btn
-              round color="primary"
-              dark
-              :to="{name: 'Physician'}">
-              Manage Physicians
-            </v-btn>
-            <v-btn  
-              round color="primary"
-              dark
-              :to="{name: 'toggleError'}">
-              Manage Error Form
-            </v-btn>
-            <v-btn  
-              round color="primary"
-              dark
-              :to="{name: 'User'}">
-              Add Users
-            </v-btn>
-            <v-btn 
-              href="http://18.188.218.170:17050"
-              round color="primary"
-              dark>
-              Reporting</v-btn>
-            </v-flex>
-          </v-layout>
-          <div>
+          <v-layout align-center column>
+            <v-flex xs12 sm4 text-xs-center>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'Error'}">
+                  Log Error
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'searchError'}">
+                  Search Errors
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'searchWorker'}">
+                  Search Workers
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'Worker'}">
+                  Manage Workers
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'Physician'}">
+                  Manage Physicians
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'toggleError'}">
+                  Manage Error Form
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'User'}">
+                  Add Users
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  href="http://18.188.218.170:17050"
+                  round color="primary"
+                  dark>
+                  Reporting</v-btn>
+              </div>
+              </v-flex>
+              </v-layout>
+              <div>
             <br/><br/>
           </div>
         </section>
