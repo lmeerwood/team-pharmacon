@@ -5,8 +5,28 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items v-if="authlevel !== 0" >
-
+      <v-btn :to="{name:'adminWelcome'}" v-if="authlevel === 2" flat>Admin Home</v-btn>
       <v-btn :to="{name:'Error'}" flat>Log Error</v-btn>
+
+      <v-menu open-on-hover open-delay=50 offset-y bottom>
+        <v-btn flat slot="activator">
+          Search...
+          <v-icon>arrow_drop_down</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'searchWorker'}" v-if="authlevel === 2" flat>Search Workers</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'searchError'}" v-if="authlevel === 2" flat>Search Errors</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
 
       <v-menu open-on-hover open-delay=50 offset-y bottom>
         <v-btn flat slot="activator">
@@ -35,26 +55,6 @@
           <v-list-tile>
             <v-list-tile-action>
               <v-btn :to="{name:'User'}" v-if="authlevel === 2" flat>Add User</v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list>
-      </v-menu>
-
-      <v-menu open-on-hover open-delay=50 offset-y bottom>
-        <v-btn flat slot="activator">
-          Search...
-          <v-icon>arrow_drop_down</v-icon>
-        </v-btn>
-        <v-list>
-          <v-list-tile>
-            <v-list-tile-action>
-              <v-btn :to="{name:'searchWorker'}" v-if="authlevel === 2" flat>Search Workers</v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-
-          <v-list-tile>
-            <v-list-tile-action>
-              <v-btn :to="{name:'searchError'}" v-if="authlevel === 2" flat>Search Errors</v-btn>
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
