@@ -94,12 +94,6 @@
               </v-flex>
             </v-layout>
 
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
-              <p>{{ message }}</p>
-              </v-flex>
-            </v-layout>
-
           </v-container>
           </v-form>
         </fieldset>
