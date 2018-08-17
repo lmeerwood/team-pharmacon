@@ -13,9 +13,8 @@
               <v-flex xs8 offset-xs2>
               <v-text-field
                 label="Worker's ID number"
-                :rules="[() => !!workerId || 'This field is required']"
+                :rules="[rules.required, rules.idNumber]"
                 :disabled="this.$route.query.workerId !== undefined"
-                required
                 v-model="workerId"
               ></v-text-field>
               </v-flex>
@@ -25,8 +24,7 @@
               <v-flex xs8 offset-xs2>
               <v-text-field
                 label="Worker's First Name"
-                :rules="[() => !!workerFirstName || 'This field is required']"
-                required
+                :rules="[rules.required, rules.workerFN]"
                 v-model="workerFirstName"
               ></v-text-field>
               </v-flex>
@@ -36,8 +34,7 @@
               <v-flex xs8 offset-xs2>
               <v-text-field
                 label="Worker's Surname"
-                ::rules="[() => !!workerSurname || 'This field is required']"
-                required
+                :rules="[rules.required, rules.workerSN]"
                 v-model="workerSurname"
               ></v-text-field>
               </v-flex>
@@ -47,7 +44,7 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Worker's Position"
-                    :rules="[() => !!WorkerRole || 'This field is required']"
+                    :rules="[rules.required, rules.role]"
                     v-model="WorkerRole"
                   ></v-text-field>
                 </v-flex>
@@ -129,7 +126,26 @@ export default {
     workerSurname: '',
     WorkerRole: '',
     workerActive: false,
-    currentWorker: ''
+    currentWorker: '',
+    rules: {
+      required: value => !!value || 'This field is required',
+      idNumber: value => {
+        const pattern = /^([0-9]+)$/
+        return pattern.test(value) || 'Invalid Worker Id entered. Must be numeric only'
+      },
+      workerFN: value => {
+        const pattern = /^([a-zA-Z-]+)$/
+        return pattern.test(value) || 'First Name must contain letters and/or dash only'
+      },
+      workerSN: value => {
+        const pattern = /^([a-zA-Z-']+)$/
+        return pattern.test(value) || 'Surname must contain letters and/or dash/apostrophe only'
+      },
+      role: value => {
+        const pattern = /^([a-zA-Z]+)$/
+        return pattern.test(value) || 'Worker role contain letters only'
+      }
+    }
   }),
   created () {
     // Retrieve specific worker and load into the form.
