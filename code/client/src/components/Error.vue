@@ -67,8 +67,7 @@
                   <v-text-field
                     label="Patient MRN"
                     v-model="patientId"
-                    :rules="[() => !!patientId || 'This field is required']"
-                    required
+                    :rules="[rules.required, rules.alphaNum]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -78,8 +77,7 @@
                   <v-text-field
                     label="Patient First Name"
                     v-model="patientFirstName"
-                    :rules="[() => !!patientFirstName || 'This field is required']"
-                    required
+                    :rules="[rules.required, rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -89,8 +87,7 @@
                   <v-text-field
                     label="Patient Surname"
                     v-model="patientSurname"
-                    :rules="[() => !!patientSurname || 'This field is required']"
-                    required
+                    :rules="[rules.required, rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -132,8 +129,7 @@
                   <v-text-field
                     label="Medication Given"
                     v-model="medication"
-                    :rules="[() => !!medication || 'This field is required']"
-                    required
+                    :rules="[rules.required, rules.alphaNum]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -158,6 +154,7 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Error Description or General Comment"
+                    :rules="[rules.alphaNumDashAposDot]"
                     v-model="errorComment"
                   ></v-text-field>
                 </v-flex>
@@ -259,6 +256,7 @@
                     label="Physician Provider Number"
                     v-model="providerNumber"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                    :rules="[rules.alphaNum]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -269,6 +267,7 @@
                     label="Physician First Name"
                     v-model="physicianFirstName"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                    :rules="[rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -279,6 +278,7 @@
                     label="Physician Surname"
                     v-model="physicianSurname"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                    :rules="[rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -289,6 +289,7 @@
                     label="Physician Comments"
                     v-model="physicianComment"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                    :rules="[rules.alphaNumDashAposDot]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -299,6 +300,7 @@
                     label="Diagnosis"
                     v-model="diagnosis"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                    :rules="[rules.alphaNumDashAposDot]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -402,7 +404,22 @@ export default {
     physicianSurname: '',
     providerNumber: '',
     physicianComment: '',
-    diagnosis: ''
+    diagnosis: '',
+    rules: {
+      required: value => !!value || 'This field is required',
+      alphaNum: value => {
+        const pattern = /^([a-zA-Z0-9]+)$/
+        return pattern.test(value) || 'Alpha-numeric field only'
+      },
+      alphaDashApos: value => {
+        const pattern = /^([a-zA-Z-']+)$/
+        return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
+      },
+      alphaNumDashAposDot: value => {
+        const pattern = /^([a-zA-Z0-9-'.]+)$/
+        return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe/full stop only'
+      }
+    }
   }),
   created () {
     // Retrieve specific error and load into the form.

@@ -14,7 +14,7 @@
                   <v-text-field
                     label="Login"
                     v-model="login"
-                    :rules="[() => !!login || 'This field is required']"
+                    :rules="[rules.required, rules.alpha]"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -25,7 +25,7 @@
                   <v-text-field
                     label="Password"
                     v-model="password"
-                    :rules="[() =>  (password.length >= 8 && password.length <= 25 ) || 'Please enter a password between 8 and 25 characters']"
+                    :rules="[rules.required, rules.alphaNum, (password.length >= 8 && password.length <= 25 ) || 'Please enter a password between 8 and 25 characters']"
                     required
                   ></v-text-field>
                 </v-flex>
@@ -91,7 +91,18 @@ export default {
     valid: true,
     login: '',
     password: '',
-    authlevel: '1'
+    authlevel: '1',
+    rules: {
+      required: value => !!value || 'This field is required',
+      alpha: value => {
+        const pattern = /^([a-zA-Z]+)$/
+        return pattern.test(value) || 'Alpha field only'
+      },
+      alphaNum: value => {
+        const pattern = /^([a-zA-Z0-9]+)$/
+        return pattern.test(value) || 'Alpha numeric field only'
+      }
+    }
   }),
   methods: {
     async submit () {
