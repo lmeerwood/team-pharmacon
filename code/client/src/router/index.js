@@ -11,6 +11,7 @@ import searchError from '@/components/searchError'
 import searchWorker from '@/components/searchWorker'
 import store from '@/store/store'
 import Worker from '@/components/Worker'
+import adminWelcome from '@/components/adminWelcome'
 
 Vue.use(Router)
 
@@ -69,6 +70,11 @@ var router = new Router({
       path: '/editform',
       name: 'toggleError',
       component: toggleError
+    },
+    {
+      path: '/adminWelcome',
+      name: 'adminWelcome',
+      component: adminWelcome
     }
   ]
 })
