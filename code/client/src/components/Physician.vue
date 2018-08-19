@@ -34,7 +34,7 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Provider Number"
-                    :rules="[rules.required, rules.alphaDNum]"
+                    :rules="[rules.required, rules.alphaNum]"
                     v-model="providerNumber"
                   ></v-text-field>
                 </v-flex>
@@ -108,7 +108,7 @@ export default {
       required: value => !!value || 'This field is required',
       alphaNum: value => {
         const pattern = /^([a-zA-Z0-9]+)$/
-        return pattern.test(value) || 'Field must be numeric only'
+        return pattern.test(value) || 'Field must be alpha/numeric only'
       },
       alphaDash: value => {
         const pattern = /^([a-zA-Z-]+)$/
