@@ -14,15 +14,22 @@
           <v-icon>arrow_drop_down</v-icon>
         </v-btn>
         <v-list>
+
           <v-list-tile>
             <v-list-tile-action>
-              <v-btn :to="{name:'searchWorker'}" v-if="authlevel === 2" flat>Search Workers</v-btn>
+              <v-btn :to="{name:'searchError'}" v-if="authlevel === 2" flat>Search Errors</v-btn>
             </v-list-tile-action>
           </v-list-tile>
 
           <v-list-tile>
             <v-list-tile-action>
-              <v-btn :to="{name:'searchError'}" v-if="authlevel === 2" flat>Search Errors</v-btn>
+              <v-btn :to="{name:'searchPhysician'}" v-if="authlevel === 2" flat>Search Physician</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'searchWorker'}" v-if="authlevel === 2" flat>Search Workers</v-btn>
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
@@ -37,12 +44,6 @@
           <v-list-tile>
             <v-list-tile-action>
               <v-btn :to="{name:'Worker'}" v-if="authlevel === 2" flat>Manage Workers</v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-
-          <v-list-tile>
-            <v-list-tile-action>
-              <v-btn :to="{name:'Physician'}" v-if="authlevel === 2" flat>Manage Physicians</v-btn>
             </v-list-tile-action>
           </v-list-tile>
 

@@ -37,6 +37,14 @@
                 <v-btn
                   round color="primary"
                   dark
+                  :to="{name: 'searchPhysician'}">
+                  Search Physicians
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
                   :to="{name: 'searchWorker'}">
                   Search Workers
                 </v-btn>
@@ -47,14 +55,6 @@
                   dark
                   :to="{name: 'Worker'}">
                   Manage Workers
-                </v-btn>
-              </div>
-              <div>
-                <v-btn
-                  round color="primary"
-                  dark
-                  :to="{name: 'Physician'}">
-                  Manage Physicians
                 </v-btn>
               </div>
               <div>
