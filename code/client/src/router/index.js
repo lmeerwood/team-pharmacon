@@ -8,6 +8,7 @@ import User from '@/components/User'
 import Physician from '@/components/Physician'
 import viewPhysician from '@/components/viewPhysician'
 import searchError from '@/components/searchError'
+import searchPhysician from '@/components/searchPhysician'
 import searchWorker from '@/components/searchWorker'
 import store from '@/store/store'
 import Worker from '@/components/Worker'
@@ -75,6 +76,11 @@ var router = new Router({
       path: '/adminWelcome',
       name: 'adminWelcome',
       component: adminWelcome
+    },
+    {
+      path: '/searchPhysician',
+      name: 'searchPhysician',
+      component: searchPhysician
     }
   ]
 })

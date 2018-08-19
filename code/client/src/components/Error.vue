@@ -154,7 +154,6 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Error Description or General Comment"
-                    :rules="[rules.alphaNumDashAposDot]"
                     v-model="errorComment"
                   ></v-text-field>
                 </v-flex>
@@ -289,7 +288,6 @@
                     label="Physician Comments"
                     v-model="physicianComment"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.alphaNumDashAposDot]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -300,7 +298,6 @@
                     label="Diagnosis"
                     v-model="diagnosis"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.alphaNumDashAposDot]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -412,12 +409,8 @@ export default {
         return pattern.test(value) || 'Alpha-numeric field only'
       },
       alphaDashApos: value => {
-        const pattern = /^([a-zA-Z-']+)$/
+        const pattern = /^([a-zA-Z-' ]+)$/
         return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
-      },
-      alphaNumDashAposDot: value => {
-        const pattern = /^([a-zA-Z0-9-'.]+)$/
-        return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe/full stop only'
       }
     }
   }),
