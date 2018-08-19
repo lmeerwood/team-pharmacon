@@ -3,6 +3,8 @@ var router = express.Router()
 var model = require('../models')
 
 const isAuthenticated = require('../policies/isAuthenticated')
+const { check, validationResult } = require('express-validator/check')
+const { sanitize } = require('express-validator/filter')
 
 router.get('/', function (req, res, next) {
   model.sequelize
@@ -25,15 +27,23 @@ router.get('/', function (req, res, next) {
 })
 
 // The worker update route. The get is for retrieving details for a specific worker and the post is for updating details
-router.get('/worker/:id', isAuthenticated, function (req, res) {
-  model.worker.find({
-    where: {
-      id: req.params.id
+router.get(
+  '/worker/:id',
+  isAuthenticated,
+  function (req, res) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() })
     }
-  }).then(function (qres) {
-    res.send(qres)
+    console.log('User id: ' + req.params.id)
+    model.worker.find({
+      where: {
+        id: req.params.id
+      }
+    }).then(function (qres) {
+      res.send(qres)
+    })
   })
-})
 
 // Check to see if the worker exists - returns true if worker ID exists, false otherwise
 router.get('/worker/isvalid/:id', isAuthenticated, function (req, res) {
@@ -46,31 +56,48 @@ router.get('/worker/isvalid/:id', isAuthenticated, function (req, res) {
   })
 })
 
-router.post('/worker/:id', function (req, res, next) {
-  async function updateWorker (req, res, next) {
-    var workerId = req.params.id
-    var values = {
-      id: workerId,
-      workerFirstName: req.body.workerFirstName,
-      workerSurname: req.body.workerSurname,
-      WorkerRole: req.body.WorkerRole,
-      workerActive: req.body.workerActive
+router.post(
+  '/worker/:id',
+  // Input validation
+  check('workerFirstName').not().isEmpty(),
+  check('workerSurname').not().isEmpty(),
+  check('workerRole').not().isEmpty(),
+  sanitize('workerActive').toInt(),
+  check('workerActive').custom(value => {
+    if (value !== 0 && value !== 1) {
+      throw new Error('workerActive must be 1 or 0')
     }
-    var selector = {
-      where: { id: workerId }
+    return true
+  }),
+  function (req, res, next) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() })
     }
-    model.worker.update(values, selector)
-      .then(() => {
-        res.send('Updated')
-      })
-      .catch((error) => {
-        res.status(500)
-        res.send('error has occurred: ' + error)
-      })
-  }
+    async function updateWorker (req, res, next) {
+      var workerId = req.params.id
+      var values = {
+        id: workerId,
+        workerFirstName: req.body.workerFirstName,
+        workerSurname: req.body.workerSurname,
+        WorkerRole: req.body.workerRole,
+        workerActive: req.body.workerActive
+      }
+      var selector = {
+        where: { id: workerId }
+      }
+      model.worker.update(values, selector)
+        .then(() => {
+          res.send('Updated')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('error has occurred: ' + error)
+        })
+    }
 
-  updateWorker(req, res, next)
-})
+    updateWorker(req, res, next)
+  })
 
 // The worker route. The get is for retrieving details and the post is for adding details
 router.get('/worker', function (req, res) {
@@ -81,7 +108,20 @@ router.get('/worker', function (req, res) {
   })
 })
 
-router.post('/worker', function (req, res, next) {
+router.post(
+  '/worker',
+  // Input validation
+  check('workerFirstName').not().isEmpty(),
+  check('workerSurname').not().isEmpty(),
+  check('workerRole').not().isEmpty(),
+  sanitize('workerActive').toInt(),
+  check('workerActive').custom(value => {
+    if (value !== 0 && value !== 1) {
+      throw new Error('workerActive must be 1 or 0')
+    }
+    return true
+  }),
+  function (req, res, next) {
   async function addWorker (req, res, next) {
     model.worker.create({
       id: req.body.id,
@@ -125,7 +165,18 @@ router.get('/error/:id', isAuthenticated, function (req, res) {
   })
 })
 
-router.post('/error/:id', function (req, res, next) {
+router.post(
+  '/error/:id',
+  // Input validation
+  check('patientId').not().isEmpty(),
+  check('patientFirstName').not().isEmpty(),
+  check('patientSurname').not().isEmpty(),
+  check('patientType').not().isEmpty(),
+
+  check('medicationName').not().isEmpty(),
+  check('medicationtypeId').not().isEmpty(),
+  check('medication').not().isEmpty(),
+  function (req, res, next) {
   /**
    * As with the create error, some details may have to be created.
    * This function checks to see if it exists first, and if not, creates it.
@@ -228,7 +279,18 @@ router.get('/error', function (req, res) {
   })
 })
 
-router.post('/error', function (req, res, next) {
+router.post('/error',
+
+  check('patientId').not().isEmpty(),
+  check('patientFirstName').not().isEmpty(),
+  check('patientSurname').not().isEmpty(),
+  check('patientType').not().isEmpty(),
+
+  check('medicationName').not().isEmpty(),
+  check('medicationtypeId').not().isEmpty(),
+  check('medication').not().isEmpty(),
+
+  function (req, res, next) {
   /**
    * This is a longer route due to the fact we need to
    * check if the entries from linking tables are created yet.
