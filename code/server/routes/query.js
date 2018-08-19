@@ -508,7 +508,7 @@ router.get('/physician/:id', isAuthenticated, function (req, res) {
   })
 })
 
-router.post('/physician/:id', function (req, res, next) {
+router.post('/physician/:id', isAuthenticated, function (req, res, next) {
   async function updatePhysician (req, res, next) {
     var physicianId = req.params.id
     var values = {
@@ -535,7 +535,7 @@ router.post('/physician/:id', function (req, res, next) {
 })
 
 // The physician route. The get is for retrieving details and the post is for adding details
-router.get('/physician', function (req, res) {
+router.get('/physician', isAuthenticated, function (req, res) {
   model.physician.findAll({
     limit: 100
   }).then(function (qres) {
