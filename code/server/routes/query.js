@@ -441,4 +441,50 @@ router.post('/severity', function (req, res, next) {
     })
 })
 
+// The Physician update route. The get is for retrieving details for a specific physician and the post is for updating details
+router.get('/physician/:id', isAuthenticated, function (req, res) {
+  model.physician.find({
+    where: {
+      id: req.params.id
+    }
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/physician/:id', function (req, res, next) {
+  async function updatePhysician (req, res, next) {
+    var physicianId = req.params.id
+    var values = {
+      physicianSurname: req.body.physicianSurname,
+      physicianFirstName: req.body.physicianFirstName,
+      providerNumber: req.body.providerNumber,
+      physicianComment: req.body.physicianComment
+    }
+    var selector = {
+      where: { id: physicianId }
+
+    }
+    model.physician.update(values, selector)
+      .then(() => {
+        res.send('Updated')
+      })
+      .catch((error) => {
+        res.status(500)
+        res.send('error has occurred updating Physician: ' + error)
+      })
+  }
+
+  updatePhysician(req, res, next)
+})
+
+// The physician route. The get is for retrieving details and the post is for adding details
+router.get('/physician', function (req, res) {
+  model.physician.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
 module.exports = router

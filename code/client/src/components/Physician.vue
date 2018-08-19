@@ -4,26 +4,28 @@
     <v-flex xs6 offset-xs3>
       <section class="page-head">
         <h1 id="introduction" class="display-1 primary--text">
-          Physician Details
+          {{msg}}
         </h1>
         <fieldset class="white">
           <v-form v-model="valid" ref="form" lazy-validation>
           <v-container fluid>
-          <v-layout row>
-              <v-flex xs12 >
-                <v-alert :value="true" type="error">
-                  Please note: This form is a non-functional placeholder
-                </v-alert>
-              </v-flex>
-            </v-layout>
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
               <v-text-field
-                label="Physician Name"
-                :rules="[(v) => v.length <= 45 || 'Max 45 characters']"
-                :counter="45"
-                v-model="physicianName"
+                label="Physician Surname"
+                :rules="[rules.required, rules.alphaDashApos]"
+                v-model="physicianSurname"
+              ></v-text-field>
+              </v-flex>
+              </v-layout>
+
+            <v-layout row>
+              <v-flex xs8 offset-xs2>
+              <v-text-field
+                label="Physician First Name"
+                :rules="[rules.required, rules.alphaDash]"
+                v-model="physicianFirstName"
               ></v-text-field>
               </v-flex>
               </v-layout>
@@ -32,9 +34,8 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Provider Number"
-                    :rules="[(v) => v.length <= 15 || 'Max 15 characters']"
-                    :counter="15"
-                    v-model="providerNo"
+                    :rules="[rules.required, rules.alphaDNum]"
+                    v-model="providerNumber"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -42,45 +43,39 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-text-field
-                  label="Physician Comments"
-                  :rules="[(v) => v.length <= 150 || 'Max 150 characters']"
-                  :counter="150"
-                  v-model="physicianComments"
+                  label="Physician Comment"
+                  v-model="physicianComment"
                 ></v-text-field>
               </v-flex>
             </v-layout>
 
             <v-layout row>
+                <v-flex xs12 >
+                <v-alert :value="errorMessage" type="error">
+                  {{ errorMessage }}
+                </v-alert>
+                <v-alert :value="message" type="success">
+                  {{ message }}
+                </v-alert>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-btn
                   round
                   color="primary"
                   dark
-                  @click="submit"
                   :disabled="!valid"
+                  @click="submit"
                 >Submit
                 </v-btn>
                 <v-btn
-                  round color="primary"
+                  round color="secondary"
                   dark
                   @click="clear">
                   clear
                 </v-btn>
-              </v-flex>
-              <v-flex xs4>
-                <v-btn
-                  :to="{name:'viewPhysician'}"
-                  round
-                  color="primary"
-                  dark
-                >View All
-                </v-btn>
-              </v-flex>
-            </v-layout>
-
-            <v-layout row>
-              <v-flex xs8 offset-xs2>
-              <p>{{ message }}</p>
               </v-flex>
             </v-layout>
 
@@ -93,56 +88,82 @@
   </template>
 
 <script>
-var axios = require('axios')
+import PhysicianService from '@/services/PhysicianService'
+
 export default {
   data: () => ({
-    physicianName: '',
-    providerNo: '',
-    physicianComments: '',
+    menu: false,
+    msg: 'Physician Details',
+    loading: false,
+    errorMessage: '',
+    message: '',
+
+    // Variables to store input values
     valid: true,
-    message: ''
+    physicianSurname: null,
+    physicianFirstName: '',
+    providerNumber: '',
+    physicianComment: '',
+    rules: {
+      required: value => !!value || 'This field is required',
+      alphaNum: value => {
+        const pattern = /^([a-zA-Z0-9]+)$/
+        return pattern.test(value) || 'Field must be numeric only'
+      },
+      alphaDash: value => {
+        const pattern = /^([a-zA-Z-]+)$/
+        return pattern.test(value) || 'Field must contain letters and/or dash only'
+      },
+      alphaDashApos: value => {
+        const pattern = /^([a-zA-Z-']+)$/
+        return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
+      }
+    }
   }),
+  created () {
+    // Retrieve specific physician and load into the form.
+    if (this.$route.query.physicianId) {
+      PhysicianService.getPhysician(this.$route.query.physicianId)
+        .then(function (res, err) {
+          this.physicianId = this.$route.query.physicianId
+          this.physicianSurname = res.data.physicianSurname
+          this.physicianFirstName = res.data.physicianFirstName
+          this.providerNumber = res.data.providerNumber
+          this.physicianComment = res.data.physicianComment
+        }.bind(this))
+    }
+  },
 
   methods: {
-    submit: function () {
-      // Axios is the library used to send data to the API. First, make sure you have your server AND your Vue running.
-      // First, verify the form input is valid:
-      if (this.validForm()) {
-        this.message = ''
-        // Next, we'll do a POST call to the API using Axios
-        // Axios takes a URL and an object.
-
-        var url = 'http://localhost:3000/api/v1/query/physician'
-        axios.post(url,
-          {
-            // Below are the name: value pairs we are sending. In my case, I have name, number and comment.
-            // These are whatever you called them when you made the API.
-            name: this.physicianName,
-            number: this.providerNo,
-            comment: this.physicianComments
-          })
-        // This is what we want to do AFTER the POST request is finished. In my case, I want to make sure the response
-        // was valid and then display a confirmation message at the bottom of the screen.
-          .then(function (response) {
-            if (response.data['status'] === 200) {
-              this.message = 'Physician added successfully.'
-              this.clear()
-            }
-          }.bind(this)) // This bind() function allows you to use the 'this' keyword inside the then() function.
-          // Then finally a catch function in case the server can't add the new value for whatever reason.
-          .catch(function (error) {
-            this.message = 'There was an error adding the Physician: ' +
-              error.stack
-          }.bind(this))
+    async submit () {
+      this.errorMessage = ''
+      this.message = ''
+      var physicianId = this.$route.query.physicianId
+      var values = {
+        physicianSurname: this.physicianSurname,
+        physicianFirstName: this.physicianFirstName,
+        providerNumber: this.providerNumber,
+        physicianComment: this.physicianComment
+      }
+      if (this.validForm() && physicianId != null) {
+        try {
+          await PhysicianService.updatePhysician(physicianId, values)
+          this.clear()
+          this.message = 'Record updated successfully!'
+        } catch (error) {
+          this.errorMessage = error.response.data.error
+        }
       } else {
-        this.message = 'There was an error with your form.'
+        this.errorMessage = 'There was an error with your form.'
       }
     },
     clear: function () {
       this.$refs.form.reset()
+      this.message = ''
+      this.errorMessage = ''
     },
     validForm: function () {
-      return true
+      return this.$refs.form.validate()
     }
   }
 }
