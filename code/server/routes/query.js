@@ -543,4 +543,82 @@ router.get('/physician', isAuthenticated, function (req, res) {
   })
 })
 
+// The Error Type update route. The get is for retrieving details for a specific Error Type and the post is for updating details
+router.get('/errortype/:id', isAuthenticated, function (req, res) {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() })
+  }
+  console.log('User id: ' + req.params.id)
+  model.errortype.find({
+    where: {
+      id: req.params.id
+    }
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post(
+  '/errortype/:id',
+  isAuthenticated,
+  // Input validation
+  check('errorType').not().isEmpty(),
+  function (req, res, next) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() })
+    }
+    async function updateErrorType (req, res, next) {
+      var errorTypeId = req.params.id
+      var values = {
+        errorType: req.body.errorType
+      }
+      var selector = {
+        where: { id: errorTypeId }
+      }
+      model.errortype.update(values, selector)
+        .then(() => {
+          res.send('Updated')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('error has occurred: ' + error)
+        })
+    }
+
+    updateErrorType(req, res, next)
+  })
+
+// The Error Type route. The get is for retrieving details and the post is for adding details
+router.get('/errortype', isAuthenticated, function (req, res) {
+  model.errortype.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post(
+  '/errortype',
+  isAuthenticated,
+  // Input validation
+  check('errorType').not().isEmpty(),
+  function (req, res, next) {
+    async function addErrorType (req, res, next) {
+      model.errortype.create({
+        errorType: req.body.errorType
+      })
+        .then(() => {
+          res.send('success')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('An error occurred while creating an worker type: ' + error)
+        })
+    }
+
+    addErrorType(req, res, next)
+  })
+
 module.exports = router
