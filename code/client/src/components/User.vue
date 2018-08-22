@@ -111,7 +111,7 @@ export default {
       if (this.validForm()) {
         try {
           await UserService.create({
-            email: this.login,
+            username: this.login,
             password: this.password,
             authlevel: this.authlevel
           })
