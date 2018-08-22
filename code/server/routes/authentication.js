@@ -13,10 +13,10 @@ function jwtSignUser (user) {
 
 router.post('/login', function (req, res) {
   try {
-    const {email, password} = req.body
+    const {username, password} = req.body
     model.login.findOne({
       where: {
-        email: email
+        username: username
       }
     }).then(function (user) {
       if (!user) {

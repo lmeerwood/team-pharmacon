@@ -13,7 +13,7 @@ export default new Vuex.Store({
     token: null,
     user: {
       authlevel: 0,
-      email: ''
+      username: ''
     },
     isUserLoggedIn: false,
     showFields: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
@@ -29,7 +29,7 @@ export default new Vuex.Store({
     clearUser (state) {
       state.user = {
         authlevel: 0,
-        email: ''
+        username: ''
       }
     },
     setFields (state, showFields) {
