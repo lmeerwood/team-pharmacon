@@ -88,6 +88,10 @@ var router = new Router({
 router.beforeEach((to, from, next) => {
   if (to.name !== 'Login' && store.state.token === null) {
     next('/login')
+  } else if (to.name !== 'Error' && store.state.user.authlevel === 1) {
+    next('/Error')
+  } else if (to.name === 'Login' && store.state.user.authlevel === 2) {
+    next('/adminWelcome')
   } else {
     next()
   }
