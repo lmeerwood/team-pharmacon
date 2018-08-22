@@ -75,10 +75,10 @@ export default {
     rules: {
       required: value => !!value || 'This field is required'
     },
-      alphaDashApos: value => {
-        const pattern = /^([a-zA-Z-' ]+)$/
-        return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
-      }
+    alphaDashApos: value => {
+      const pattern = /^([a-zA-Z-' ]+)$/
+      return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
+    }
   }),
   created () {
     // Retrieve specific error type and load into the form.
