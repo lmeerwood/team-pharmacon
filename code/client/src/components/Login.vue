@@ -144,9 +144,16 @@ export default {
           })
           this.$store.dispatch('setToken', response.data.token)
           this.$store.dispatch('setUser', response.data.user)
-          this.$router.push({
-            name: 'adminWelcome'
-          })
+          var authlevel = this.$store.state.user.authlevel
+          if (authlevel === 2) {
+            this.$router.push({
+              name: 'adminWelcome'
+            })
+          } else {
+            this.$router.push({
+              name: 'Error'
+            })
+          }
         } catch (error) {
           this.error = error.response.data.error
         }
