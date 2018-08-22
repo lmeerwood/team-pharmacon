@@ -22,7 +22,7 @@
       <td class="justify-left layout px-0">
         <v-icon
           small
-          class="mr-2"
+          class="mr-4"
           @click="editItem(props.item.id)"
           >
           edit

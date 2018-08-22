@@ -497,6 +497,49 @@ router.post('/severity',
       })
   })
 
+// ChangePassword post function
+router.post('/changePassword', function (req, res, next) {
+  model.login.findOne({
+    where: {
+      email: req.body.email
+    }
+  }).then(user => {
+    console.log('we are now in the then function')
+    if (!user) {
+      return res.status(403).send({
+        error: 'The login information was incorrect'
+      })
+    }
+    console.log('the values are: password - ' + user.password)
+    var valid = user.comparePassword(req.body.password)
+    if (!valid) {
+      return res.status(403).send({
+        error: 'The login information was incorrect'
+      })
+    }
+    var passwordsMatch = user.compareTwoPasswords(req.body.newPassword, req.body.checkPassword)
+    if (!passwordsMatch) {
+      return res.status(403).send({
+        error: 'Your new passwords do not match'
+      })
+    }
+    console.log('I am about to update the record!!!!')
+    model.login.update(
+      {password: req.body.newPassword},
+      {where: {email: req.body.email}}
+    ).then(function (qres) {
+      return res.send(qres)
+    }).catch((error) => {
+      res.status(500)
+      res.send('error has occurred: ' + error)
+    })
+  })
+    .catch((error) => {
+      res.status(500)
+      res.send('error has occurred: ' + error)
+    })
+})
+
 // The Physician update route. The get is for retrieving details for a specific physician and the post is for updating details
 router.get('/physician/:id', isAuthenticated, function (req, res) {
   model.physician.find({

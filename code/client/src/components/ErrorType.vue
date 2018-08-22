@@ -13,7 +13,7 @@
               <v-flex xs8 offset-xs2>
               <v-text-field
                 label="Error Type"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.alphaDashApos]"
                 v-model="errorType"
               ></v-text-field>
               </v-flex>
@@ -74,7 +74,11 @@ export default {
     errorType: '',
     rules: {
       required: value => !!value || 'This field is required'
-    }
+    },
+      alphaDashApos: value => {
+        const pattern = /^([a-zA-Z-' ]+)$/
+        return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
+      }
   }),
   created () {
     // Retrieve specific error type and load into the form.
