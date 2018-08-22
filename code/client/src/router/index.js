@@ -13,6 +13,8 @@ import searchWorker from '@/components/searchWorker'
 import store from '@/store/store'
 import Worker from '@/components/Worker'
 import adminWelcome from '@/components/adminWelcome'
+import ErrorType from '@/components/ErrorType'
+import searchErrorType from '@/components/searchErrorType'
 
 Vue.use(Router)
 
@@ -81,6 +83,16 @@ var router = new Router({
       path: '/searchPhysician',
       name: 'searchPhysician',
       component: searchPhysician
+    },
+    {
+      path: '/errortype',
+      name: 'ErrorType',
+      component: ErrorType
+    },
+    {
+      path: '/searchErrorType',
+      name: 'searchErrorType',
+      component: searchErrorType
     }
   ]
 })
