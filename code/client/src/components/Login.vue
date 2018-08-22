@@ -145,6 +145,7 @@ export default {
           this.$store.dispatch('setToken', response.data.token)
           this.$store.dispatch('setUser', response.data.user)
           var authlevel = this.$store.state.user.authlevel
+          // checks if user is admin or standard user
           if (authlevel === 2) {
             this.$router.push({
               name: 'adminWelcome'
