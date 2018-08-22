@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     return password === this.password
   }
 
+  Login.prototype.compareTwoPasswords = function (newPassword, checkPassword) {
+    return newPassword === checkPassword
+  }
+
   Login.associate = function (models) {
   }
 

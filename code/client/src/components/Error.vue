@@ -129,7 +129,7 @@
                   <v-text-field
                     label="Medication Given"
                     v-model="medication"
-                    :rules="[rules.required, rules.alphaNum]"
+                    :rules="[rules.required, rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -154,6 +154,7 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Error Description or General Comment"
+                    :rules="[rules.alphaDashApos]"
                     v-model="errorComment"
                   ></v-text-field>
                 </v-flex>
@@ -286,6 +287,7 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Comments"
+                    :rules="[rules.alphaDashApos]"
                     v-model="physicianComment"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>
@@ -296,6 +298,7 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Diagnosis"
+                    :rules="[rules.alphaDashApos]"
                     v-model="diagnosis"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
                   ></v-text-field>

@@ -67,7 +67,7 @@ export default {
       .then(function (res, err) {
         var i
         for (i = 0; i < res.data.length; i++) {
-          console.log(res.data)
+          console.log('Worker search: ' + res.data[i].id)
           this.workers.push({
             id: res.data[i].id,
             workerFirstName: res.data[i].workerFirstName,
