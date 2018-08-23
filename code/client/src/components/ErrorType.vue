@@ -73,19 +73,11 @@ export default {
     errorTypeId: '',
     errorType: '',
     rules: {
-<<<<<<< HEAD
       required: value => !!value || 'This field is required',
       alphaDashApos: value => {
         const pattern = /^([a-zA-Z-' ]+)$/
         return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
       }
-=======
-      required: value => !!value || 'This field is required'
-    },
-    alphaDashApos: value => {
-      const pattern = /^([a-zA-Z-' ]+)$/
-      return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
->>>>>>> 529174f0606c891e852a01067c49ec728daf35e1
     }
   }),
   created () {
