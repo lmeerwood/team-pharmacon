@@ -15,6 +15,7 @@ import Worker from '@/components/Worker'
 import adminWelcome from '@/components/adminWelcome'
 import ErrorType from '@/components/ErrorType'
 import searchErrorType from '@/components/searchErrorType'
+import MedicationType from '@/components/MedicationType'
 
 Vue.use(Router)
 
@@ -93,6 +94,11 @@ var router = new Router({
       path: '/searchErrorType',
       name: 'searchErrorType',
       component: searchErrorType
+    },
+    {
+      path: '/medicationtype',
+      name: 'MedicationType',
+      component: MedicationType
     }
   ]
 })
