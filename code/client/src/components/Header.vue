@@ -7,7 +7,7 @@
     <v-toolbar-items v-if="authlevel !== 0" >
       <v-btn :to="{name:'adminWelcome'}" v-if="authlevel === 2" flat>Admin Home</v-btn>
       <v-btn :to="{name:'Error'}" flat>Log Error</v-btn>
-      
+
       <v-menu open-on-hover open-delay=50 offset-y bottom>
         <v-btn flat slot="activator">
           Search...
