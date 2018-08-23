@@ -1,13 +1,16 @@
 {
     "version": "0.2.0",
     "configurations": [
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Remote debugging",
-            "sourceMaps": true,
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceRoot}"
-        },
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "vuejs: chrome",
+        "url": "http://localhost:8080",
+        "webRoot": "${workspaceFolder}/code/client/src",
+        "breakOnLoad": true,
+        "sourceMapPathOverrides": {
+          "webpack:///src/*": "${webRoot}/*"
+        }
+      }
     ]
   }
