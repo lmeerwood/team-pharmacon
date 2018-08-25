@@ -281,6 +281,10 @@ router.get('/error', isAuthenticated, function (req, res) {
 
 router.post('/error',
   isAuthenticated,
+  // input validation
+  check('errorDate').not().isEmpty(),
+  check('errorTime').not().isEmpty(),
+  check('errorTypeId').not().isEmpty(),
 
   check('patientId').not().isEmpty(),
   check('patientFirstName').not().isEmpty(),
@@ -289,7 +293,12 @@ router.post('/error',
 
   check('medicationName').not().isEmpty(),
   check('medicationtypeId').not().isEmpty(),
-  check('medication').not().isEmpty(),
+
+  check('errorCausedByWorker').not().isEmpty(),
+  check('wasWorkerNotified').not().isEmpty(),
+  check('locationId').not().isEmpty(),
+  check('iimsCompleted').not().isEmpty(),
+  check('severityId').not().isEmpty(),
 
   function (req, res, next) {
   /**
