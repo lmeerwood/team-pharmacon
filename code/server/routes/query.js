@@ -592,7 +592,7 @@ router.get('/errortype/:id', isAuthenticated, function (req, res) {
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
   }
-  console.log('User id: ' + req.params.id)
+  console.log('ErrorType id: ' + req.params.id)
   model.errortype.find({
     where: {
       id: req.params.id
@@ -670,7 +670,7 @@ router.get('/medicationtype/:id', isAuthenticated, function (req, res) {
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
   }
-  console.log('User id: ' + req.params.id)
+  console.log('MedicationType id: ' + req.params.id)
   model.medicationtype.find({
     where: {
       id: req.params.id

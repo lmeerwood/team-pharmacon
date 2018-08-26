@@ -6,9 +6,9 @@
     <v-spacer></v-spacer>
     <v-toolbar-items v-if="authlevel !== 0" >
       <v-btn :to="{name:'adminWelcome'}" v-if="authlevel === 2" flat>Admin Home</v-btn>
-      <v-btn :to="{name:'Error'}" flat>Log Error</v-btn>
+      <v-btn :to="{name:'Error'}" flat v-if="authlevel === 2">Log Error</v-btn>
 
-      <v-menu open-on-hover open-delay=50 offset-y bottom>
+      <v-menu open-on-hover open-delay=50 offset-y bottom v-if="authlevel === 2">
         <v-btn flat slot="activator">
           Search...
           <v-icon>arrow_drop_down</v-icon>
@@ -29,6 +29,12 @@
 
           <v-list-tile>
             <v-list-tile-action>
+              <v-btn :to="{name:'searchMedicationType'}" v-if="authlevel === 2" flat>Search Medication Types</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
               <v-btn :to="{name:'searchPhysician'}" v-if="authlevel === 2" flat>Search Physician</v-btn>
             </v-list-tile-action>
           </v-list-tile>
@@ -41,7 +47,7 @@
         </v-list>
       </v-menu>
 
-      <v-menu open-on-hover open-delay=50 offset-y bottom>
+      <v-menu open-on-hover open-delay=50 offset-y bottom v-if="authlevel === 2" >
         <v-btn flat slot="activator">
           Manage...
           <v-icon>arrow_drop_down</v-icon>

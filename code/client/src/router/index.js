@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Main from '@/components/Main'
 import Error from '@/components/Error'
 import toggleError from '@/components/toggleError'
 import Login from '@/components/Login'
@@ -16,6 +15,7 @@ import adminWelcome from '@/components/adminWelcome'
 import ErrorType from '@/components/ErrorType'
 import searchErrorType from '@/components/searchErrorType'
 import MedicationType from '@/components/MedicationType'
+import searchMedicationType from '@/components/searchMedicationType'
 
 Vue.use(Router)
 
@@ -23,12 +23,7 @@ var router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/main'
-    },
-    {
-      path: '/main',
-      name: 'Main',
-      component: Main
+      redirect: '/adminWelcome'
     },
     {
       path: '/error',
@@ -99,13 +94,27 @@ var router = new Router({
       path: '/medicationtype',
       name: 'MedicationType',
       component: MedicationType
+    },
+    {
+      path: '/searchmedicationtype',
+      name: 'searchMedicationType',
+      component: searchMedicationType
     }
   ]
 })
 
+// This provides some authentication level checking. If the user is not authenticated
+// they will always be redirected to the login page. If the user is a standard user
+// they will always be redirected to the error page. If the user is an admin user
+// they will be only redirected away from the login page.
+
 router.beforeEach((to, from, next) => {
   if (to.name !== 'Login' && store.state.token === null) {
     next('/login')
+  } else if (to.name !== 'Error' && store.state.user.authlevel === 1) {
+    next('/Error')
+  } else if (to.name === 'Login' && store.state.user.authlevel === 2) {
+    next('/adminWelcome')
   } else {
     next()
   }

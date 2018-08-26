@@ -1,7 +1,7 @@
 <template>
 <v-card>
   <v-card-title>
-    Search Error Types
+    Search Medication Types
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -13,12 +13,12 @@
       </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="errorTypes"
+      :items="medicationTypes"
       :search="search"
       >
     <template slot="items" slot-scope="props">
       <td>{{ props.item.id }}</td>
-      <td class="text-xs-center">{{ props.item.errorType }}</td>
+      <td class="text-xs-center">{{ props.item.medicationType }}</td>
       <td class="justify-left layout px-0">
         <v-icon
           small
@@ -37,34 +37,34 @@
 </template>
 
 <script>
-import ErrorType from '@/services/ErrortypeService'
+import MedicationType from '@/services/MedicationtypeService'
 export default {
   data: () => ({
     search: '',
-    errorTypes: [],
+    medicationTypes: [],
     id: '',
     generalComment: '',
     carbs: '',
     protein: '',
     headers: [
       {
-        text: 'Error Type ID',
+        text: 'Medication Type ID',
         align: 'left',
         sortable: true,
         value: 'id'
       },
-      { text: 'Error Type', align: 'center', value: 'errorType' }
+      { text: 'Medication Type', align: 'center', value: 'medicationType' }
     ]
   }),
   created () {
-    ErrorType.getAll()
+    MedicationType.getAll()
       .then(function (res, err) {
         var i
         for (i = 0; i < res.data.length; i++) {
-          console.log('Error Type search: ' + res.data[i].id)
-          this.errorTypes.push({
+          console.log('Medication Type search: ' + res.data[i].id)
+          this.medicationTypes.push({
             id: res.data[i].id,
-            errorType: res.data[i].errorType
+            medicationType: res.data[i].medicationType
           })
         }
       }.bind(this))
@@ -72,7 +72,7 @@ export default {
   methods: {
     editItem (id) {
       console.log('id in editItem' + id)
-      this.$router.push('errortype?errorTypeId=' + id)
+      this.$router.push('medicationType?medicationTypeId=' + id)
     }
   }
 }

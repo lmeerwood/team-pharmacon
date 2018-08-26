@@ -101,7 +101,7 @@ export default {
       if (this.validForm() && medicationTypeId !== undefined) {
         console.log('inside update medication type. ID: ' + medicationTypeId)
         try {
-          await MedicationtypeService.updateMedicationType(medicationTypeId, this.medicationType)
+          await MedicationtypeService.updateMedicationType(medicationTypeId, values)
           this.clear()
           this.message = 'Record updated successfully!'
         } catch (error) {
@@ -110,7 +110,7 @@ export default {
       } else if (this.validForm()) {
         console.log('inside add medication type. Values: ' + this.medicationType)
         try {
-          await MedicationtypeService.addMedicationType(this.medicationType)
+          await MedicationtypeService.addMedicationType(values)
           this.clear()
           this.message = 'Record added successfully!'
         } catch (error) {
