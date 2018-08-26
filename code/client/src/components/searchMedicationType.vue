@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     editItem (id) {
-      console.log('id in editItem' + id)
+      console.log('Medication id in editItem ' + id)
       this.$router.push('medicationType?medicationTypeId=' + id)
     }
   }

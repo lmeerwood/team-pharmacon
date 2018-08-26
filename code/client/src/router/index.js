@@ -16,6 +16,8 @@ import ErrorType from '@/components/ErrorType'
 import searchErrorType from '@/components/searchErrorType'
 import MedicationType from '@/components/MedicationType'
 import searchMedicationType from '@/components/searchMedicationType'
+import PatientType from '@/components/PatientType'
+import searchPatientType from '@/components/searchPatientType'
 
 Vue.use(Router)
 
@@ -99,6 +101,16 @@ var router = new Router({
       path: '/searchmedicationtype',
       name: 'searchMedicationType',
       component: searchMedicationType
+    },
+    {
+      path: '/patienttype',
+      name: 'PatientType',
+      component: PatientType
+    },
+    {
+      path: '/searchpatienttype',
+      name: 'searchPatientType',
+      component: searchPatientType
     }
   ]
 })

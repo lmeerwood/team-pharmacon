@@ -105,7 +105,7 @@ export default {
           this.clear()
           this.message = 'Record updated successfully!'
         } catch (error) {
-          this.errorMessage = error.response.data.errorType
+          this.errorMessage = error.response.data.medicationType
         }
       } else if (this.validForm()) {
         console.log('inside add medication type. Values: ' + this.medicationType)
@@ -114,7 +114,7 @@ export default {
           this.clear()
           this.message = 'Record added successfully!'
         } catch (error) {
-          this.errorMessage = error.response.data.errorType
+          this.errorMessage = error.response.data.medicationType
         }
       } else {
         this.errorMessage = 'There was an error with your form.'
