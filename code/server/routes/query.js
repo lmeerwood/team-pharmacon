@@ -409,28 +409,6 @@ router.post('/errortype',
       })
   })
 
-// The patienttype route. The get is for retrieving details and the post is for adding details
-router.get('/patienttype', isAuthenticated, function (req, res) {
-  model.patienttype.findAll({
-    limit: 100
-  }).then(function (qres) {
-    res.send(qres)
-  })
-})
-
-router.post('/patienttype',
-  isAuthenticated,
-  check('patienttype').not().isEmpty(),
-  function (req, res, next) {
-    model.patienttype.create(req.body)
-      .then(function (qres) {
-        res.send(qres)
-      })
-      .catch(function (e) {
-        res.send('An error occurred while creating a patient type! ' + e)
-      })
-  })
-
 // The worker route. The get is for retrieving details and the post is for adding details
 router.get('/worker', isAuthenticated, function (req, res) {
   model.worker.findAll({
@@ -440,29 +418,7 @@ router.get('/worker', isAuthenticated, function (req, res) {
   })
 })
 
-// The medication type route. The get is for retrieving details and the post is for adding details
-router.get('/medicationtype', isAuthenticated, function (req, res) {
-  model.medicationtype.findAll({
-    limit: 100
-  }).then(function (qres) {
-    res.send(qres)
-  })
-})
-
-router.post('/medicationtype',
-  isAuthenticated,
-  check('medicationtype').not().isEmpty(),
-  function (req, res, next) {
-    model.medicationtype.create(req.body)
-      .then(function (qres) {
-        res.send(qres)
-      })
-      .catch(function (e) {
-        res.send('An error occurred creating a new medication type! ' + e)
-      })
-  })
-
-// The medication type route. The get is for retrieving details and the post is for adding details
+// The locations route. The get is for retrieving details and the post is for adding details
 router.get('/locations', isAuthenticated, function (req, res) {
   model.location.findAll({
     limit: 100
@@ -601,7 +557,7 @@ router.get('/errortype/:id', isAuthenticated, function (req, res) {
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
   }
-  console.log('User id: ' + req.params.id)
+  console.log('ErrorType id: ' + req.params.id)
   model.errortype.find({
     where: {
       id: req.params.id
@@ -671,6 +627,195 @@ router.post(
     }
 
     addErrorType(req, res, next)
+  })
+
+// The Medication Type update route. The get is for retrieving details for a specific Medication Type and the post is for updating details
+router.get('/medicationtype/:id', isAuthenticated, function (req, res) {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() })
+  }
+  console.log('MedicationType id: ' + req.params.id)
+  model.medicationtype.find({
+    where: {
+      id: req.params.id
+    }
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post(
+  '/medicationtype/:id',
+  isAuthenticated,
+  // Input validation
+  check('medicationType').not().isEmpty(),
+  function (req, res, next) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() })
+    }
+    async function updateMedicationType (req, res, next) {
+      var medicationTypeId = req.params.id
+      console.log('Server side post update Med Type id: ' + req.params.id)
+      var values = {
+        medicationType: req.body.medicationType
+      }
+      var selector = {
+        where: { id: medicationTypeId }
+      }
+      model.medicationtype.update(values, selector)
+        .then(() => {
+          res.send('Updated')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('error has occurred: ' + error)
+        })
+    }
+
+    updateMedicationType(req, res, next)
+  })
+
+// The Medication Type route. The get is for retrieving details and the post is for adding details
+router.get('/medicationtype', isAuthenticated, function (req, res) {
+  model.medicationtype.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post(
+  '/medicationtype',
+  isAuthenticated,
+  // Input validation
+  check('medicationType').not().isEmpty(),
+  function (req, res, next) {
+    async function addMedicationType (req, res, next) {
+      console.log('inside query - add medication type. Values: ' + req.body.medicationType)
+      model.medicationtype.create({
+        medicationType: req.body.medicationType
+      })
+        .then(() => {
+          res.send('success')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('An error occurred while creating an medication type: ' + error)
+        })
+    }
+
+    addMedicationType(req, res, next)
+  })
+
+router.post('/medicationtype',
+  isAuthenticated,
+  check('medicationtype').not().isEmpty(),
+  function (req, res, next) {
+    model.medicationtype.create(req.body)
+      .then(function (qres) {
+        res.send(qres)
+      })
+      .catch(function (e) {
+        res.send('An error occurred creating a new medication type! ' + e)
+      })
+  })
+
+// The patienttype route. The get is for retrieving details and the post is for adding details
+router.get('/patienttype', isAuthenticated, function (req, res) {
+  model.patienttype.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+// The Patient Type update route. The get is for retrieving details for a specific Patient Type and the post is for updating details
+router.get('/patienttype/:id', isAuthenticated, function (req, res) {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() })
+  }
+  console.log('Server side get PatientType id: ' + req.params.id)
+  model.patienttype.find({
+    where: {
+      id: req.params.id
+    }
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/patienttype',
+  isAuthenticated,
+  check('patienttype').not().isEmpty(),
+  function (req, res, next) {
+    model.patienttype.create(req.body)
+      .then(function (qres) {
+        res.send(qres)
+      })
+      .catch(function (e) {
+        res.send('An error occurred while creating a patient type! ' + e)
+      })
+  })
+
+router.post(
+  '/patienttype',
+  isAuthenticated,
+  // Input validation
+  check('patienttype').not().isEmpty(),
+  function (req, res, next) {
+    async function addPatientType (req, res, next) {
+      console.log('inside query - add patient type. Values: ' + req.body.patientType)
+      model.patienttype.create({
+        patientType: req.body.patientType
+      })
+        .then(() => {
+          res.send('success')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('An error occurred while creating an patient type: ' + error)
+        })
+    }
+
+    addPatientType(req, res, next)
+  })
+
+router.post(
+  '/patienttype/:id',
+  isAuthenticated,
+  // Input validation
+  check('patienttype').not().isEmpty(),
+  function (req, res, next) {
+    const errors = validationResult(req)
+    console.log('isEmpty: ' + !errors.isEmpty())
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() })
+    }
+
+    async function updatePatientType (req, res, next) {
+      var patientTypeId = req.params.id
+      console.log('Server side post update Patient Type id: ' + req.params.id)
+      console.log('Server side post update Patient Type: ' + req.body.patientType)
+      var values = {
+        patientType: req.body.patientType
+      }
+      var selector = {
+        where: { id: patientTypeId }
+      }
+      model.patienttype.update(values, selector)
+        .then(() => {
+          res.send('Updated')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('error has occurred: ' + error)
+        })
+    }
+
+    updatePatientType(req, res, next)
   })
 
 module.exports = router
