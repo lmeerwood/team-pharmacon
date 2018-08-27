@@ -37,6 +37,30 @@
                 <v-btn
                   round color="primary"
                   dark
+                  :to="{name: 'searchErrorType'}">
+                  Search Error Types
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'searchMedicationType'}">
+                  Search Medication Types
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'searchPatientType'}">
+                  Search Patient Types
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
                   :to="{name: 'searchPhysician'}">
                   Search Physicians
                 </v-btn>
@@ -47,6 +71,38 @@
                   dark
                   :to="{name: 'searchWorker'}">
                   Search Workers
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'ErrorType'}">
+                  Manage Error Types
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'MedicationType'}">
+                  Manage Medication Types
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'PatientType'}">
+                  Manage Patient Types
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'Physician'}">
+                  Manage Physicians
                 </v-btn>
               </div>
               <div>
