@@ -780,15 +780,12 @@ router.post(
   // Input validation
   check('patienttype').not().isEmpty(),
   function (req, res, next) {
-
-    console.log('Server side post before update Patient Type id: ' + req.params.id)
-    console.log('Server side post before update Patient Type: ' + req.body.patientType)
-    
     const errors = validationResult(req)
+    console.log('isEmpty: ' + !errors.isEmpty())
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() })
     }
-    
+
     async function updatePatientType (req, res, next) {
       var patientTypeId = req.params.id
       console.log('Server side post update Patient Type id: ' + req.params.id)
