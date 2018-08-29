@@ -29,6 +29,12 @@
 
           <v-list-tile>
             <v-list-tile-action>
+              <v-btn :to="{name:'searchMedicationType'}" v-if="authlevel === 2" flat>Search Medication Types</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
               <v-btn :to="{name:'searchPhysician'}" v-if="authlevel === 2" flat>Search Physician</v-btn>
             </v-list-tile-action>
           </v-list-tile>
@@ -62,6 +68,12 @@
           <v-list-tile>
             <v-list-tile-action>
               <v-btn :to="{name:'ErrorType'}" v-if="authlevel === 2" flat>Manage Error Type</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'MedicationType'}" v-if="authlevel === 2" flat>Manage Medication Type</v-btn>
             </v-list-tile-action>
           </v-list-tile>
 

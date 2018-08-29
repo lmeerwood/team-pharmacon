@@ -12,9 +12,9 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
               <v-text-field
-                label="Error Type"
+                label="Medication Type"
                 :rules="[rules.required, rules.alphaDashApos]"
-                v-model="errorType"
+                v-model="medicationType"
               ></v-text-field>
               </v-flex>
               </v-layout>
@@ -58,20 +58,20 @@
   </template>
 
 <script>
-import ErrortypeService from '@/services/ErrortypeService'
+import MedicationtypeService from '@/services/MedicationtypeService'
 
 export default {
   data: () => ({
     menu: false,
-    msg: 'Error Type Details',
+    msg: 'Medication Type Details',
     loading: false,
     errorMessage: '',
     message: '',
 
     // Variables to store input values
     valid: true,
-    errorTypeId: '',
-    errorType: '',
+    medicationTypeId: '',
+    medicationType: '',
     rules: {
       required: value => !!value || 'This field is required',
       alphaDashApos: value => {
@@ -81,12 +81,12 @@ export default {
     }
   }),
   created () {
-    // Retrieve specific error type and load into the form.
-    if (this.$route.query.errorTypeId) {
-      ErrortypeService.getErrorType(this.$route.query.errorTypeId)
+    // Retrieve specific medication type and load into the form.
+    if (this.$route.query.medicationTypeId) {
+      MedicationtypeService.getMedicationType(this.$route.query.medicationTypeId)
         .then(function (res, err) {
-          this.errorTypeId = this.$route.query.errorTypeId
-          this.errorType = res.data.errorType
+          this.medicationTypeId = this.$route.query.medicationTypeId
+          this.medicationType = res.data.medicationType
         }.bind(this))
     }
   },
@@ -94,23 +94,23 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
-      var errorTypeId = this.$route.query.errorTypeId
+      var medicationTypeId = this.$route.query.medicationTypeId
       var values = {
-        errorType: this.errorType
+        medicationType: this.medicationType
       }
-      if (this.validForm() && errorTypeId !== undefined) {
-        console.log('inside update error type. ID: ' + errorTypeId)
+      if (this.validForm() && medicationTypeId !== undefined) {
+        console.log('inside update medication type. ID: ' + medicationTypeId)
         try {
-          await ErrortypeService.updateErrorType(errorTypeId, values)
+          await MedicationtypeService.updateMedicationType(medicationTypeId, values)
           this.clear()
           this.message = 'Record updated successfully!'
         } catch (error) {
           this.errorMessage = error.response.data.errorType
         }
       } else if (this.validForm()) {
-        console.log('inside add error type. Values: ' + values)
+        console.log('inside add medication type. Values: ' + this.medicationType)
         try {
-          await ErrortypeService.addErrorType(values)
+          await MedicationtypeService.addMedicationType(values)
           this.clear()
           this.message = 'Record added successfully!'
         } catch (error) {

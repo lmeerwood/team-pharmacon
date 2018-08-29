@@ -592,7 +592,7 @@ router.get('/errortype/:id', isAuthenticated, function (req, res) {
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
   }
-  console.log('User id: ' + req.params.id)
+  console.log('ErrorType id: ' + req.params.id)
   model.errortype.find({
     where: {
       id: req.params.id
@@ -662,6 +662,85 @@ router.post(
     }
 
     addErrorType(req, res, next)
+  })
+
+// The Medication Type update route. The get is for retrieving details for a specific Error Type and the post is for updating details
+router.get('/medicationtype/:id', isAuthenticated, function (req, res) {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() })
+  }
+  console.log('MedicationType id: ' + req.params.id)
+  model.medicationtype.find({
+    where: {
+      id: req.params.id
+    }
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post(
+  '/medicationtype/:id',
+  isAuthenticated,
+  // Input validation
+  check('medicationType').not().isEmpty(),
+  function (req, res, next) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() })
+    }
+    async function updateMedicationType (req, res, next) {
+      var medicationTypeId = req.params.id
+      var values = {
+        medicationType: req.body.medicationType
+      }
+      var selector = {
+        where: { id: medicationTypeId }
+      }
+      model.medicationtype.update(values, selector)
+        .then(() => {
+          res.send('Updated')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('error has occurred: ' + error)
+        })
+    }
+
+    updateMedicationType(req, res, next)
+  })
+
+// The Medication Type route. The get is for retrieving details and the post is for adding details
+router.get('/medicationtype', isAuthenticated, function (req, res) {
+  model.medicationtype.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post(
+  '/medicationtype',
+  isAuthenticated,
+  // Input validation
+  check('medicationType').not().isEmpty(),
+  function (req, res, next) {
+    async function addMedicationType (req, res, next) {
+      console.log('inside query - add medication type. Values: ' + req.body.medicationType)
+      model.medicationtype.create({
+        medicationType: req.body.medicationType
+      })
+        .then(() => {
+          res.send('success')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('An error occurred while creating an worker type: ' + error)
+        })
+    }
+
+    addMedicationType(req, res, next)
   })
 
 module.exports = router
