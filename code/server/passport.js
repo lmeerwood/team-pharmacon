@@ -72,7 +72,7 @@ function (jwtPayload, cb) {
   })
     .then(user => {
       if(user.authlevel !== 2) {
-        return cb(null, false, { message: 'Not authorized for this resource'})
+        return cb(null, false)
       }
       return cb(null, user)
     })
