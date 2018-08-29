@@ -156,7 +156,7 @@ export default {
             })
           }
         } catch (error) {
-          this.error = error.response.data.error
+          this.error = 'Incorrect login details'
         }
       }
     },
