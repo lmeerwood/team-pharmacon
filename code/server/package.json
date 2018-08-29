@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "test": "node node_modules/standard/bin/cmd.js",
     "fix": "node node_modules/standard/bin/cmd.js --fix",
-    "dev": "node node_modules/nodemon/bin/nodemon.js ./bin/www --exec \"npm run test && node\""
+    "dev": "node node_modules/nodemon/bin/nodemon.js ./bin/www"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -21,6 +21,7 @@
     "nodemon": "^1.17.4",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pug": "^2.0.3",
     "sequelize": "^4.37.8"
   },
