@@ -2,10 +2,11 @@ var express = require('express')
 var router = express.Router()
 var model = require('../models')
 
-const isAuthenticated = require('../policies/isAuthenticated')
 const { check, validationResult } = require('express-validator/check')
 const { sanitize } = require('express-validator/filter')
+const passport = require('passport')
 
+// Heartbeat route
 router.get('/', function (req, res, next) {
   model.sequelize
     .authenticate()
@@ -27,7 +28,7 @@ router.get('/', function (req, res, next) {
 })
 
 // The worker update route. The get is for retrieving details for a specific worker and the post is for updating details
-router.get('/worker/:id', isAuthenticated, function (req, res) {
+router.get('/worker/:id', passport.authenticate('jwt', {session: false}), function (req, res) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
@@ -43,7 +44,7 @@ router.get('/worker/:id', isAuthenticated, function (req, res) {
 })
 
 // Check to see if the worker exists - returns true if worker ID exists, false otherwise
-router.get('/worker/isvalid/:id', isAuthenticated, function (req, res) {
+router.get('/worker/isvalid/:id', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
   model.worker.find({
     where: {
       id: req.params.id
@@ -55,7 +56,7 @@ router.get('/worker/isvalid/:id', isAuthenticated, function (req, res) {
 
 router.post(
   '/worker/:id',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   // Input validation
   check('workerFirstName').not().isEmpty(),
   check('workerSurname').not().isEmpty(),
@@ -98,7 +99,7 @@ router.post(
   })
 
 // The worker route. The get is for retrieving details and the post is for adding details
-router.get('/worker', isAuthenticated, function (req, res) {
+router.get('/worker', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.worker.findAll({
     limit: 100
   }).then(function (qres) {
@@ -108,7 +109,7 @@ router.get('/worker', isAuthenticated, function (req, res) {
 
 router.post(
   '/worker',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   // Input validation
   check('workerFirstName').not().isEmpty(),
   check('workerSurname').not().isEmpty(),
@@ -142,7 +143,7 @@ router.post(
   })
 
 // The error update route. The get is for retrieving details for a specific error and the post is for updating details
-router.get('/error/:id', isAuthenticated, function (req, res) {
+router.get('/error/:id', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
   model.error.find({
     where: {
       id: req.params.id
@@ -166,7 +167,7 @@ router.get('/error/:id', isAuthenticated, function (req, res) {
 
 router.post(
   '/error/:id',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   // Input validation
   check('patientId').not().isEmpty(),
   check('patientFirstName').not().isEmpty(),
@@ -267,7 +268,7 @@ router.post(
   })
 
 // The error route. The get is for retrieving details and the post is for adding details
-router.get('/error', isAuthenticated, function (req, res) {
+router.get('/error', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
   model.error.findAll({
     include: [
       model.patient,
@@ -280,7 +281,7 @@ router.get('/error', isAuthenticated, function (req, res) {
 })
 
 router.post('/error',
-  isAuthenticated,
+passport.authenticate('jwt', {session: false}),
 
   check('patientId').not().isEmpty(),
   check('patientFirstName').not().isEmpty(),
@@ -379,7 +380,7 @@ router.post('/error',
   })
 
 // The errortype route. The get is for retrieving details and the post is for adding details
-router.get('/errortype', isAuthenticated, function (req, res) {
+router.get('/errortype', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.errortype.findAll({
     limit: 100
   }).then(function (qres) {
@@ -388,7 +389,7 @@ router.get('/errortype', isAuthenticated, function (req, res) {
 })
 
 router.post('/errortype',
-  isAuthenticated,
+passport.authenticate('jwtAdmin', {session: false}),
   check('errorType').not().isEmpty(),
   function (req, res, next) {
     model.errortype.create(req.body)
@@ -401,7 +402,7 @@ router.post('/errortype',
   })
 
 // The worker route. The get is for retrieving details and the post is for adding details
-router.get('/worker', isAuthenticated, function (req, res) {
+router.get('/worker', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.worker.findAll({
     limit: 100
   }).then(function (qres) {
@@ -409,8 +410,30 @@ router.get('/worker', isAuthenticated, function (req, res) {
   })
 })
 
-// The locations route. The get is for retrieving details and the post is for adding details
-router.get('/locations', isAuthenticated, function (req, res) {
+// The medication type route. The get is for retrieving details and the post is for adding details
+router.get('/medicationtype', passport.authenticate('jwt', {session: false}), function (req, res) {
+  model.medicationtype.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/medicationtype',
+passport.authenticate('jwtAdmin', {session: false}),
+  check('medicationtype').not().isEmpty(),
+  function (req, res, next) {
+    model.medicationtype.create(req.body)
+      .then(function (qres) {
+        res.send(qres)
+      })
+      .catch(function (e) {
+        res.send('An error occurred creating a new medication type! ' + e)
+      })
+  })
+
+// The medication type route. The get is for retrieving details and the post is for adding details
+router.get('/locations', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.location.findAll({
     limit: 100
   }).then(function (qres) {
@@ -419,7 +442,7 @@ router.get('/locations', isAuthenticated, function (req, res) {
 })
 
 router.post('/locations',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   check('location').not().isEmpty(),
   function (req, res, next) {
     model.location.create(req.body)
@@ -432,7 +455,7 @@ router.post('/locations',
   })
 
 // The severity levels route. The get is for retrieving details and the post is for adding details
-router.get('/severity', isAuthenticated, function (req, res) {
+router.get('/severity', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.severity.findAll({
     limit: 100
   }).then(function (qres) {
@@ -441,7 +464,7 @@ router.get('/severity', isAuthenticated, function (req, res) {
 })
 
 router.post('/severity',
-  isAuthenticated,
+passport.authenticate('jwtAdmin', {session: false}),
   check('severity').not().isEmpty(),
   function (req, res, next) {
     model.severity.create(req.body)
@@ -454,7 +477,7 @@ router.post('/severity',
   })
 
 // ChangePassword post function
-router.post('/changePassword', function (req, res, next) {
+router.post('/changePassword', passport.authenticate('jwtAdmin', {session: false}), function (req, res, next) {
   model.login.findOne({
     where: {
       email: req.body.email
@@ -497,7 +520,7 @@ router.post('/changePassword', function (req, res, next) {
 })
 
 // The Physician update route. The get is for retrieving details for a specific physician and the post is for updating details
-router.get('/physician/:id', isAuthenticated, function (req, res) {
+router.get('/physician/:id', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
   model.physician.find({
     where: {
       id: req.params.id
@@ -507,7 +530,7 @@ router.get('/physician/:id', isAuthenticated, function (req, res) {
   })
 })
 
-router.post('/physician/:id', isAuthenticated, function (req, res, next) {
+router.post('/physician/:id', passport.authenticate('jwtAdmin', {session: false}), function (req, res, next) {
   async function updatePhysician (req, res, next) {
     var physicianId = req.params.id
     var values = {
@@ -534,7 +557,7 @@ router.post('/physician/:id', isAuthenticated, function (req, res, next) {
 })
 
 // The physician route. The get is for retrieving details and the post is for adding details
-router.get('/physician', isAuthenticated, function (req, res) {
+router.get('/physician', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.physician.findAll({
     limit: 100
   }).then(function (qres) {
@@ -543,7 +566,7 @@ router.get('/physician', isAuthenticated, function (req, res) {
 })
 
 // The Error Type update route. The get is for retrieving details for a specific Error Type and the post is for updating details
-router.get('/errortype/:id', isAuthenticated, function (req, res) {
+router.get('/errortype/:id', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
@@ -560,7 +583,7 @@ router.get('/errortype/:id', isAuthenticated, function (req, res) {
 
 router.post(
   '/errortype/:id',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   // Input validation
   check('errorType').not().isEmpty(),
   function (req, res, next) {
@@ -590,7 +613,7 @@ router.post(
   })
 
 // The Error Type route. The get is for retrieving details and the post is for adding details
-router.get('/errortype', isAuthenticated, function (req, res) {
+router.get('/errortype', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.errortype.findAll({
     limit: 100
   }).then(function (qres) {
@@ -600,7 +623,7 @@ router.get('/errortype', isAuthenticated, function (req, res) {
 
 router.post(
   '/errortype',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   // Input validation
   check('errorType').not().isEmpty(),
   function (req, res, next) {
@@ -621,7 +644,7 @@ router.post(
   })
 
 // The Medication Type update route. The get is for retrieving details for a specific Medication Type and the post is for updating details
-router.get('/medicationtype/:id', isAuthenticated, function (req, res) {
+router.get('/medicationtype/:id', passport.authenticate('jwt', {session: false}), function (req, res) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
@@ -638,7 +661,7 @@ router.get('/medicationtype/:id', isAuthenticated, function (req, res) {
 
 router.post(
   '/medicationtype/:id',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   // Input validation
   check('medicationType').not().isEmpty(),
   function (req, res, next) {
@@ -669,7 +692,7 @@ router.post(
   })
 
 // The Medication Type route. The get is for retrieving details and the post is for adding details
-router.get('/medicationtype', isAuthenticated, function (req, res) {
+router.get('/medicationtype', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.medicationtype.findAll({
     limit: 100
   }).then(function (qres) {
@@ -679,7 +702,7 @@ router.get('/medicationtype', isAuthenticated, function (req, res) {
 
 router.post(
   '/medicationtype',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   // Input validation
   check('medicationType').not().isEmpty(),
   function (req, res, next) {
@@ -701,7 +724,7 @@ router.post(
   })
 
 router.post('/medicationtype',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   check('medicationtype').not().isEmpty(),
   function (req, res, next) {
     model.medicationtype.create(req.body)
@@ -714,7 +737,7 @@ router.post('/medicationtype',
   })
 
 // The patienttype route. The get is for retrieving details and the post is for adding details
-router.get('/patienttype', isAuthenticated, function (req, res) {
+router.get('/patienttype', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.patienttype.findAll({
     limit: 100
   }).then(function (qres) {
@@ -723,7 +746,7 @@ router.get('/patienttype', isAuthenticated, function (req, res) {
 })
 
 // The Patient Type update route. The get is for retrieving details for a specific Patient Type and the post is for updating details
-router.get('/patienttype/:id', isAuthenticated, function (req, res) {
+router.get('/patienttype/:id', passport.authenticate('jwt', {session: false}), function (req, res) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
@@ -739,7 +762,7 @@ router.get('/patienttype/:id', isAuthenticated, function (req, res) {
 })
 
 router.post('/patienttype',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   check('patienttype').not().isEmpty(),
   function (req, res, next) {
     model.patienttype.create(req.body)
@@ -753,7 +776,7 @@ router.post('/patienttype',
 
 router.post(
   '/patienttype',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   // Input validation
   check('patienttype').not().isEmpty(),
   function (req, res, next) {
@@ -776,7 +799,7 @@ router.post(
 
 router.post(
   '/patienttype/:id',
-  isAuthenticated,
+  passport.authenticate('jwtAdmin', {session: false}),
   // Input validation
   check('patientType').not().isEmpty(),
   function (req, res, next) {
