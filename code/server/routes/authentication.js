@@ -20,21 +20,25 @@ router.post('/login', function (req, res) {
       }
     }).then(function (user) {
       if (!user) {
-        return res.status(403).send({
-          error: 'The login information was incorrect'
+        return res.status(401).send({
+          error: 'No such user'
         })
       }
 
       var valid = user.comparePassword(password)
       if (!valid) {
-        return res.status(403).send({
-          error: 'The login information was incorrect'
+        return res.status(401).send({
+          error: 'The Password was incorrect'
         })
       }
 
       const userJson = user.toJSON()
       res.send({
-        user: userJson,
+        user: {
+          'id': user.id,
+          'username': user.username,
+          'authlevel': user.authlevel
+        },
         token: jwtSignUser(userJson)
       })
     })
