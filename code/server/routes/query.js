@@ -778,10 +778,10 @@ router.post(
   '/patienttype/:id',
   isAuthenticated,
   // Input validation
-  check('patienttype').not().isEmpty(),
+  check('patientType').not().isEmpty(),
   function (req, res, next) {
     const errors = validationResult(req)
-    console.log('isEmpty: ' + !errors.isEmpty())
+    console.log('isEmpty: ' + errors.isEmpty())
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() })
     }
