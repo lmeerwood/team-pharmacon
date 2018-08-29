@@ -6,7 +6,7 @@ const isAuthenticated = require('../policies/isAuthenticated')
 const isAuthenticatedAdmin = require('../policies/isAuthenticatedAdmin')
 const { check, validationResult } = require('express-validator/check')
 const { sanitize } = require('express-validator/filter')
-
+const passport = require('passport')
 router.get('/', function (req, res, next) {
   model.sequelize
     .authenticate()
@@ -28,7 +28,7 @@ router.get('/', function (req, res, next) {
 })
 
 // The worker update route. The get is for retrieving details for a specific worker and the post is for updating details
-router.get('/worker/:id', isAuthenticatedAdmin, function (req, res) {
+router.get('/worker/:id', passport.authenticate('jwt', {session: false}), function (req, res) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
@@ -44,7 +44,7 @@ router.get('/worker/:id', isAuthenticatedAdmin, function (req, res) {
 })
 
 // Check to see if the worker exists - returns true if worker ID exists, false otherwise
-router.get('/worker/isvalid/:id', isAuthenticatedAdmin, function (req, res) {
+router.get('/worker/isvalid/:id', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
   model.worker.find({
     where: {
       id: req.params.id
