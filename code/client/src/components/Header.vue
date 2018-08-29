@@ -35,6 +35,12 @@
 
           <v-list-tile>
             <v-list-tile-action>
+              <v-btn :to="{name:'searchPatientType'}" v-if="authlevel === 2" flat>Search Patient Types</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
               <v-btn :to="{name:'searchPhysician'}" v-if="authlevel === 2" flat>Search Physician</v-btn>
             </v-list-tile-action>
           </v-list-tile>
@@ -55,18 +61,6 @@
         <v-list>
           <v-list-tile>
             <v-list-tile-action>
-              <v-btn :to="{name:'Worker'}" v-if="authlevel === 2" flat>Manage Workers</v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-
-          <v-list-tile>
-            <v-list-tile-action>
-              <v-btn :to="{name:'toggleError'}" v-if="authlevel === 2" flat>Manage Error Form</v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-
-          <v-list-tile>
-            <v-list-tile-action>
               <v-btn :to="{name:'ErrorType'}" v-if="authlevel === 2" flat>Manage Error Type</v-btn>
             </v-list-tile-action>
           </v-list-tile>
@@ -74,6 +68,30 @@
           <v-list-tile>
             <v-list-tile-action>
               <v-btn :to="{name:'MedicationType'}" v-if="authlevel === 2" flat>Manage Medication Type</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'PatientType'}" v-if="authlevel === 2" flat>Manage Patient Type</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'Physician'}" v-if="authlevel === 2" flat>Manage Physicians</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'Worker'}" v-if="authlevel === 2" flat>Manage Workers</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'toggleError'}" v-if="authlevel === 2" flat>Manage Error Form</v-btn>
             </v-list-tile-action>
           </v-list-tile>
 

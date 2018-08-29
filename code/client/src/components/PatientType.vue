@@ -12,9 +12,9 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
               <v-text-field
-                label="Medication Type"
+                label="Patient Type"
                 :rules="[rules.required, rules.alphaDashApos]"
-                v-model="medicationType"
+                v-model="patientType"
               ></v-text-field>
               </v-flex>
               </v-layout>
@@ -58,20 +58,20 @@
   </template>
 
 <script>
-import MedicationtypeService from '@/services/MedicationtypeService'
+import PatienttypeService from '@/services/PatienttypeService'
 
 export default {
   data: () => ({
     menu: false,
-    msg: 'Medication Type Details',
+    msg: 'Patient Type Details',
     loading: false,
     errorMessage: '',
     message: '',
 
     // Variables to store input values
     valid: true,
-    medicationTypeId: '',
-    medicationType: '',
+    patientTypeId: '',
+    patientType: '',
     rules: {
       required: value => !!value || 'This field is required',
       alphaDashApos: value => {
@@ -81,12 +81,12 @@ export default {
     }
   }),
   created () {
-    // Retrieve specific medication type and load into the form.
-    if (this.$route.query.medicationTypeId) {
-      MedicationtypeService.getMedicationType(this.$route.query.medicationTypeId)
+    // Retrieve specific patient type and load into the form.
+    if (this.$route.query.patientTypeId) {
+      PatienttypeService.getPatientType(this.$route.query.patientTypeId)
         .then(function (res, err) {
-          this.medicationTypeId = this.$route.query.medicationTypeId
-          this.medicationType = res.data.medicationType
+          this.patientTypeId = this.$route.query.patientTypeId
+          this.patientType = res.data.patientType
         }.bind(this))
     }
   },
@@ -94,27 +94,29 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
-      var medicationTypeId = this.$route.query.medicationTypeId
+      var patientTypeId = this.$route.query.patientTypeId
+      console.log('inside methods submit patient type. ID: ' + this.$route.query.patientTypeId)
+      console.log('inside methods submit patient type. ID: ' + this.patientType)
       var values = {
-        medicationType: this.medicationType
+        patientType: this.patientType
       }
-      if (this.validForm() && medicationTypeId !== undefined) {
-        console.log('inside update medication type. ID: ' + medicationTypeId)
+      if (this.validForm() && patientTypeId !== undefined) {
+        console.log('inside update patient type. ID: ' + patientTypeId + ' type: ' + values)
         try {
-          await MedicationtypeService.updateMedicationType(medicationTypeId, values)
+          await PatienttypeService.updatePatientType(patientTypeId, values)
           this.clear()
           this.message = 'Record updated successfully!'
         } catch (error) {
-          this.errorMessage = error.response.data.medicationType
+          this.errorMessage = error.response.data.patientType
         }
       } else if (this.validForm()) {
-        console.log('inside add medication type. Values: ' + this.medicationType)
+        console.log('inside add patient type. Values: ' + this.patientType)
         try {
-          await MedicationtypeService.addMedicationType(values)
+          await PatienttypeService.addPatientType(values)
           this.clear()
           this.message = 'Record added successfully!'
         } catch (error) {
-          this.errorMessage = error.response.data.medicationType
+          this.errorMessage = error.response.data.patientType
         }
       } else {
         this.errorMessage = 'There was an error with your form.'

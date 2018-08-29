@@ -1,7 +1,7 @@
 <template>
 <v-card>
   <v-card-title>
-    Search Medication Types
+    Search Patient Types
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -13,12 +13,12 @@
       </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="medicationTypes"
+      :items="patientTypes"
       :search="search"
       >
     <template slot="items" slot-scope="props">
       <td>{{ props.item.id }}</td>
-      <td class="text-xs-center">{{ props.item.medicationType }}</td>
+      <td class="text-xs-center">{{ props.item.patientType }}</td>
       <td class="justify-left layout px-0">
         <v-icon
           small
@@ -37,42 +37,42 @@
 </template>
 
 <script>
-import MedicationType from '@/services/MedicationtypeService'
+import PatientType from '@/services/PatienttypeService'
 export default {
   data: () => ({
     search: '',
-    medicationTypes: [],
+    patientTypes: [],
     id: '',
     generalComment: '',
     carbs: '',
     protein: '',
     headers: [
       {
-        text: 'Medication Type ID',
+        text: 'Patient Type ID',
         align: 'left',
         sortable: true,
         value: 'id'
       },
-      { text: 'Medication Type', align: 'center', value: 'medicationType' }
+      { text: 'Patient Type', align: 'center', value: 'patientType' }
     ]
   }),
   created () {
-    MedicationType.getAll()
+    PatientType.getAll()
       .then(function (res, err) {
         var i
         for (i = 0; i < res.data.length; i++) {
-          console.log('Medication Type search: ' + res.data[i].id)
-          this.medicationTypes.push({
+          console.log('Patient Type search: ' + res.data[i].id + ' & ' + res.data[i].patientType)
+          this.patientTypes.push({
             id: res.data[i].id,
-            medicationType: res.data[i].medicationType
+            patientType: res.data[i].patientType
           })
         }
       }.bind(this))
   },
   methods: {
     editItem (id) {
-      console.log('Medication id in editItem ' + id)
-      this.$router.push('medicationType?medicationTypeId=' + id)
+      console.log('Search Patient Type - id in editItem ' + id)
+      this.$router.push('patienttype?patientTypeId=' + id)
     }
   }
 }
