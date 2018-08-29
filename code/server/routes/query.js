@@ -3,6 +3,7 @@ var router = express.Router()
 var model = require('../models')
 
 const isAuthenticated = require('../policies/isAuthenticated')
+const isAuthenticatedAdmin = require('../policies/isAuthenticatedAdmin')
 const { check, validationResult } = require('express-validator/check')
 const { sanitize } = require('express-validator/filter')
 
@@ -27,7 +28,7 @@ router.get('/', function (req, res, next) {
 })
 
 // The worker update route. The get is for retrieving details for a specific worker and the post is for updating details
-router.get('/worker/:id', isAuthenticated, function (req, res) {
+router.get('/worker/:id', isAuthenticatedAdmin, function (req, res) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
@@ -43,7 +44,7 @@ router.get('/worker/:id', isAuthenticated, function (req, res) {
 })
 
 // Check to see if the worker exists - returns true if worker ID exists, false otherwise
-router.get('/worker/isvalid/:id', isAuthenticated, function (req, res) {
+router.get('/worker/isvalid/:id', isAuthenticatedAdmin, function (req, res) {
   model.worker.find({
     where: {
       id: req.params.id
@@ -55,7 +56,7 @@ router.get('/worker/isvalid/:id', isAuthenticated, function (req, res) {
 
 router.post(
   '/worker/:id',
-  isAuthenticated,
+  isAuthenticatedAdmin,
   // Input validation
   check('workerFirstName').not().isEmpty(),
   check('workerSurname').not().isEmpty(),
@@ -142,7 +143,7 @@ router.post(
   })
 
 // The error update route. The get is for retrieving details for a specific error and the post is for updating details
-router.get('/error/:id', isAuthenticated, function (req, res) {
+router.get('/error/:id', isAuthenticatedAdmin, function (req, res) {
   model.error.find({
     where: {
       id: req.params.id
@@ -166,7 +167,7 @@ router.get('/error/:id', isAuthenticated, function (req, res) {
 
 router.post(
   '/error/:id',
-  isAuthenticated,
+  isAuthenticatedAdmin,
   // Input validation
   check('patientId').not().isEmpty(),
   check('patientFirstName').not().isEmpty(),
@@ -267,7 +268,7 @@ router.post(
   })
 
 // The error route. The get is for retrieving details and the post is for adding details
-router.get('/error', isAuthenticated, function (req, res) {
+router.get('/error', isAuthenticatedAdmin, function (req, res) {
   model.error.findAll({
     include: [
       model.patient,
@@ -388,7 +389,7 @@ router.get('/errortype', isAuthenticated, function (req, res) {
 })
 
 router.post('/errortype',
-  isAuthenticated,
+  isAuthenticatedAdmin,
   check('errorType').not().isEmpty(),
   function (req, res, next) {
     model.errortype.create(req.body)
@@ -419,7 +420,7 @@ router.get('/locations', isAuthenticated, function (req, res) {
 })
 
 router.post('/locations',
-  isAuthenticated,
+  isAuthenticatedAdmin,
   check('location').not().isEmpty(),
   function (req, res, next) {
     model.location.create(req.body)
@@ -441,7 +442,7 @@ router.get('/severity', isAuthenticated, function (req, res) {
 })
 
 router.post('/severity',
-  isAuthenticated,
+  isAuthenticatedAdmin,
   check('severity').not().isEmpty(),
   function (req, res, next) {
     model.severity.create(req.body)
@@ -454,7 +455,7 @@ router.post('/severity',
   })
 
 // ChangePassword post function
-router.post('/changePassword', function (req, res, next) {
+router.post('/changePassword', isAuthenticatedAdmin, function (req, res, next) {
   model.login.findOne({
     where: {
       email: req.body.email
@@ -497,7 +498,7 @@ router.post('/changePassword', function (req, res, next) {
 })
 
 // The Physician update route. The get is for retrieving details for a specific physician and the post is for updating details
-router.get('/physician/:id', isAuthenticated, function (req, res) {
+router.get('/physician/:id', isAuthenticatedAdmin, function (req, res) {
   model.physician.find({
     where: {
       id: req.params.id
@@ -507,7 +508,7 @@ router.get('/physician/:id', isAuthenticated, function (req, res) {
   })
 })
 
-router.post('/physician/:id', isAuthenticated, function (req, res, next) {
+router.post('/physician/:id', isAuthenticatedAdmin, function (req, res, next) {
   async function updatePhysician (req, res, next) {
     var physicianId = req.params.id
     var values = {
@@ -543,7 +544,7 @@ router.get('/physician', isAuthenticated, function (req, res) {
 })
 
 // The Error Type update route. The get is for retrieving details for a specific Error Type and the post is for updating details
-router.get('/errortype/:id', isAuthenticated, function (req, res) {
+router.get('/errortype/:id', isAuthenticatedAdmin, function (req, res) {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
@@ -560,7 +561,7 @@ router.get('/errortype/:id', isAuthenticated, function (req, res) {
 
 router.post(
   '/errortype/:id',
-  isAuthenticated,
+  isAuthenticatedAdmin,
   // Input validation
   check('errorType').not().isEmpty(),
   function (req, res, next) {
@@ -600,7 +601,7 @@ router.get('/errortype', isAuthenticated, function (req, res) {
 
 router.post(
   '/errortype',
-  isAuthenticated,
+  isAuthenticatedAdmin,
   // Input validation
   check('errorType').not().isEmpty(),
   function (req, res, next) {
