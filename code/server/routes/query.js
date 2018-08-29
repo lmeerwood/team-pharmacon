@@ -410,8 +410,30 @@ router.get('/worker', passport.authenticate('jwt', {session: false}), function (
   })
 })
 
-// The locations route. The get is for retrieving details and the post is for adding details
-router.get('/locations', isAuthenticated, function (req, res) {
+// The medication type route. The get is for retrieving details and the post is for adding details
+router.get('/medicationtype', passport.authenticate('jwt', {session: false}), function (req, res) {
+  model.medicationtype.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post('/medicationtype',
+passport.authenticate('jwtAdmin', {session: false}),
+  check('medicationtype').not().isEmpty(),
+  function (req, res, next) {
+    model.medicationtype.create(req.body)
+      .then(function (qres) {
+        res.send(qres)
+      })
+      .catch(function (e) {
+        res.send('An error occurred creating a new medication type! ' + e)
+      })
+  })
+
+// The medication type route. The get is for retrieving details and the post is for adding details
+router.get('/locations', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.location.findAll({
     limit: 100
   }).then(function (qres) {
