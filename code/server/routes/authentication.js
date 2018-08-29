@@ -3,6 +3,7 @@ var router = express.Router()
 var model = require('../models')
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
+const passport = require('passport')
 
 function jwtSignUser (user) {
   const ONE_WEEK = 60 * 60 * 24 * 7
@@ -12,41 +13,24 @@ function jwtSignUser (user) {
 }
 
 router.post('/login', function (req, res) {
-  try {
-    const {username, password} = req.body
-    model.login.findOne({
-      where: {
-        username: username
-      }
-    }).then(function (user) {
-      if (!user) {
-        return res.status(401).send({
-          error: 'No such user'
-        })
-      }
-
-      var valid = user.comparePassword(password)
-      if (!valid) {
-        return res.status(401).send({
-          error: 'The Password was incorrect'
-        })
-      }
-
-      const userJson = user.toJSON()
-      res.send({
-        user: {
-          'id': user.id,
-          'username': user.username,
-          'authlevel': user.authlevel
-        },
-        token: jwtSignUser(userJson)
+  passport.authenticate('local', {session: false}, (err, user, info) => {
+    if (err || !user) {
+      return res.status(400).json({
+        message: 'Something is not right',
+        user: user,
+        err: err.message
       })
+    }
+
+    req.login(user, {session: false}, (err) => {
+      if (err) {
+        res.send(err)
+      }
+
+      const token = jwtSignUser(user)
+      return res.json({user, token})
     })
-  } catch (err) {
-    res.status(500).send({
-      error: 'An error has occured trying to log in'
-    })
-  }
+  })(req, res)
 })
 
 // TODO: Add authentication
