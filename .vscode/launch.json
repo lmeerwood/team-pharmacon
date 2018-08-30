@@ -1,16 +1,6 @@
 {
     "version": "0.2.0",
     "configurations": [
-<<<<<<< HEAD
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Remote debugging",
-            "sourceMaps": true,
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceRoot}"
-        },
-=======
       {
         "type": "node",
         "request": "launch",
@@ -28,6 +18,5 @@
           "webpack:///src/*": "${webRoot}/*"
         }
       }
->>>>>>> 1c480923de99b24d15e37f4d97005c0722b80784
     ]
   }
