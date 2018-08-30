@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+<<<<<<< HEAD
         {
             "type": "chrome",
             "request": "launch",
@@ -9,5 +10,24 @@
             "url": "http://localhost:8080",
             "webRoot": "${workspaceRoot}"
         },
+=======
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Star Server Debug",
+        "program": "${workspaceFolder}/code/server/bin/www"
+      },
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Attach Vue  JS Debug",
+        "url": "http://localhost:8080",
+        "webRoot": "${workspaceFolder}/code/client/src",
+        "breakOnLoad": true,
+        "sourceMapPathOverrides": {
+          "webpack:///src/*": "${webRoot}/*"
+        }
+      }
+>>>>>>> 1c480923de99b24d15e37f4d97005c0722b80784
     ]
   }
