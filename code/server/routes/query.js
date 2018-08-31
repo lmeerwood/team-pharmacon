@@ -79,7 +79,7 @@ router.post(
         id: workerId,
         workerFirstName: req.body.workerFirstName,
         workerSurname: req.body.workerSurname,
-        WorkerRole: req.body.workerRole,
+        WorkerRole: req.body.WorkerRole,
         workerActive: req.body.workerActive
       }
       var selector = {
@@ -113,7 +113,7 @@ router.post(
   // Input validation
   check('workerFirstName').not().isEmpty(),
   check('workerSurname').not().isEmpty(),
-  check('workerRole').not().isEmpty(),
+  check('WorkerRole').not().isEmpty(),
   sanitize('workerActive').toInt(),
   check('workerActive').custom(value => {
     if (value !== 0 && value !== 1) {
