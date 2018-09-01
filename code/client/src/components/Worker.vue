@@ -136,8 +136,8 @@ export default {
         return pattern.test(value) || 'Surname must contain letters and/or dash/apostrophe only'
       },
       role: value => {
-        const pattern = /^([a-zA-Z]+)$/
-        return pattern.test(value) || 'Worker role contain letters only'
+        const pattern = /^([a-zA-Z ]+)$/
+        return pattern.test(value) || 'Worker role contain letters & spaces only'
       }
     }
   }),

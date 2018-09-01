@@ -16,7 +16,7 @@ passport.use(
   function (username, password, cb) {
     return model.login.findOne({
       where: {
-        username: username, 
+        username: username,
         password: password
       }
     })
@@ -24,7 +24,7 @@ passport.use(
         if (!user) {
           return cb(null, false, {message: 'Incorrect email or password'})
         }
-        var userParsed =  {
+        var userParsed = {
           username: user.username,
           authlevel: user.authlevel
         }
@@ -71,7 +71,7 @@ function (jwtPayload, cb) {
     }
   })
     .then(user => {
-      if(user.authlevel !== 2) {
+      if (user.authlevel !== 2) {
         return cb(null, false)
       }
       return cb(null, user)

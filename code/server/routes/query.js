@@ -60,7 +60,7 @@ router.post(
   // Input validation
   check('workerFirstName').not().isEmpty(),
   check('workerSurname').not().isEmpty(),
-  check('workerRole').not().isEmpty(),
+  check('WorkerRole').not().isEmpty(),
   sanitize('workerActive').toInt(),
   check('workerActive').custom(value => {
     if (value !== 0 && value !== 1) {
@@ -74,12 +74,13 @@ router.post(
       return res.status(422).json({ errors: errors.array() })
     }
     async function updateWorker (req, res, next) {
+      console.log('Query.js Worker Role: ' + req.body.WorkerRole)
       var workerId = req.params.id
       var values = {
         id: workerId,
         workerFirstName: req.body.workerFirstName,
         workerSurname: req.body.workerSurname,
-        WorkerRole: req.body.workerRole,
+        WorkerRole: req.body.WorkerRole,
         workerActive: req.body.workerActive
       }
       var selector = {
@@ -113,7 +114,7 @@ router.post(
   // Input validation
   check('workerFirstName').not().isEmpty(),
   check('workerSurname').not().isEmpty(),
-  check('workerRole').not().isEmpty(),
+  check('WorkerRole').not().isEmpty(),
   sanitize('workerActive').toInt(),
   check('workerActive').custom(value => {
     if (value !== 0 && value !== 1) {
@@ -281,7 +282,7 @@ router.get('/error', passport.authenticate('jwtAdmin', {session: false}), functi
 })
 
 router.post('/error',
-passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', {session: false}),
 
   check('patientId').not().isEmpty(),
   check('patientFirstName').not().isEmpty(),
@@ -290,7 +291,12 @@ passport.authenticate('jwt', {session: false}),
 
   check('medicationName').not().isEmpty(),
   check('medicationtypeId').not().isEmpty(),
-  check('medication').not().isEmpty(),
+
+  check('errorCausedByWorker').not().isEmpty(),
+  check('wasWorkerNotified').not().isEmpty(),
+  check('locationId').not().isEmpty(),
+  check('iimsCompleted').not().isEmpty(),
+  check('severityId').not().isEmpty(),
 
   function (req, res, next) {
   /**
@@ -389,7 +395,7 @@ router.get('/errortype', passport.authenticate('jwt', {session: false}), functio
 })
 
 router.post('/errortype',
-passport.authenticate('jwtAdmin', {session: false}),
+  passport.authenticate('jwtAdmin', {session: false}),
   check('errorType').not().isEmpty(),
   function (req, res, next) {
     model.errortype.create(req.body)
@@ -420,7 +426,7 @@ router.get('/medicationtype', passport.authenticate('jwt', {session: false}), fu
 })
 
 router.post('/medicationtype',
-passport.authenticate('jwtAdmin', {session: false}),
+  passport.authenticate('jwtAdmin', {session: false}),
   check('medicationtype').not().isEmpty(),
   function (req, res, next) {
     model.medicationtype.create(req.body)
@@ -464,7 +470,7 @@ router.get('/severity', passport.authenticate('jwt', {session: false}), function
 })
 
 router.post('/severity',
-passport.authenticate('jwtAdmin', {session: false}),
+  passport.authenticate('jwtAdmin', {session: false}),
   check('severity').not().isEmpty(),
   function (req, res, next) {
     model.severity.create(req.body)

@@ -79,12 +79,6 @@
 
           <v-list-tile>
             <v-list-tile-action>
-              <v-btn :to="{name:'Physician'}" v-if="authlevel === 2" flat>Manage Physicians</v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-
-          <v-list-tile>
-            <v-list-tile-action>
               <v-btn :to="{name:'Worker'}" v-if="authlevel === 2" flat>Manage Workers</v-btn>
             </v-list-tile-action>
           </v-list-tile>

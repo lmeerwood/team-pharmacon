@@ -154,8 +154,8 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Error Description or General Comment"
-                    :rules="[rules.alphaDashApos]"
                     v-model="errorComment"
+                    :rules="[() => errorComment == '' || rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -256,7 +256,7 @@
                     label="Physician Provider Number"
                     v-model="providerNumber"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.alphaNum]"
+                    :rules="[() => providerNumber == '' || rules.drAlphaNum]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -267,7 +267,7 @@
                     label="Physician First Name"
                     v-model="physicianFirstName"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.alphaDashApos]"
+                    :rules="[() => physicianFirstName == '' || rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -278,7 +278,7 @@
                     label="Physician Surname"
                     v-model="physicianSurname"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.alphaDashApos]"
+                    :rules="[() => physicianSurname == '' || rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -287,9 +287,9 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Comments"
-                    :rules="[rules.alphaDashApos]"
                     v-model="physicianComment"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                    :rules="[() => physicianComment == '' || rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -298,9 +298,9 @@
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Diagnosis"
-                    :rules="[rules.alphaDashApos]"
                     v-model="diagnosis"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
+                    :rules="[() => diagnosis == '' || rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -414,6 +414,14 @@ export default {
       alphaDashApos: value => {
         const pattern = /^([a-zA-Z-' ]+)$/
         return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
+      },
+      drAlpha: value => {
+        const pattern = /^([a-zA-Z-' ]+)$/
+        return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
+      },
+      drAlphaNum: value => {
+        const pattern = /^([a-zA-Z0-9]+)$/
+        return pattern.test(value) || 'Alpha-numeric field only'
       }
     }
   }),

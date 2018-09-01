@@ -75,8 +75,8 @@ export default {
     rules: {
       required: value => !!value || 'This field is required',
       alphaDashApos: value => {
-        const pattern = /^([a-zA-Z-' ]+)$/
-        return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
+        const pattern = /^([a-zA-Z ]+)$/
+        return pattern.test(value) || 'Field must contain letters and spaces only'
       }
     }
   }),
@@ -100,6 +100,7 @@ export default {
       }
       if (this.validForm() && medicationTypeId !== undefined) {
         console.log('inside update medication type. ID: ' + medicationTypeId)
+        console.log('inside update medication type: ' + this.medicationType)
         try {
           await MedicationtypeService.updateMedicationType(medicationTypeId, values)
           this.clear()

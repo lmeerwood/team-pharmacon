@@ -13,9 +13,9 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
               <v-text-field
-                label="Physician Surname"
-                :rules="[rules.required, rules.alphaDashApos]"
-                v-model="physicianSurname"
+                label="Physician First Name"
+                :rules="[rules.required, rules.alphaDash]"
+                v-model="physicianFirstName"
               ></v-text-field>
               </v-flex>
               </v-layout>
@@ -23,9 +23,9 @@
             <v-layout row>
               <v-flex xs8 offset-xs2>
               <v-text-field
-                label="Physician First Name"
-                :rules="[rules.required, rules.alphaDash]"
-                v-model="physicianFirstName"
+                label="Physician Surname"
+                :rules="[rules.required, rules.alphaDashApos]"
+                v-model="physicianSurname"
               ></v-text-field>
               </v-flex>
               </v-layout>
