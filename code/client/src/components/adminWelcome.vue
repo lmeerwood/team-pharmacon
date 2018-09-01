@@ -101,14 +101,6 @@
                 <v-btn
                   round color="primary"
                   dark
-                  :to="{name: 'Physician'}">
-                  Manage Physicians
-                </v-btn>
-              </div>
-              <div>
-                <v-btn
-                  round color="primary"
-                  dark
                   :to="{name: 'Worker'}">
                   Manage Workers
                 </v-btn>
