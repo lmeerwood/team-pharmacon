@@ -60,7 +60,7 @@ router.post(
   // Input validation
   check('workerFirstName').not().isEmpty(),
   check('workerSurname').not().isEmpty(),
-  check('workerRole').not().isEmpty(),
+  check('WorkerRole').not().isEmpty(),
   sanitize('workerActive').toInt(),
   check('workerActive').custom(value => {
     if (value !== 0 && value !== 1) {
@@ -74,6 +74,7 @@ router.post(
       return res.status(422).json({ errors: errors.array() })
     }
     async function updateWorker (req, res, next) {
+      console.log('Query.js Worker Role: ' + req.body.WorkerRole)
       var workerId = req.params.id
       var values = {
         id: workerId,
