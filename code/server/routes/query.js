@@ -571,6 +571,17 @@ router.get('/physician', passport.authenticate('jwt', {session: false}), functio
   })
 })
 
+  // Check to see if the error type exists - returns true if error type exists, false otherwise
+  router.get('/errortype/isvalid/:errorType', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
+    model.errortype.find({
+      where: {
+        errorType: req.params.errorType
+      }
+    }).then(function (qres) {
+      res.send(qres !== null)
+    })
+  })
+
 // The Error Type update route. The get is for retrieving details for a specific Error Type and the post is for updating details
 router.get('/errortype/:id', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
   const errors = validationResult(req)
