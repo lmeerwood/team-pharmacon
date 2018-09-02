@@ -660,6 +660,17 @@ router.post(
     addErrorType(req, res, next)
   })
 
+  // Check to see if the error type exists - returns true if error type exists, false otherwise
+  router.get('/medicationtype/isvalid/:medicationType', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
+    model.medicationtype.find({
+      where: {
+        medicationType: req.params.medicationType
+      }
+    }).then(function (qres) {
+      res.send(qres !== null)
+    })
+  })
+
 // The Medication Type update route. The get is for retrieving details for a specific Medication Type and the post is for updating details
 router.get('/medicationtype/:id', passport.authenticate('jwt', {session: false}), function (req, res) {
   const errors = validationResult(req)
