@@ -15,5 +15,9 @@ export default {
   updateMedicationType (medicationTypeId, medicationType) {
     var url = '/api/v1/query/medicationtype/' + medicationTypeId
     return Api().post(url, medicationType)
+  },
+  isMedicationTypeValid (medicationType) {
+    var url = '/api/v1/query/medicationtype/isvalid/' + medicationType
+    return Api().get(url)
   }
 }

@@ -94,11 +94,21 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
+      var type = this.medicationType
       var medicationTypeId = this.$route.query.medicationTypeId
       var values = {
         medicationType: this.medicationType
       }
-      if (this.validForm() && medicationTypeId !== undefined) {
+      var currentType = await MedicationtypeService.isMedicationTypeValid(type)
+      if (this.validForm() && currentType.data) {
+        console.log('inside update medication type. currentType: ' + currentType.data)
+        try {
+          this.clear()
+          this.errorMessage = 'Error type - ' + type + ' - already exists!'
+        } catch (error) {
+          this.errorMessage = error.response.data.errorType
+        }
+      } else if (this.validForm() && medicationTypeId !== undefined) {
         console.log('inside update medication type. ID: ' + medicationTypeId)
         console.log('inside update medication type: ' + this.medicationType)
         try {

@@ -94,11 +94,21 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
+      var type = this.errorType
       var errorTypeId = this.$route.query.errorTypeId
       var values = {
         errorType: this.errorType
       }
-      if (this.validForm() && errorTypeId !== undefined) {
+      var currentType = await ErrortypeService.isErrorTypeValid(type)
+      if (this.validForm() && currentType.data) {
+        console.log('inside update error type. currentType: ' + currentType.data)
+        try {
+          this.clear()
+          this.errorMessage = 'Error type - ' + type + ' - already exists!'
+        } catch (error) {
+          this.errorMessage = error.response.data.errorType
+        }
+      } else if (this.validForm() && errorTypeId !== undefined) {
         console.log('inside update error type. ID: ' + errorTypeId)
         try {
           await ErrortypeService.updateErrorType(errorTypeId, values)

@@ -94,13 +94,23 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
+      var type = this.patientType
       var patientTypeId = this.$route.query.patientTypeId
       console.log('inside methods submit patient type. ID: ' + this.$route.query.patientTypeId)
       console.log('inside methods submit patient type. ID: ' + this.patientType)
       var values = {
         patientType: this.patientType
       }
-      if (this.validForm() && patientTypeId !== undefined) {
+      var currentType = await PatienttypeService.isPatientTypeValid(type)
+      if (this.validForm() && currentType.data) {
+        console.log('inside update patient type. currentType: ' + currentType.data)
+        try {
+          this.clear()
+          this.errorMessage = 'Error type - ' + type + ' - already exists!'
+        } catch (error) {
+          this.errorMessage = error.response.data.errorType
+        }
+      } else if (this.validForm() && patientTypeId !== undefined) {
         console.log('inside update patient type. ID: ' + patientTypeId + ' type: ' + values)
         try {
           await PatienttypeService.updatePatientType(patientTypeId, values)
