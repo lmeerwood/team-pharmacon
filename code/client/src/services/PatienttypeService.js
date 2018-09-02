@@ -15,5 +15,9 @@ export default {
   updatePatientType (patientTypeId, patientType) {
     var url = '/api/v1/query/patienttype/' + patientTypeId
     return Api().post(url, patientType)
+  },
+  isPatientTypeValid (patientType) {
+    var url = '/api/v1/query/patienttype/isvalid/' + patientType
+    return Api().get(url)
   }
 }
