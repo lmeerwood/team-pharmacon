@@ -660,7 +660,7 @@ router.post(
     addErrorType(req, res, next)
   })
 
-  // Check to see if the error type exists - returns true if error type exists, false otherwise
+  // Check to see if the medication type exists - returns true if medication type exists, false otherwise
   router.get('/medicationtype/isvalid/:medicationType', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
     model.medicationtype.find({
       where: {
@@ -762,6 +762,17 @@ router.post('/medicationtype',
       .catch(function (e) {
         res.send('An error occurred creating a new medication type! ' + e)
       })
+  })
+
+  // Check to see if the patient type exists - returns true if patient type exists, false otherwise
+  router.get('/patienttype/isvalid/:patientType', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
+    model.patienttype.find({
+      where: {
+        patientType: req.params.patientType
+      }
+    }).then(function (qres) {
+      res.send(qres !== null)
+    })
   })
 
 // The patienttype route. The get is for retrieving details and the post is for adding details
