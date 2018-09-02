@@ -108,7 +108,7 @@ export default {
         } catch (error) {
           this.errorMessage = error.response.data.errorType
         }
-      }else if (this.validForm() && errorTypeId !== undefined) {
+      } else if (this.validForm() && errorTypeId !== undefined) {
         console.log('inside update error type. ID: ' + errorTypeId)
         try {
           await ErrortypeService.updateErrorType(errorTypeId, values)
