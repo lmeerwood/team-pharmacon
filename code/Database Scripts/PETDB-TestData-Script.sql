@@ -45,11 +45,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petdatabase`;
-INSERT INTO `petdatabase`.`worker` (`id`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (1, 'Pat', 'Smith', 'Pharmacist', 1);
-INSERT INTO `petdatabase`.`worker` (`id`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (2, 'Timothy', 'Myers', 'Pharmacist', 1);
-INSERT INTO `petdatabase`.`worker` (`id`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (3, 'Jessica', 'Noble', 'Senior Pharmacist', 1);
-INSERT INTO `petdatabase`.`worker` (`id`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (4, 'Amanda', 'Stait', 'Trainee Pharmacist', 1);
-INSERT INTO `petdatabase`.`worker` (`id`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (5, 'Wang', 'Shu', 'Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`id`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (1234, 'Pat', 'Smith', 'Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`id`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (2345, 'Timothy', 'Myers', 'Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`id`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (3456, 'Jessica', 'Noble', 'Senior Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`id`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (4567, 'Amanda', 'Stait', 'Trainee Pharmacist', 1);
+INSERT INTO `petdatabase`.`worker` (`id`, `workerFirstName`, `workerSurname`, `workerRole`, `workerActive`) VALUES (5678, 'Wang', 'Shu', 'Pharmacist', 1);
 
 COMMIT;
 
