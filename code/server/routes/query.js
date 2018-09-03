@@ -150,7 +150,6 @@ router.get('/error/:id', passport.authenticate('jwtAdmin', {session: false}), fu
       id: req.params.id
     },
     include: [
-      // model.diagnosis,
       model.errortype,
       model.location,
       model.medication,
@@ -571,17 +570,6 @@ router.get('/physician', passport.authenticate('jwt', {session: false}), functio
   })
 })
 
-  // Check to see if the error type exists - returns true if error type exists, false otherwise
-  router.get('/errortype/isvalid/:errorType', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
-    model.errortype.find({
-      where: {
-        errorType: req.params.errorType
-      }
-    }).then(function (qres) {
-      res.send(qres !== null)
-    })
-  })
-
 // The Error Type update route. The get is for retrieving details for a specific Error Type and the post is for updating details
 router.get('/errortype/:id', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
   const errors = validationResult(req)
@@ -658,17 +646,6 @@ router.post(
     }
 
     addErrorType(req, res, next)
-  })
-
-  // Check to see if the medication type exists - returns true if medication type exists, false otherwise
-  router.get('/medicationtype/isvalid/:medicationType', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
-    model.medicationtype.find({
-      where: {
-        medicationType: req.params.medicationType
-      }
-    }).then(function (qres) {
-      res.send(qres !== null)
-    })
   })
 
 // The Medication Type update route. The get is for retrieving details for a specific Medication Type and the post is for updating details
@@ -762,17 +739,6 @@ router.post('/medicationtype',
       .catch(function (e) {
         res.send('An error occurred creating a new medication type! ' + e)
       })
-  })
-
-  // Check to see if the patient type exists - returns true if patient type exists, false otherwise
-  router.get('/patienttype/isvalid/:patientType', passport.authenticate('jwtAdmin', {session: false}), function (req, res) {
-    model.patienttype.find({
-      where: {
-        patientType: req.params.patientType
-      }
-    }).then(function (qres) {
-      res.send(qres !== null)
-    })
   })
 
 // The patienttype route. The get is for retrieving details and the post is for adding details

@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`physician` (
   `physicianFirstName` VARCHAR(45) NOT NULL,
   `providerNumber` VARCHAR(15) NOT NULL,
   `physicianComment` VARCHAR(150) NULL DEFAULT NULL,
-  `diagnosisID` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 12
@@ -42,32 +41,9 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`patient` (
   `patientSurname` VARCHAR(45) NOT NULL,
   `patientFirstName` VARCHAR(45) NOT NULL,
   `patientTypeId` INT(11) NOT NULL,
-  `patientDiagnosis` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 21
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `petdatabase`.`diagnosis`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `petdatabase`.`diagnosis` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `diagnosis` VARCHAR(150) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `diagnosisID`
-    FOREIGN KEY (`id`)
-    REFERENCES `petdatabase`.`physician` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `patientDiagnosis`
-    FOREIGN KEY (`id`)
-    REFERENCES `petdatabase`.`patient` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8;
 
 

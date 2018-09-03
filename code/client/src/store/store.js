@@ -16,7 +16,7 @@ export default new Vuex.Store({
       username: ''
     },
     isUserLoggedIn: false,
-    showFields: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    showFields: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
   },
   mutations: {
     setToken (state, token) {
@@ -36,7 +36,7 @@ export default new Vuex.Store({
       state.showFields = showFields
     },
     resetFields (state) {
-      state.showFields = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+      state.showFields = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
     }
   },
   actions: {
