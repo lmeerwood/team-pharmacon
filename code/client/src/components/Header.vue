@@ -50,6 +50,11 @@
               <v-btn :to="{name:'searchWorker'}" v-if="authlevel === 2" flat>Search Workers</v-btn>
             </v-list-tile-action>
           </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'searchUser'}" v-if="authlevel === 2" flat>Search Users</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
         </v-list>
       </v-menu>
 
