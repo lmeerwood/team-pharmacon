@@ -294,17 +294,6 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[20]">
-                <v-flex xs8 offset-xs2>
-                  <v-text-field
-                    label="Diagnosis"
-                    v-model="diagnosis"
-                    :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[() => diagnosis == '' || rules.drAlpha]"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-
               <v-layout row>
                 <v-flex xs12 >
                 <v-alert :value="errorMessage" type="error">
@@ -350,7 +339,6 @@ import SeverityService from '@/services/SeverityService'
 // import MedicationService from '@/services/MedicationService'
 import MedicationtypeService from '@/services/MedicationtypeService'
 // import PhysicianService from '@/services/PhysicianService'
-// import DiagnosisService from '@/services/DiagnosisService'
 import PatienttypeService from '@/services/PatienttypeService'
 // import PatientService from '@/services/PatientService'
 import LocationService from '@/services/LocationService'
@@ -404,7 +392,6 @@ export default {
     physicianSurname: '',
     providerNumber: '',
     physicianComment: '',
-    diagnosis: '',
     rules: {
       required: value => !!value || 'This field is required',
       alphaNum: value => {
@@ -451,7 +438,6 @@ export default {
           this.physicianSurname = res.data.physician.physicianSurname
           this.providerNumber = res.data.physician.providerNumber
           this.physicianComment = res.data.physician.physicianComment
-          this.diagnosis = res.data.diagnosis
         }.bind(this))
     }
 
@@ -589,7 +575,6 @@ export default {
         physicianSurname: this.physicianSurname,
         providerNumber: this.providerNumber,
         physicianComment: this.physicianComment,
-        diagnosis: this.diagnosis
       }
       if (this.validForm() && errorId != null) {
         try {

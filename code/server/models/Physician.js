@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
 
   Physician.associate = function (models) {
     Physician.hasMany(models.error)
-    Physician.hasMany(models.diagnosis)
   }
 
   return Physician
