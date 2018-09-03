@@ -12,10 +12,6 @@ export default {
     var url = '/auth/user/delete' + userId
     return Api().post(url)
   },
-  isUserValid (userId) {
-    var url = '/auth/user/isvalid/' + userId
-    return Api().get(url)
-  },
   create (user) {
     return Api().post('/auth/login/create', user)
   }

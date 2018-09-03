@@ -18,15 +18,16 @@
       >
     <template slot="items" slot-scope="props">
       <td>{{ props.item.id }}</td>
-      <td class="text-xs-center">{{ props.item.User }}</td>
-      <td class="justify-left layout px-0">
-        <v-icon
-          small
-          class="mr-4"
-          @click="editItem(props.item.id)"
+      <td class="text-xs-center">{{ props.item.user }}</td>
+      <td class="text-xs-center">{{ props.item.authlevel }}</td>
+      <td class="justify-right layout px-0">
+        <v-btn
+          slot="activator"
+          color="red lighten-2"
+          dark
           >
-          edit
-          </v-icon>
+          Delete User
+          </v-btn>
         </td>
       </template>
       <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -41,7 +42,7 @@ import User from '@/services/UserService'
 export default {
   data: () => ({
     search: '',
-    users: [],
+    Users: [],
     id: '',
     generalComment: '',
     carbs: '',
@@ -53,8 +54,10 @@ export default {
         sortable: true,
         value: 'id'
       },
-      { text: 'User Name', align: 'center', value: 'user' }
-    ]
+      { text: 'User Name', align: 'center', value: 'user' },
+      { text: 'Authentication Level', align: 'center', value: 'authlevel' }
+    ],
+    dialog: false
   }),
   created () {
     User.getAll()
@@ -62,9 +65,10 @@ export default {
         var i
         for (i = 0; i < res.data.length; i++) {
           console.log('User search: ' + res.data[i].id)
-          this.user.push({
+          this.Users.push({
             id: res.data[i].id,
-            user: res.data[i].user
+            user: res.data[i].username,
+            authlevel: res.data[i].authlevel
           })
         }
       }.bind(this))

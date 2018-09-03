@@ -43,4 +43,13 @@ router.post('/login/create', function (req, res) {
     })
 })
 
+// The Error Type route. The get is for retrieving details and the post is for adding details
+router.get('/user', passport.authenticate('jwt', {session: false}), function (req, res) {
+  model.login.findAll({
+    limit: 100
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
 module.exports = router

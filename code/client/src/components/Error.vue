@@ -574,7 +574,7 @@ export default {
         physicianFirstName: this.physicianFirstName,
         physicianSurname: this.physicianSurname,
         providerNumber: this.providerNumber,
-        physicianComment: this.physicianComment,
+        physicianComment: this.physicianComment
       }
       if (this.validForm() && errorId != null) {
         try {
