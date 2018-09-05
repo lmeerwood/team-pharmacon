@@ -123,6 +123,14 @@
               </div>
               <div>
                 <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'downloadData'}">
+                  Download Data
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
                   href="http://18.188.218.170:17050"
                   round color="primary"
                   dark>
