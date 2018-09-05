@@ -9,8 +9,8 @@ export default {
     return Api().get(url)
   },
   deleteUser (userId) {
-    var url = '/auth/user/delete' + userId
-    return Api().post(url)
+    var url = '/auth/user/' + userId
+    return Api().delete(url)
   },
   create (user) {
     return Api().post('/auth/login/create', user)

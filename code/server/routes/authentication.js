@@ -43,7 +43,7 @@ router.post('/login/create', function (req, res) {
     })
 })
 
-// The Error Type route. The get is for retrieving details and the post is for adding details
+// The search Users route.
 router.get('/user', passport.authenticate('jwt', {session: false}), function (req, res) {
   model.login.findAll({
     limit: 100
@@ -51,5 +51,25 @@ router.get('/user', passport.authenticate('jwt', {session: false}), function (re
     res.send(qres)
   })
 })
+
+// The Delete User update route.
+
+router.delete('/user/:id', passport.authenticate('jwtAdmin', {session: false}),
+  function (req, res, next) {
+    async function deleteUser (req, res, next) {
+      model.login.destroy({ where: {
+        id: req.params.id }
+      })
+        .then(() => {
+          res.send('Deleted user')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('Error has occurred: ' + error)
+        })
+    }
+    console.log('Deleting user' + req.params.id)
+    deleteUser(req, res, next)
+  })
 
 module.exports = router

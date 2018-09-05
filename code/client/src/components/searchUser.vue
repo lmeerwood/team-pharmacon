@@ -25,6 +25,7 @@
           slot="activator"
           color="red lighten-2"
           dark
+          @click="deleteItem(props.item.id)"
           >
           Delete User
           </v-btn>
@@ -38,7 +39,7 @@
 </template>
 
 <script>
-import User from '@/services/UserService'
+import UserService from '@/services/UserService'
 export default {
   data: () => ({
     search: '',
@@ -60,7 +61,7 @@ export default {
     dialog: false
   }),
   created () {
-    User.getAll()
+    UserService.getAll()
       .then(function (res, err) {
         var i
         for (i = 0; i < res.data.length; i++) {
@@ -74,9 +75,21 @@ export default {
       }.bind(this))
   },
   methods: {
-    editItem (id) {
-      console.log('id in editItem' + id)
-      this.$router.push('user?userId=' + id)
+    deleteItem (id) {
+      UserService.deleteUser(id).then(function (res, err) {
+        while (this.Users.length > 0) { this.Users.pop() }
+        UserService.getAll()
+          .then(function (res, err) {
+            for (var j = 0; j < res.data.length; j++) {
+              console.log('repopulating user: ' + res.data[j].id)
+              this.Users.push({
+                id: res.data[j].id,
+                user: res.data[j].username,
+                authlevel: res.data[j].authlevel
+              })
+            }
+          }.bind(this))
+      }.bind(this))
     }
   }
 }
