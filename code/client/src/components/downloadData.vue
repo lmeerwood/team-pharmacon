@@ -67,16 +67,16 @@
 
             <v-layout row>
               <v-flex xs8 offset-xs2>
+                <download-excel
+                  class = "btn btn-default"
+                  :data = "json_data"
+                  :fields = "json_fields"
+                  type = "csv"
+                  name = "filename.xls">
+                  Export
+                </download-excel>
                 <v-btn
-                  round
-                  color="primary"
-                  dark
-                  :disabled="!valid"
-                  @click="submit"
-                >Export
-                </v-btn>
-                <v-btn
-                  round color="secondary"
+                  color="secondary"
                   dark
                   @click="clear">
                   Cancel
@@ -110,7 +110,17 @@ export default {
     // Variables to store input values
     valid: true,
     dateFrom: '',
-    dateTo: ''
+    dateTo: '',
+    json_fields: {
+      // fields to be entered here
+    },
+    json_data: [{
+      // data goes here
+    }],
+    json_meta: [{
+      key: 'charset',
+      value: 'utf-8'
+    }]
   }),
   methods: {
     async submit () {
