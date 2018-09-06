@@ -861,15 +861,7 @@ router.post(
           }
         }
       },
-      include: [
-        model.errortype,
-        model.location,
-        model.medication,
-        model.patient,
-        model.physician,
-        model.severity,
-        model.worker
-      ]
+      include: [{ all: true, nested: true }]
     }).then(function (qres) {
       res.send(qres)
     })
@@ -881,3 +873,10 @@ router.post(
 )
 
 module.exports = router
+
+// model.errortype,
+// model.location,
+// model.medication,
+// model.physician,
+// model.severity,
+// model.worker,
