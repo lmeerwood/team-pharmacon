@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import JsonExcel from 'vue-json-excel'
 import Error from '@/components/Error'
 import toggleError from '@/components/toggleError'
 import Login from '@/components/Login'
@@ -18,8 +19,10 @@ import MedicationType from '@/components/MedicationType'
 import searchMedicationType from '@/components/searchMedicationType'
 import PatientType from '@/components/PatientType'
 import searchPatientType from '@/components/searchPatientType'
+import downloadData from '@/components/downloadData'
 
 Vue.use(Router)
+Vue.component('downloadExcel', JsonExcel)
 
 var router = new Router({
   routes: [
@@ -111,6 +114,11 @@ var router = new Router({
       path: '/searchpatienttype',
       name: 'searchPatientType',
       component: searchPatientType
+    },
+    {
+      path: '/downloadData',
+      name: 'downloadData',
+      component: downloadData
     }
   ]
 })
