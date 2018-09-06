@@ -137,9 +137,9 @@ export default {
     dateTo: '',
     json_fields: {
       'Error': 'generalComment',
-      'Severity of error': 'medication.medicationName',
-      'Medication given': 'medication.medicationtype.medicationType',
-      'Medication type': 'severity.level',
+      'Severity of error': 'severity.level',
+      'Medication given': 'medication.medicationName',
+      'Medication type': 'medication.medicationtype.medicationType',
       'Type of error': 'errortype.errorType',
       'Date of error': 'errorDate',
       'Time of error': {
@@ -155,7 +155,7 @@ export default {
       'Worker ID': 'worker.id',
       'Worker Surname': 'worker.workerSurname',
       'Worker Firstname': 'worker.workerFirstName',
-      'Worker Role': 'worker.workerRole',
+      'Worker Role': 'worker.WorkerRole',
       'Was the worker notified of the error': {
         field: 'wasWorkerNotified',
         callback: (value) => {
