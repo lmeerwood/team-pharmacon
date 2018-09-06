@@ -9,7 +9,7 @@
           <v-form v-model="valid" ref="form" lazy-validation>
             <v-container fluid>
 
-            <v-layout row>
+            <v-layout row v-if="!exporting">
               <v-flex xs8 offset-xs1>
               <v-menu
                   ref="datePickerFrom"
@@ -37,7 +37,7 @@
               </v-flex>
               </v-layout>
 
-            <v-layout row>
+            <v-layout row  v-if="!exporting">
                 <v-flex xs8 offset-xs1>
                 <v-menu
                   ref="datePickerTo"
@@ -65,22 +65,43 @@
                 </v-flex>
               </v-layout>
 
-            <v-layout row>
+              <v-layout row>
+                <v-flex xs12 >
+                <v-alert :value="errorMessage" type="error">
+                  {{ errorMessage }}
+                </v-alert>
+                <v-alert :value="message" type="success">
+                  {{ message }}
+                </v-alert>
+                </v-flex>
+              </v-layout>
+
+            <v-layout row v-if="!exporting">
               <v-flex xs8 offset-xs2>
-                <download-excel
-                  class = "btn btn-default"
-                  :data = "json_data"
-                  :fields = "json_fields"
-                  type = "csv"
-                  name = "filename.xls">
+                <v-btn
+                  @click="submit">
                   Export
-                </download-excel>
+                </v-btn>
                 <v-btn
                   color="secondary"
                   dark
                   @click="clear">
                   Cancel
                 </v-btn>
+              </v-flex>
+            </v-layout>
+
+            <v-layout row  v-if="downloadReady">
+              <v-flex xs8 offset-xs2>
+                <download-excel
+                  class = "btn btn-default"
+                  :data = "json_data"
+                  :fields = "json_fields"
+                  type = "csv"
+                  name = "report.csv"
+                  color="secondary">
+                  Download CSV File
+                </download-excel>
               </v-flex>
             </v-layout>
 
@@ -98,10 +119,13 @@ import downloadDataService from '@/services/downloadDataService'
 export default {
   data: () => ({
     menu: false,
-    msg: 'Download Errors Within Date Range of...',
+    msg: 'Export Errors to CSV',
     loading: false,
     errorMessage: '',
     message: '',
+
+    exporting: false,
+    downloadReady: false,
 
     // Variables to hold menu helpers
     datePickerFrom: false,
@@ -112,10 +136,64 @@ export default {
     dateFrom: '',
     dateTo: '',
     json_fields: {
-      // fields to be entered here
+      'Error': 'generalComment',
+      'Severity of error': 'medication.medicationName',
+      'Medication given': 'medication.medicationtype.medicationType',
+      'Medication type': 'severity.level',
+      'Type of error': 'errortype.errorType',
+      'Date of error': 'errorDate',
+      'Time of error': {
+        field: 'errorTime',
+        callback: (value) => {
+          return value.split('.')[0]
+        }
+      },
+      'Patient ID': 'patient.patientHospitalId',
+      'Patient surname': 'patient.patientSurname',
+      'Patient firstname': 'patient.patientFirstName',
+      'Patient Type': 'patient.patienttype.patientType',
+      'Worker ID': 'worker.id',
+      'Worker Surname': 'worker.workerSurname',
+      'Worker Firstname': 'worker.workerFirstName',
+      'Worker Role': 'worker.workerRole',
+      'Was the worker notified of the error': {
+        field: 'wasWorkerNotified',
+        callback: (value) => {
+          if (value) {
+            return 'yes'
+          } else {
+            return 'no'
+          }
+        }
+      },
+      'Was an IIMS completed': {
+        field: 'iimsCompleted',
+        callback: (value) => {
+          if (value) {
+            return 'yes'
+          } else {
+            return 'no'
+          }
+        }
+      },
+      'Was a physicain notified': {
+        field: 'wasPhysicianNotified',
+        callback: (value) => {
+          if (value) {
+            return 'yes'
+          } else {
+            return 'no'
+          }
+        }
+      },
+      'Physician surname': 'physician.physicianSurname',
+      'Physician firstname': 'physician.physicianFirstName',
+      'Physician provider number': 'physician.providerNumber',
+      'Physician comment': 'physician.physicianComment',
+      'Location where error occured': 'location.errorLocation'
     },
     json_data: [{
-      // data goes here
+      // data will be populated at a later date
     }],
     json_meta: [{
       key: 'charset',
@@ -126,28 +204,37 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
-      var fromDate = this.dateFrom.valueOf()
-      var toDate = this.dateTo.valueOf()
+      var dates = {
+        startDate: this.dateFrom.valueOf(),
+        endDate: this.dateTo.valueOf()
+      }
+      this.exporting = true
+      this.message = 'Exporting data, please do not close window.'
 
       if (this.validForm()) {
-        console.log('inside download. dateFrom: ' + fromDate + ' dateTo: ' + toDate)
-        try {
-          await downloadDataService.getAll(fromDate, toDate)
-          this.clear()
-          this.message = 'Records successfully downloaded!'
-        } catch (error) {
-          this.errorMessage = error.response.data.downloadData
-        }
+        await downloadDataService.getAll(dates)
+          .then(function (res, err) {
+            if (res.data.length === 0) {
+              this.message = ''
+              this.errorMessage = 'No entries found in this date range'
+              this.exporting = false
+            } else {
+              this.downloadReady = true
+              this.message = 'Download Ready'
+              this.json_data = res.data
+              console.log(this.json_data)
+            }
+          }.bind(this))
       } else {
         this.errorMessage = 'There was an error with your form.'
       }
     },
     clear: function () {
+      this.message = ''
+      this.errorMessage = ''
       this.$router.push({
         name: 'adminWelcome'
       })
-      this.message = ''
-      this.errorMessage = ''
     },
     validForm: function () {
       return this.$refs.form.validate()
