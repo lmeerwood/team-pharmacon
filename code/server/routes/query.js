@@ -850,28 +850,33 @@ router.post(
     //   return res.status(422).json({ errors: errors.array() })
     // }
 
-    async function exportToCsv (req, res, next) {
-      var startDate = req.body.startDate
-      var endDate = req.body.endDate
-      model.error.findAll({
-        where: {
-          errorDate: {
-            [Op.and]: {
-              [Op.gt]: startDate,
-              [Op.lt]: endDate
-            }
+    var startDate = req.body.startDate
+    var endDate = req.body.endDate
+    model.error.findAll({
+      where: {
+        errorDate: {
+          [Op.and]: {
+            [Op.gt]: startDate,
+            [Op.lt]: endDate
           }
         }
-      })
-      .then(function (qres) {
-        res.send(qres)
-      })
-      .catch((error) => {
-        res.status(500)
-        res.send('error has occurred: ' + error)
-      })
-    }
-  exportToCsv(req, res, next)
+      },
+      include: [
+        model.errortype,
+        model.location,
+        model.medication,
+        model.patient,
+        model.physician,
+        model.severity,
+        model.worker
+      ]
+    }).then(function (qres) {
+      res.send(qres)
+    })
+    .catch((error) => {
+      res.status(500)
+      res.send('error has occurred: ' + error)
+    })
   }
 )
 
