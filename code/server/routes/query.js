@@ -6,6 +6,9 @@ const { check, validationResult } = require('express-validator/check')
 const { sanitize } = require('express-validator/filter')
 const passport = require('passport')
 
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
+
 // Heartbeat route
 router.get('/', function (req, res, next) {
   model.sequelize
@@ -835,6 +838,41 @@ router.post(
     }
 
     updatePatientType(req, res, next)
-  })
+  }
+)
+
+router.post(
+  '/export',
+  passport.authenticate('jwtAdmin', {session: false}),
+  function (req, res, next) {
+    // const errors = validationResult(req)
+    // if (!errors.isEmpty()){
+    //   return res.status(422).json({ errors: errors.array() })
+    // }
+
+    async function exportToCsv (req, res, next) {
+      var startDate = req.body.startDate
+      var endDate = req.body.endDate
+      model.error.findAll({
+        where: {
+          errorDate: {
+            [Op.and]: {
+              [Op.gt]: startDate,
+              [Op.lt]: endDate
+            }
+          }
+        }
+      })
+      .then(function (qres) {
+        res.send(qres)
+      })
+      .catch((error) => {
+        res.status(500)
+        res.send('error has occurred: ' + error)
+      })
+    }
+  exportToCsv(req, res, next)
+  }
+)
 
 module.exports = router
