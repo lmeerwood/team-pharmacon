@@ -21,7 +21,7 @@
       <td class="text-xs-center">{{ props.item.user }}</td>
       <td class="text-xs-center">{{ props.item.authlevel }}</td>
       <td class="justify-right layout px-0">
-        <v-dialog v-model="dialog" width="500">
+        <v-dialog v-model="dialog" width="500" v-if="!loggedInUser(props.item.user)">
           <v-btn
             slot="activator"
             color="red lighten-2"
@@ -79,7 +79,13 @@
 
 <script>
 import UserService from '@/services/UserService'
+import {mapGetters} from 'vuex'
 export default {
+
+  computed: mapGetters([
+    'getUser'
+  ]),
+
   data: () => ({
     search: '',
     Users: [],
@@ -132,6 +138,10 @@ export default {
           }.bind(this))
       }.bind(this))
       this.snackbar = true
+    },
+
+    loggedInUser (user) {
+      return this.getUser === user
     }
   }
 }
