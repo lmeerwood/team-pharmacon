@@ -21,14 +21,53 @@
       <td class="text-xs-center">{{ props.item.user }}</td>
       <td class="text-xs-center">{{ props.item.authlevel }}</td>
       <td class="justify-right layout px-0">
-        <v-btn
-          slot="activator"
-          color="red lighten-2"
-          dark
-          @click="deleteItem(props.item.id)"
+        <v-dialog v-model="dialog" width="500">
+          <v-btn
+            slot="activator"
+            color="red lighten-2"
+            dark
+            >
+              Delete User
+            </v-btn>
+
+            <v-card>
+              <v-card-title class="headline red lighten-2" primary-title>
+                Delete User: {{ props.item.user }}
+              </v-card-title>
+
+              <v-card-text>
+                Are you sure you want to delete the user {{ props.item.user }}? This action cannot be undone!
+              </v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-btn
+                  color="gray lighten-1"
+                  dark
+                  @click="dialog = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="red lighten-1"
+                  dark
+                  @click="deleteItem(props.item.id)"
+                >
+                  Delete User
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+          <v-snackbar
+            v-model="snackbar"
+            :bottom= true
+            :timeout="3000"
           >
-          Delete User
-          </v-btn>
+            User {{ props.item.user }} deleted.
+          </v-snackbar>
         </td>
       </template>
       <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -58,7 +97,8 @@ export default {
       { text: 'User Name', align: 'center', value: 'user' },
       { text: 'Authentication Level', align: 'center', value: 'authlevel' }
     ],
-    dialog: false
+    dialog: false,
+    snackbar: false
   }),
   created () {
     UserService.getAll()
@@ -76,6 +116,7 @@ export default {
   },
   methods: {
     deleteItem (id) {
+      this.dialog = false
       UserService.deleteUser(id).then(function (res, err) {
         while (this.Users.length > 0) { this.Users.pop() }
         UserService.getAll()
@@ -90,6 +131,7 @@ export default {
             }
           }.bind(this))
       }.bind(this))
+      this.snackbar = true
     }
   }
 }
