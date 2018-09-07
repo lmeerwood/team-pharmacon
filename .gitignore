@@ -1,5 +1,7 @@
 .idea
 .env
+.env_bu
 pharmacy_app.iml
 
 node_modules
+code/server/.env_bu
