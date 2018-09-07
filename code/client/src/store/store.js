@@ -67,6 +67,9 @@ export default new Vuex.Store({
       console.log('Someone wants the user ' + state.user.authlevel)
       return state.user.authlevel
     },
+    getUser: state => {
+      return state.user.username
+    },
     showFields: state => state.showFields
   }
 })

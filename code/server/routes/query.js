@@ -36,7 +36,7 @@ router.get('/worker/:id', passport.authenticate('jwt', {session: false}), functi
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() })
   }
-  console.log('User id: ' + req.params.id)
+  console.log('Worker id: ' + req.params.id)
   model.worker.find({
     where: {
       id: req.params.id

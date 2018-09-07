@@ -125,6 +125,14 @@
                 <v-btn
                   round color="primary"
                   dark
+                  :to="{name: 'searchUser'}">
+                  Search Users
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
                   :to="{name: 'downloadData'}">
                   Download Data
                 </v-btn>
