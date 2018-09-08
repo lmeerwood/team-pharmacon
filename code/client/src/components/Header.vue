@@ -120,7 +120,7 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-      <v-btn href="http://127.0.0.1:3000/resources/UserGuide.pdf"  @click="message" flat>Help</v-btn>
+      <v-btn href="http://127.0.0.1:3000/resources/UserGuide.pdf" flat>Help</v-btn>
       <v-btn @click="logout" flat>Logout</v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -135,16 +135,10 @@ export default {
       authlevel: 'auth'
     })
   },
-  data: () => ({
-    msg: ''
-  }),
   methods: {
     logout: function () {
       this.$store.dispatch('logout')
       this.$router.push('/login')
-    },
-    message: function () {
-      this.msg = 'User Guide has been downloaded'
     }
   }
 }
