@@ -72,4 +72,44 @@ router.delete('/user/:id', passport.authenticate('jwtAdmin', {session: false}),
     deleteUser(req, res, next)
   })
 
+// ChangePassword post function
+router.post('/changePassword', passport.authenticate('jwtAdmin', {session: false}), function (req, res, next) {
+  model.login.findOne({
+    where: {
+      email: req.body.email
+    }
+  }).then(user => {
+    if (!user) {
+      return res.status(403).send({
+        error: 'The login information was incorrect'
+      })
+    }
+    var valid = user.comparePassword(req.body.password)
+    if (!valid) {
+      return res.status(403).send({
+        error: 'The login information was incorrect'
+      })
+    }
+    var passwordsMatch = user.compareTwoPasswords(req.body.newPassword, req.body.checkPassword)
+    if (!passwordsMatch) {
+      return res.status(403).send({
+        error: 'Your new passwords do not match'
+      })
+    }
+    model.login.update(
+      {password: req.body.newPassword},
+      {where: {email: req.body.email}}
+    ).then(function (qres) {
+      return res.send(qres)
+    }).catch((error) => {
+      res.status(500)
+      res.send('error has occurred: ' + error)
+    })
+  })
+    .catch((error) => {
+      res.status(500)
+      res.send('error has occurred: ' + error)
+    })
+})
+
 module.exports = router
