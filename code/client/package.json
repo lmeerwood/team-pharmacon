@@ -15,8 +15,11 @@
   "dependencies": {
     "axios": "^0.18.0",
     "material-icons": "^0.2.3",
+    "npm": "^6.4.1",
+    "pdfjs": "^2.0.0",
     "vue": "^2.5.2",
     "vue-json-excel": "^0.2.83",
+    "vue-pdf": "^3.3.1",
     "vue-router": "^3.0.1",
     "vuejs-datepicker": "^1.2.0",
     "vuetify": "^1.0.17",
