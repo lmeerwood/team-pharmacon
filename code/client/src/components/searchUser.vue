@@ -21,11 +21,12 @@
       <td class="text-xs-center">{{ props.item.user }}</td>
       <td class="text-xs-center">{{ props.item.authlevel }}</td>
       <td class="justify-right layout px-0">
-        <v-dialog v-model="dialog" width="500" v-if="!loggedInUser(props.item.user)">
+        <v-dialog v-model="dialogDelete[props.item.id]" width="500" v-if="!loggedInUser(props.item.user)">
           <v-btn
             slot="activator"
             color="red lighten-2"
             dark
+            @click="$set(dialogDelete, props.item.id, true)"
             >
               Delete User
             </v-btn>
@@ -45,7 +46,7 @@
                 <v-btn
                   color="gray lighten-1"
                   dark
-                  @click="dialog = false"
+                  @click="$set(dialogDelete, props.item.id, false)"
                 >
                   Cancel
                 </v-btn>
@@ -103,7 +104,7 @@ export default {
       { text: 'User Name', align: 'center', value: 'user' },
       { text: 'Authentication Level', align: 'center', value: 'authlevel' }
     ],
-    dialog: false,
+    dialogDelete: {},
     snackbar: false
   }),
   created () {
@@ -122,7 +123,7 @@ export default {
   },
   methods: {
     deleteItem (id) {
-      this.dialog = false
+      this.dialogDelete[id] = false
       UserService.deleteUser(id).then(function (res, err) {
         while (this.Users.length > 0) { this.Users.pop() }
         UserService.getAll()

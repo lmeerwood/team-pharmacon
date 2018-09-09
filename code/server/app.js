@@ -27,6 +27,7 @@ app.use('/api/v1/query', queryRoute)
 app.use('/auth', authRoute)
 
 app.use('/static', express.static('static'))
+app.use('/resources', express.static('resources'))
 app.use('/', vue)
 
 // catch 404 and forward to error handler
