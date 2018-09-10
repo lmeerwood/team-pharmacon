@@ -76,7 +76,7 @@ router.delete('/user/:id', passport.authenticate('jwtAdmin', {session: false}),
 router.post('/changePassword', passport.authenticate('jwtAdmin', {session: false}), function (req, res, next) {
   model.login.findOne({
     where: {
-      email: req.body.email
+      username: req.body.username 
     }
   }).then(user => {
     if (!user) {
@@ -84,21 +84,9 @@ router.post('/changePassword', passport.authenticate('jwtAdmin', {session: false
         error: 'The login information was incorrect'
       })
     }
-    var valid = user.comparePassword(req.body.password)
-    if (!valid) {
-      return res.status(403).send({
-        error: 'The login information was incorrect'
-      })
-    }
-    var passwordsMatch = user.compareTwoPasswords(req.body.newPassword, req.body.checkPassword)
-    if (!passwordsMatch) {
-      return res.status(403).send({
-        error: 'Your new passwords do not match'
-      })
-    }
     model.login.update(
-      {password: req.body.newPassword},
-      {where: {email: req.body.email}}
+      {password: req.body.password},
+      {where: {username: req.body.username}}
     ).then(function (qres) {
       return res.send(qres)
     }).catch((error) => {

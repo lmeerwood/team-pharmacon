@@ -14,5 +14,8 @@ export default {
   },
   create (user) {
     return Api().post('/auth/login/create', user)
+  },
+  changePassword (user) {
+    return Api().post('/auth/changePassword', user)
   }
 }
