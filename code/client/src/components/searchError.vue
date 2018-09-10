@@ -70,16 +70,23 @@ export default {
         var i
         for (i = 0; i < res.data.length; i++) {
           console.log(res.data)
-          this.errors.push({
-            id: res.data[i].id,
-            generalComment: res.data[i].generalComment,
-            errorDate: res.data[i].errorDate,
-            errorTime: res.data[i].errorTime,
-            patientName: res.data[i].patient.patientFirstName + ' ' + res.data[i].patient.patientSurname
-          })
           if (res.data[i].physician) {
             this.errors.push({
+              id: res.data[i].id,
+              generalComment: res.data[i].generalComment,
+              errorDate: res.data[i].errorDate,
+              errorTime: res.data[i].errorTime,
+              patientName: res.data[i].patient.patientFirstName + ' ' + res.data[i].patient.patientSurname,
               physicianName: res.data[i].physician.physicianFirstName + ' ' + res.data[i].physician.physicianSurname
+            })
+          } else {
+            this.errors.push({
+              id: res.data[i].id,
+              generalComment: res.data[i].generalComment,
+              errorDate: res.data[i].errorDate,
+              errorTime: res.data[i].errorTime,
+              patientName: res.data[i].patient.patientFirstName + ' ' + res.data[i].patient.patientSurname,
+              physicianName: ' '
             })
           }
         }
