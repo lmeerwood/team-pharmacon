@@ -3,20 +3,20 @@
 case $1 in
     start-webserver)
         # Checkout Branch
-        cd ~/pharmacy_app
-        git checkout master -f
+        cd ~/pharmacy_app;
+        git checkout master -f;
         echo Checked out into dev;
 
         #Start Web Server
-        cd ~/pharmacy_app/code/server
-        npm start &
-        wait
+        cd ~/pharmacy_app/code/server;
+        npm start &;
+        wait;
         echo Web Server Started;
     ;;
     stop-webserver)
         #Kill the node module to stop the web server
-        pkill -f 'node'
-        echo "Web Server has been stopped!"
+        pkill -f 'node';
+        echo "Web Server has been stopped!";
     ;;
 
     start-metabase)
@@ -26,34 +26,33 @@ case $1 in
         echo Metabase Server Port and IP Address Set;
 
         # Run Metabase
-        java -jar ~/metabase.jar &
-        wait
+        java -jar ~/metabase.jar &;
+        wait;
         echo Metabase Started;
     ;;
     stop-metabase)
         #Kill the metabase java jar file
-        pkill -f 'java -jar'
-        echo "Metabase has been stopped!"
+        pkill -f 'java -jar';
+        echo "Metabase has been stopped!";
     ;;
 
     build-server)
-
         echo "Building and starting The Web Server!";
         cd ~;
 
         #creating aliases
-        echo "alias pharmacon='cd ~/pharmacy_app/scripts && ./buildserver.sh'" >> ~/.bashrc
+        echo "alias pharmacon='cd ~/pharmacy_app/scripts && ./buildserver.sh'" >> ~/.bashrc;
 
         #Change into the application folder and checkout appropriate branch
-        cd /pharmacy_app;
+        cd ~/pharmacy_app;
         git checkout master -f;
 
         #Change into the server folder and then npm install all the packages
-        cd /code/server;
+        cd ~/pharmacy_app/code/server;
         npm install;
-        wait
+        wait;
         cd ~;
-        echo "The web Server has been built successfully!"
+        echo "The web Server has been built successfully!";
     ;;
     
     *)
