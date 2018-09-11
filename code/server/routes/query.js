@@ -286,20 +286,6 @@ router.get('/error', passport.authenticate('jwtAdmin', {session: false}), functi
 router.post('/error',
   passport.authenticate('jwt', {session: false}),
 
-  check('patientId').not().isEmpty(),
-  check('patientFirstName').not().isEmpty(),
-  check('patientSurname').not().isEmpty(),
-  check('patientType').not().isEmpty(),
-
-  check('medicationName').not().isEmpty(),
-  check('medicationtypeId').not().isEmpty(),
-
-  check('errorCausedByWorker').not().isEmpty(),
-  check('wasWorkerNotified').not().isEmpty(),
-  check('locationId').not().isEmpty(),
-  check('iimsCompleted').not().isEmpty(),
-  check('severityId').not().isEmpty(),
-
   function (req, res, next) {
   /**
    * This is a longer route due to the fact we need to
@@ -308,77 +294,91 @@ router.post('/error',
    * Some of them will be updated with newer values.
    */
     async function addError (req, res, next) {
-    // Check if the patient already exist.
-      var patient = await model.patient.findOrCreate({
-        where: {
-          patientHospitalId: req.body.patientId
-        },
-        // create new patient
-        defaults: {
-          patientFirstName: req.body.patientFirstName,
-          patientSurname: req.body.patientSurname,
-          patienttypeId: req.body.patientType
-        }
-      })
+    // If the Patient fields are enabled, Check if the patient already exists.
+      if (req.body.patientId) {
+
+        var patient = await model.patient.findOrCreate({
+          where: {
+            patientHospitalId: req.body.patientId
+          },
+          // create new patient
+          defaults: {
+            patientFirstName: req.body.patientFirstName,
+            patientSurname: req.body.patientSurname,
+            patienttypeId: req.body.patientType
+          }
+        })
         .spread((patient, created) => {
           return patient
         })
-
+      
       var patientid = patient.id
       console.log(patientid)
 
-      // Check if the medication already exist.
-      var medication = await model.medication.findOrCreate({
-        where: {
-          medicationName: req.body.medicationName,
-          medicationtypeId: req.body.medicationtypeId
-        },
-        // create new medication
-        defaults: {
-          medicationName: req.body.medication
-        }
-      })
-        .spread((medication, created) => {
-          return medication
-        })
+      }
+      // If the medication fields are enabled, Check if the medication already exists.
+      if (req.body.medicationName) {
 
-      // Check if the physician already exist.
-      var physician = await model.physician.findOrCreate({
-        where: {
-          providerNumber: req.body.providerNumber
-        },
-        // create new physician
-        defaults: {
-          physicianSurname: req.body.physicianSurname,
-          physicianFirstName: req.body.physicianFirstName
-        }
-      })
-        .spread((physician, created) => {
-          return physician
+        var medication = await model.medication.findOrCreate({
+          where: {
+            medicationName: req.body.medicationName,
+            medicationtypeId: req.body.medicationtypeId
+          },
+          // create new medication
+          defaults: {
+            medicationName: req.body.medication
+          }
         })
+          .spread((medication, created) => {
+            return medication
+          })
+
+      }
+      // If the physician fields are enabled, Check if the physician already exists.
+      if (req.body.providerNumber) {
+
+        var physician = await model.physician.findOrCreate({
+          where: {
+            providerNumber: req.body.providerNumber
+          },
+          // create new physician
+          defaults: {
+            physicianSurname: req.body.physicianSurname,
+            physicianFirstName: req.body.physicianFirstName
+          }
+        })
+          .spread((physician, created) => {
+            return physician
+          })
+      }
 
       // Now that the relating entries in other tables exist, make the error
-
-      model.error.create({
+      values = {
         errorDate: req.body.errorDate,
         errorTime: req.body.errorTime,
         locationId: req.body.locationId,
         wasWorkerNotified: req.body.wasWorkerNotified,
         wasPhysicianNotified: req.body.wasPhysicianNotified,
-        iimsCompleted: req.body.iimsCompleted,
+        iimsCompleted:  req.body.iimsCompleted,
         generalComment: req.body.generalComment,
-        errortypeId: req.body.errortypeId,
+        errortypeId:  req.body.errortypeId,
         severityId: req.body.severityId,
         errorCausedByWorker: req.body.errorCausedByWorker,
-        medicationId: medication.id,
-        patientId: patient.id,
-        physicianId: physician.id
-      })
+      }
+
+      //if(req.body.patientId) { values.patientId = patient.id }
+      //if(req.body.medicationName) { values.medicationId = medication.id }
+      //if(req.body.providerNumber) { values.physicianId = physician.id }
+
+      console.log('before creation')
+      model.error.create(values)
         .then(() => {
+          console.log('success')
           res.send('success')
         }
         )
         .catch((error) => {
+          console.log(error)
           res.status(500)
           res.send('error has occurred: ' + error)
         })
@@ -840,6 +840,50 @@ router.post(
     updatePatientType(req, res, next)
   }
 )
+
+// The Hidden Fields route. The get is for retrieving the fields' states and the post is for updating them
+
+router.get('/hiddenFields/:index', passport.authenticate('jwt', {session: false}), function (req, res) {
+  const errors = validationResult(req)
+  console.log('Server side get hiddenFields: ' + index)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() })
+  }
+  
+  model.hiddenFields.findOrCreate({
+    where: {
+      id: req.params.index
+    }
+  }).then(function (qres) {
+    res.send(qres)
+  })
+})
+
+router.post(
+  '/hiddenFields/:index',
+  passport.authenticate('jwtAdmin', {session: false}),
+  function (req, res, next) {
+
+    async function updateHiddenFields (req, res, next) {
+      console.log('Server side post update index: ' + req.params.index)
+      console.log('Server side post update hidden fields: ' + req.body)
+      var selector = {
+        where: { id: req.params.index }
+      }
+      model.hiddenfields.update(req.body, selector)
+        .then(() => {
+          res.send('Updated')
+        })
+        .catch((error) => {
+          res.status(500)
+          res.send('error has occurred: ' + error)
+        })
+    }
+
+    updateHiddenFields(req, res, next)
+  }
+)
+
 
 router.post(
   '/export',

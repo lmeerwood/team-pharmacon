@@ -97,7 +97,7 @@
                   <v-select
                     :loading="loading"
                     :items="patientTypes"
-                    :rules="[() => patientType > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     label="Select Patient Type"
                     v-model="patientType"
                     autocomplete
@@ -113,7 +113,7 @@
                   <v-select
                     :loading="loading"
                     :items="errorTypes"
-                    :rules="[() => errorType > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     v-model="errorType"
                     label='Select an Error Type'
                     autocomplete
@@ -139,7 +139,7 @@
                   <v-select
                     :loading="loading"
                     :items="medicationTypes"
-                    :rules="[() => medicationType > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     label="Select Medication Type"
                     v-model="medicationType"
                     autocomplete
@@ -150,12 +150,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[9]">
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Error Description or General Comment"
                     v-model="errorComment"
-                    :rules="[() => errorComment == '' || rules.drAlpha]"
+                    :rules="[rules.drCommentRule]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -165,7 +165,7 @@
                   <v-select
                     :loading="loading"
                     :items="workers"
-                    :rules="[() => workerAtFault > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     label="Select Person Who Made Error"
                     v-model="workerAtFault"
                     autocomplete
@@ -183,7 +183,7 @@
               </v-layout>
               <v-layout row v-if="showFields[11]">
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="workerNotified" :mandatory="false" row="row">
+                  <v-radio-group v-model="workerNotified" :mandatory="false" :rules="[rules.requiredSelect]" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
                     <v-radio label="No" value="false"></v-radio>
                   </v-radio-group>
@@ -195,7 +195,7 @@
                   <v-select
                     :loading="loading"
                     :items="errorLocations"
-                    :rules="[() => errorLocation > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     v-model="errorLocation"
                     label='Where was error detected?'
                     autocomplete
@@ -243,7 +243,7 @@
               </v-layout>
               <v-layout row v-if="showFields[15]">
                 <v-flex xs8 offset-xs2>
-                  <v-radio-group v-model="wasPhysicianNotified" row="row">
+                  <v-radio-group v-model="wasPhysicianNotified" :rules="[rules.requiredSelect]" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
                     <v-radio label="No" value="false"></v-radio>
                   </v-radio-group>
@@ -256,7 +256,7 @@
                     label="Physician Provider Number"
                     v-model="providerNumber"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[() => providerNumber == '' || rules.drAlphaNum]"
+                    :rules="[rules.drAlphaNum]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -267,7 +267,7 @@
                     label="Physician First Name"
                     v-model="physicianFirstName"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[() => physicianFirstName == '' || rules.drAlpha]"
+                    :rules="[rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -278,7 +278,7 @@
                     label="Physician Surname"
                     v-model="physicianSurname"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[() => physicianSurname == '' || rules.drAlpha]"
+                    :rules="[rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -289,7 +289,7 @@
                     label="Physician Comments"
                     v-model="physicianComment"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[() => physicianComment == '' || rules.drAlpha]"
+                    :rules="[rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -394,8 +394,9 @@ export default {
     physicianComment: '',
     rules: {
       required: value => !!value || 'This field is required',
+      requiredSelect: value => value > 0 || 'You must select one',
       alphaNum: value => {
-        const pattern = /^([a-zA-Z0-9]+)$/
+        const pattern = /^$|^([a-zA-Z0-9]+)$/
         return pattern.test(value) || 'Alpha-numeric field only'
       },
       alphaDashApos: value => {
@@ -403,12 +404,16 @@ export default {
         return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
       },
       drAlpha: value => {
-        const pattern = /^([a-zA-Z-' ]+)$/
+        const pattern = /^$|^([a-zA-Z-' ]+)$/
         return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
       },
       drAlphaNum: value => {
         const pattern = /^([a-zA-Z0-9]+)$/
         return pattern.test(value) || 'Alpha-numeric field only'
+      },
+      drCommentRule: value => {
+        const pattern = /^$|^[a-zA-Z0-9 -'\\.]+$/
+        return pattern.test(value) || 'Optional, but must be Alpha-numeric. You can use spaces, dashes and full stops.'
       }
     }
   }),
@@ -560,22 +565,23 @@ export default {
         patientId: this.patientId,
         patientFirstName: this.patientFirstName,
         patientSurname: this.patientSurname,
-        patientType: this.patientType.valueOf(),
-        errortypeId: this.errorType.valueOf(),
-        medicationName: this.medication.valueOf(),
-        medicationtypeId: this.medicationType.valueOf(),
         generalComment: this.errorComment,
-        errorCausedByWorker: this.workerAtFault.valueOf(),
-        wasWorkerNotified: workerNotified,
-        locationId: this.errorLocation.valueOf(),
-        iimsCompleted: iimsCompleted,
-        severityId: this.severity.valueOf(),
-        wasPhysicianNotified: wasPhysicianNotified,
         physicianFirstName: this.physicianFirstName,
         physicianSurname: this.physicianSurname,
         providerNumber: this.providerNumber,
         physicianComment: this.physicianComment
       }
+      if (this.showFields[5]) { values = Object.assign(values, { patientType: this.patientType.valueOf() }) }
+      if (this.showFields[6]) { values = Object.assign(values, { errortypeId: this.errorType.valueOf() }) }
+      if (this.showFields[7]) { values = Object.assign(values, { medicationName: this.medication.valueOf() }) }
+      if (this.showFields[8]) { values = Object.assign(values, { medicationtypeId: this.medicationType.valueOf() }) }
+      if (this.showFields[10]) { values = Object.assign(values, { errorCausedByWorker: this.workerAtFault.valueOf() }) }
+      if (this.showFields[11]) { values = Object.assign(values, { wasWorkerNotified: workerNotified }) }
+      if (this.showFields[12]) { values = Object.assign(values, { locationId: this.errorLocation.valueOf() }) }
+      if (this.showFields[13]) { values = Object.assign(values, { iimsCompleted: iimsCompleted }) }
+      if (this.showFields[14]) { values = Object.assign(values, { severityId: this.severity.valueOf() }) }
+      if (this.showFields[15]) { values = Object.assign(values, { wasPhysicianNotified: wasPhysicianNotified }) }
+
       if (this.validForm() && errorId != null) {
         try {
           await ErrorService.updateError(errorId, values)

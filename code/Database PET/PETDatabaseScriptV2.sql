@@ -118,16 +118,16 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`error` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `errorDate` DATE NOT NULL,
   `errorTime` TIME(6) NOT NULL,
-  `errorTypeId` INT(11) NOT NULL,
-  `locationId` INT(11) NOT NULL,
-  `errorCausedByWorker` INT(11) NOT NULL,
-  `wasWorkerNotified` TINYINT(1) NOT NULL,
-  `wasPhysicianNotified` TINYINT(1) NOT NULL,
-  `iimsCompleted` TINYINT(1) NOT NULL,
+  `errorTypeId` INT(11) DEFAULT NULL,
+  `locationId` INT(11) DEFAULT NULL,
+  `errorCausedByWorker` INT(11) DEFAULT NULL,
+  `wasWorkerNotified` TINYINT(1) DEFAULT NULL,
+  `wasPhysicianNotified` TINYINT(1) DEFAULT NULL,
+  `iimsCompleted` TINYINT(1) DEFAULT NULL,
   `generalComment` VARCHAR(150) NULL DEFAULT NULL,
-  `severityId` INT(11) NOT NULL,
-  `medicationId` INT(11) NOT NULL,
-  `patientId` INT(11) NOT NULL,
+  `severityId` INT(11) DEFAULT NULL,
+  `medicationId` INT(11) DEFAULT NULL,
+  `patientId` INT(11) DEFAULT NULL,
   `physicianId` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `idUser_idx` (`errorCausedByWorker` ASC),
@@ -224,6 +224,26 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`patienttype` (
 ENGINE = InnoDB
 AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8;
+
+-- -----------------------------------------------------
+-- Table `petdatabase`.`hiddenFields
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `petdatabase`.`hiddenfields` (
+  `id` int(11) NOT NULL,
+  `showDate` tinyint(1) NOT NULL DEFAULT '1',
+  `showTime` tinyint(1) NOT NULL DEFAULT '1',
+  `showPatientFields` tinyint(1) NOT NULL DEFAULT '1',
+  `showErrorType` tinyint(1) NOT NULL DEFAULT '1',
+  `showMedicationFields` tinyint(1) NOT NULL DEFAULT '1',
+  `showWorker` tinyint(1) NOT NULL DEFAULT '1',
+  `showWorkerNotified` tinyint(1) NOT NULL DEFAULT '1',
+  `showLocation` tinyint(1) NOT NULL DEFAULT '1',
+  `showIIMScompleted` tinyint(1) NOT NULL DEFAULT '1',
+  `showSeverity` tinyint(1) NOT NULL DEFAULT '1',
+  `showPhysicianFields` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
