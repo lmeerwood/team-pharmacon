@@ -5,12 +5,11 @@ case $1 in
         # Checkout Branch
         cd ~/pharmacy_app
         git checkout master -f
-        echo Checked out into dev
+        echo Checked out into Master
 
         #Start Web Server
         cd ~/pharmacy_app/code/server
         npm start &
-        wait
         echo Web Server Started
     ;;
     stop-webserver)
