@@ -43,6 +43,7 @@ case $1 in
 
         #creating aliases
         echo "alias pharmacon='cd ~/pharmacy_app/scripts && ./buildserver.sh'" >> ~/.bashrc
+        source ~/.bashrc
 
         #Change into the application folder and checkout appropriate branch
         cd ~/pharmacy_app
