@@ -1,7 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const HiddenFields = sequelize.define('hiddenfields', {
-    showDate: DataTypes.BOOLEAN,
-    showTime: DataTypes.BOOLEAN,
     showPatientFields: DataTypes.BOOLEAN,
     showErrorType: DataTypes.BOOLEAN,
     showMedicationFields: DataTypes.BOOLEAN,

@@ -10,24 +10,6 @@
 
               <v-layout row>
                 <v-flex xs8 offset-xs2>
-                  <h4>Show Date field? If hidden, the date the form was submitted will be used.</h4>
-                </v-flex>
-                <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showDate" @change="noChanges=false"></v-checkbox>
-                </v-flex>
-              </v-layout>
-
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
-                  <h4>Show Time field? If hidden, the time the form was submitted will be used.</h4>
-                </v-flex>
-                <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showTime" @change="noChanges=false"></v-checkbox>
-                </v-flex>
-              </v-layout>
-
-              <v-layout row>
-                <v-flex xs8 offset-xs2>
                   <h4>Show Patient information fields?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
@@ -163,8 +145,6 @@ export default {
     errorMessage: '',
     message: '',
     fields: {
-      showDate: true,
-      showTime: true,
       showPatientFields: true,
       showErrorType: true,
       showMedicationFields: true,

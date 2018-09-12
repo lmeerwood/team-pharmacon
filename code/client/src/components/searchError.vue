@@ -70,7 +70,7 @@ export default {
         var i
         for (i = 0; i < res.data.length; i++) {
           console.log(res.data)
-          if (res.data[i].physician) {
+          if (res.data[i].physician && res.data[i].patient) {
             this.errors.push({
               id: res.data[i].id,
               generalComment: res.data[i].generalComment,
@@ -79,13 +79,31 @@ export default {
               patientName: res.data[i].patient.patientFirstName + ' ' + res.data[i].patient.patientSurname,
               physicianName: res.data[i].physician.physicianFirstName + ' ' + res.data[i].physician.physicianSurname
             })
-          } else {
+          } else if (!res.data[i].physician && res.data[i].patient) {
             this.errors.push({
               id: res.data[i].id,
               generalComment: res.data[i].generalComment,
               errorDate: res.data[i].errorDate,
               errorTime: res.data[i].errorTime,
               patientName: res.data[i].patient.patientFirstName + ' ' + res.data[i].patient.patientSurname,
+              physicianName: ' '
+            })
+          } else if (res.data[i].physician && !res.data[i].patient) {
+            this.errors.push({
+              id: res.data[i].id,
+              generalComment: res.data[i].generalComment,
+              errorDate: res.data[i].errorDate,
+              errorTime: res.data[i].errorTime,
+              patientName: ' ',
+              physicianName: res.data[i].physician.physicianFirstName + ' ' + res.data[i].physician.physicianSurname
+            })
+          } else {
+            this.errors.push({
+              id: res.data[i].id,
+              generalComment: res.data[i].generalComment,
+              errorDate: res.data[i].errorDate,
+              errorTime: res.data[i].errorTime,
+              patientName: ' ',
               physicianName: ' '
             })
           }
