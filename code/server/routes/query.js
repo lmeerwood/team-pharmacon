@@ -844,13 +844,8 @@ router.post(
 // The Hidden Fields route. The get is for retrieving the fields' states and the post is for updating them
 
 router.get('/hiddenFields/:index', passport.authenticate('jwt', {session: false}), function (req, res) {
-  const errors = validationResult(req)
-  console.log('Server side get hiddenFields: ' + index)
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() })
-  }
-  
-  model.hiddenFields.findOrCreate({
+ 
+  model.hiddenfields.findOrCreate({
     where: {
       id: req.params.index
     }
@@ -865,8 +860,6 @@ router.post(
   function (req, res, next) {
 
     async function updateHiddenFields (req, res, next) {
-      console.log('Server side post update index: ' + req.params.index)
-      console.log('Server side post update hidden fields: ' + req.body)
       var selector = {
         where: { id: req.params.index }
       }

@@ -13,7 +13,7 @@
                   <h4>Show Date field? If hidden, the date the form was submitted will be used.</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showDate"></v-checkbox>
+                  <v-checkbox v-model="fields.showDate" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -22,7 +22,7 @@
                   <h4>Show Time field? If hidden, the time the form was submitted will be used.</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showTime"></v-checkbox>
+                  <v-checkbox v-model="fields.showTime" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -31,7 +31,7 @@
                   <h4>Show Patient information fields?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showPatientFields"></v-checkbox>
+                  <v-checkbox v-model="fields.showPatientFields" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -40,7 +40,7 @@
                   <h4>Show Error Type field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showErrorType"></v-checkbox>
+                  <v-checkbox v-model="fields.showErrorType" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -49,7 +49,7 @@
                   <h4>Show Medication fields?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showMedicationFields"></v-checkbox>
+                  <v-checkbox v-model="fields.showMedicationFields" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -58,7 +58,7 @@
                   <h4>Show Person At Fault fields?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showWorker"></v-checkbox>
+                  <v-checkbox v-model="fields.showWorker" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -67,7 +67,7 @@
                   <h4>Show Was that person notified field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showWorkerNotified"></v-checkbox>
+                  <v-checkbox v-model="fields.showWorkerNotified" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -76,7 +76,7 @@
                   <h4>Show Error Location field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showLocation"></v-checkbox>
+                  <v-checkbox v-model="fields.showLocation" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -85,7 +85,7 @@
                   <h4>Show IIMS Completed field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showIIMScompleted"></v-checkbox>
+                  <v-checkbox v-model="fields.showIIMScompleted" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -94,7 +94,7 @@
                   <h4>Show Was Severity Level field?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showSeverity"></v-checkbox>
+                  <v-checkbox v-model="fields.showSeverity" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -103,7 +103,7 @@
                   <h4>Show Physician information fields?</h4>
                 </v-flex>
                 <v-flex xs8 offset-xs2>
-                  <v-checkbox v-model="fields.showPhysicianFields"></v-checkbox>
+                  <v-checkbox v-model="fields.showPhysicianFields" @change="noChanges=false"></v-checkbox>
                 </v-flex>
               </v-layout>
 
@@ -138,7 +138,7 @@
                     round color="secondary"
                     dark
                     @click="undo()"
-                    :disabled = arraysAreEqual()
+                    :disabled = "noChanges"
                     >
                     Undo Changes
                   </v-btn>
@@ -162,7 +162,6 @@ export default {
     loading: false,
     errorMessage: '',
     message: '',
-    showFieldArray: [],
     fields: {
       showDate: true,
       showTime: true,
@@ -176,24 +175,34 @@ export default {
       showSeverity: true,
       showPhysicianFields: true
     },
-    currentFields: {}
+    noChanges: false
   }),
 
   methods: {
     // Mutates the store with the updated field hidden/shown values.
     async submit () {
       this.message = ''
+      var selector = 1
+
       try {
-        await HiddenFieldsService.updateHiddenFields(1, this.fields)
+        await HiddenFieldsService.updateHiddenFields(selector, this.fields)
         this.message = 'Form updated!'
       } catch (error) {
         this.errorMessage = error.response.data.error
       }
+      this.noChanges = true
     },
 
     // Reverts all unsubmitted changes.
     undo: function () {
-      Object.keys(this.fields).forEach(key => { this.fields[key] = this.currentFields[key] })
+      var selector = 1
+      HiddenFieldsService.getHiddenFields(selector)
+        .then(function (res, err) {
+          if (!res.data[1]) {
+            this.fields = res.data[0]
+          }
+        }.bind(this))
+      this.noChanges = true
       this.message = 'Undo success!'
     },
 
@@ -207,31 +216,19 @@ export default {
       } catch (error) {
         this.errorMessage = error.response.data.error
       }
-    },
-
-    // Checks whether changes have been made to the fields - used to show/hide Undo button.
-    arraysAreEqual: function () {
-      Object.keys(this.fields).forEach(key => {
-        if (this.fields[key] !== this.currentFields[key]) {
-          return false
-        }
-      })
-      return true
+      this.noChanges = true
     }
+
   },
   // On page creation, sets the checkboxes to a copy of the status from the store.
   created () {
-    Object.keys(this.fields).forEach(key => { this.currentFields[key] = this.fields[key] })
-    console.log('Created: ' + this.fields.showDate)
     HiddenFieldsService.getHiddenFields(1)
       .then(function (res, err) {
-        Object.keys(this.fields).forEach(key => {
-          this.fields[key] = res.data[key]
-          this.currentFields[key] = res.data[key]
-        },
-        console.log('Show Date: ' + this.fields.showDate)
-        )
+        if (!res.data[1]) {
+          this.fields = res.data[0]
+        }
       }.bind(this))
+    this.noChanges = true
   }
 }
 
