@@ -21,6 +21,14 @@
       <td class="text-xs-center">{{ props.item.user }}</td>
       <td class="text-xs-center">{{ props.item.authlevel }}</td>
       <td class="justify-right layout px-0">
+      <v-btn
+        slot="activator"
+        color="blue lighten-2"
+        dark
+        @click="goToChangePassword( props.item.user )"
+        >
+        Change Password
+      </v-btn>
         <v-dialog v-model="dialogDelete[props.item.id]" width="500" v-if="!loggedInUser(props.item.user)">
           <v-btn
             slot="activator"
@@ -140,9 +148,11 @@ export default {
       }.bind(this))
       this.snackbar = true
     },
-
     loggedInUser (user) {
       return this.getUser === user
+    },
+    goToChangePassword (user) {
+      this.$router.push('/password?login=' + user)
     }
   }
 }

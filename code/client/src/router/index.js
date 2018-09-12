@@ -21,6 +21,7 @@ import PatientType from '@/components/PatientType'
 import searchPatientType from '@/components/searchPatientType'
 import searchUser from '@/components/searchUser'
 import downloadData from '@/components/downloadData'
+import password from '@/components/Password'
 
 Vue.use(Router)
 Vue.component('downloadExcel', JsonExcel)
@@ -125,6 +126,11 @@ var router = new Router({
       path: '/downloadData',
       name: 'downloadData',
       component: downloadData
+    },
+    {
+      path: '/password',
+      name: 'password',
+      component: password
     }
   ]
 })
