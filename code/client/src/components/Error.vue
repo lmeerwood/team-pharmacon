@@ -443,7 +443,6 @@ export default {
     if (this.$route.query.errorId) {
       ErrorService.getError(this.$route.query.errorId)
         .then(function (res, err) {
-
           this.errorId = this.$route.query.errorId
           this.date = res.data.errorDate
           this.time = res.data.errorTime.split(':', 2).join(':')

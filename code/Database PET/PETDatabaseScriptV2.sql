@@ -231,8 +231,6 @@ DEFAULT CHARACTER SET = utf8;
 
 CREATE TABLE IF NOT EXISTS `petdatabase`.`hiddenfields` (
   `id` int(11) NOT NULL,
-  `showDate` tinyint(1) NOT NULL DEFAULT '1',
-  `showTime` tinyint(1) NOT NULL DEFAULT '1',
   `showPatientFields` tinyint(1) NOT NULL DEFAULT '1',
   `showErrorType` tinyint(1) NOT NULL DEFAULT '1',
   `showMedicationFields` tinyint(1) NOT NULL DEFAULT '1',
