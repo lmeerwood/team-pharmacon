@@ -321,6 +321,13 @@
                     @click="clear">
                     clear
                   </v-btn>
+                  <v-btn
+                    round color="secondary"
+                    dark
+                    @click="showAllCurrentFields"
+                    :disabled="!this.fieldsAreHidden">
+                    Show Missing Fields
+                  </v-btn>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -421,12 +428,13 @@ export default {
       showIIMScompleted: true,
       showSeverity: true,
       showPhysicianFields: true
-    }
+    },
+    fieldsAreHidden: false
   }),
   created () {
     HiddenFieldsService.getHiddenFields(1)
       .then(function (res, err) {
-        if (!res.data[1] || this.$route.query.errorId) {
+        if (!res.data[1] && !this.$route.query.errorId) {
           this.showFields = res.data[0]
         }
       }.bind(this))
@@ -435,27 +443,66 @@ export default {
     if (this.$route.query.errorId) {
       ErrorService.getError(this.$route.query.errorId)
         .then(function (res, err) {
+
           this.errorId = this.$route.query.errorId
           this.date = res.data.errorDate
           this.time = res.data.errorTime.split(':', 2).join(':')
-          this.patientId = res.data.patient.patientHospitalId
-          this.patientFirstName = res.data.patient.patientFirstName
-          this.patientSurname = res.data.patient.patientSurname
-          this.patientType = res.data.patient.patienttypeId
-          this.errorType = res.data.errortype.id
-          this.medication = res.data.medication.medicationName
-          this.medicationType = res.data.medication.medicationtypeId
           this.errorComment = res.data.generalComment
-          this.workerAtFault = res.data.worker.id
-          this.workerNotified = res.data.wasWorkerNotified ? 'true' : 'false'
-          this.errorLocation = res.data.location.id
-          this.iimsCompleted = res.data.iimsCompleted ? 'true' : 'false'
-          this.severity = res.data.severity.id
-          this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
-          this.physicianFirstName = res.data.physician.physicianFirstName
-          this.physicianSurname = res.data.physician.physicianSurname
-          this.providerNumber = res.data.physician.providerNumber
-          this.physicianComment = res.data.physician.physicianComment
+
+          if (res.data.patient) {
+            this.showFields.showPatientFields = true
+            this.patientId = res.data.patient.patientHospitalId
+            this.patientFirstName = res.data.patient.patientFirstName
+            this.patientSurname = res.data.patient.patientSurname
+            this.patientType = res.data.patient.patienttypeId
+          } else { this.showFields.showPatientFields = false }
+
+          if (res.data.errortype) {
+            this.showFields.showErrorType = true
+            this.errorType = res.data.errortype.id
+          } else { this.showFields.showErrorType = false }
+
+          if (res.data.medication) {
+            this.showFields.showMedicationFields = true
+            this.medication = res.data.medication.medicationName
+            this.medicationType = res.data.medication.medicationtypeId
+          } else { this.showFields.showMedicationFields = false }
+
+          if (res.data.worker) {
+            this.showFields.showWorker = true
+            this.workerAtFault = res.data.worker.id
+          } else { this.showFields.showWorker = false }
+
+          if (res.data.wasWorkerNotified === 'null') {
+            this.showFields.showWorkerNotified = true
+            this.workerNotified = res.data.wasWorkerNotified ? 'true' : 'false'
+          } else { this.showFields.showWorkerNotified = false }
+
+          if (res.data.location) {
+            this.showFields.showLocation = true
+            this.errorLocation = res.data.location.id
+          } else { this.showFields.showLocation = false }
+
+          if (res.data.iimsCompleted === 'null') {
+            this.showFields.showIIMScompleted = true
+            this.iimsCompleted = res.data.iimsCompleted ? 'true' : 'false'
+          } else { this.showFields.showIIMScompleted = false }
+
+          if (res.data.severity) {
+            this.showFields.showSeverity = true
+            this.severity = res.data.severity.id
+          } else { this.showFields.showSeverity = false }
+
+          if (res.data.physician) {
+            this.showFields.showPhysicianFields = true
+            this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
+            this.physicianFirstName = res.data.physician.physicianFirstName
+            this.physicianSurname = res.data.physician.physicianSurname
+            this.providerNumber = res.data.physician.providerNumber
+            this.physicianComment = res.data.physician.physicianComment
+          } else { this.showFields.showPhysicianFields = false }
+          this.fieldsAreHidden = true
+          console.log('data initialised')
         }.bind(this))
     }
 
@@ -623,6 +670,13 @@ export default {
     },
     validForm: function () {
       return this.$refs.form.validate()
+    },
+    showAllCurrentFields: function () {
+      HiddenFieldsService.getHiddenFields(1)
+        .then(function (res, err) {
+          this.showFields = res.data[0]
+          this.fieldsAreHidden = false
+        }.bind(this))
     }
   }
 }

@@ -124,11 +124,14 @@ router.post('/error',
         errortypeId:  req.body.errortypeId,
         severityId: req.body.severityId,
         errorCausedByWorker: req.body.errorCausedByWorker,
+        patientId: null,
+        medicationId: null,
+        physicianId: null
       }
 
-      //if(req.body.patientId) { values.patientId = patient.id }
-      //if(req.body.medicationName) { values.medicationId = medication.id }
-      //if(req.body.providerNumber) { values.physicianId = physician.id }
+      if(req.body.patientId) { values.patientId = patient.id }
+      if(req.body.medicationName) { values.medicationId = medication.id }
+      if(req.body.providerNumber) { values.physicianId = physician.id }
 
       console.log('before creation')
       model.error.create(values)
@@ -166,6 +169,10 @@ router.get('/error/:id', passport.authenticate('jwtAdmin', {session: false}), fu
     ]
   }).then(function (qres) {
     res.send(qres)
+  }).catch((error) => {
+    console.log(error)
+    res.status(500)
+    res.send('error has occurred: ' + error)
   })
 })
 
