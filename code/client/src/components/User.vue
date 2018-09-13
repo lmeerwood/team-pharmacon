@@ -129,10 +129,9 @@ export default {
       }
     },
     clear: function () {
-    //   this.$refs.form.reset()
+      this.$refs.form.reset()
       this.message = ''
       this.errorMessage = ''
-      this.$refs.form.reset()
     },
     validForm: function () {
       return this.$refs.form.validate()
