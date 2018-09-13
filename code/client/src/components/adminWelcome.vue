@@ -118,7 +118,7 @@
                   round color="primary"
                   dark
                   :to="{name: 'User'}">
-                  Add Users
+                  Manage Users
                 </v-btn>
               </div>
               <div>

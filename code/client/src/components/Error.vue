@@ -8,8 +8,8 @@
         <fieldset class="white">
           <v-form v-model="valid" ref="form" lazy-validation>
             <v-container fluid>
-              <v-layout row>
-                <v-flex xs8 offset-xs1 v-if="showFields[0]">
+                <v-layout row>
+                <v-flex xs8 offset-xs1>
                   <v-menu
                   ref="datePicker"
                   :close-on-content-click="false"
@@ -34,7 +34,7 @@
                   <v-date-picker v-model="date" @input="$refs.datePicker.save(date)"></v-date-picker>
                 </v-menu>
                 </v-flex>
-                <v-flex xs8 offset-xs1 v-if="showFields[1]">
+                <v-flex xs8 offset-xs1>
                   <v-menu
                     ref="timePicker"
                     :close-on-content-click="false"
@@ -62,7 +62,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[2]">
+              <v-layout row v-if="showFields.showPatientFields">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Patient MRN"
@@ -72,7 +72,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[3]">
+              <v-layout row v-if="showFields.showPatientFields">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Patient First Name"
@@ -82,7 +82,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[4]">
+              <v-layout row v-if="showFields.showPatientFields">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Patient Surname"
@@ -92,12 +92,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[5]">
+              <v-layout row v-if="showFields.showPatientFields">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
                     :items="patientTypes"
-                    :rules="[() => patientType > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     label="Select Patient Type"
                     v-model="patientType"
                     autocomplete
@@ -108,12 +108,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[6]">
+              <v-layout row v-if="showFields.showErrorType">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
                     :items="errorTypes"
-                    :rules="[() => errorType > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     v-model="errorType"
                     label='Select an Error Type'
                     autocomplete
@@ -124,7 +124,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[7]">
+              <v-layout row v-if="showFields.showMedicationFields">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Medication Given"
@@ -134,12 +134,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[8]">
+              <v-layout row v-if="showFields.showMedicationFields">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
                     :items="medicationTypes"
-                    :rules="[() => medicationType > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     label="Select Medication Type"
                     v-model="medicationType"
                     autocomplete
@@ -150,22 +150,22 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[9]">
+              <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Error Description or General Comment"
                     v-model="errorComment"
-                    :rules="[() => errorComment == '' || rules.drAlpha]"
+                    :rules="[rules.drCommentRule]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[10]">
+              <v-layout row v-if="showFields.showWorker">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
                     :items="workers"
-                    :rules="[() => workerAtFault > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     label="Select Person Who Made Error"
                     v-model="workerAtFault"
                     autocomplete
@@ -176,12 +176,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[11]">
+              <v-layout row v-if="showFields.showWorkerNotified">
                 <v-flex xs8 offset-xs2>
                   <h4>Was the person notified?</h4>
                 </v-flex>
               </v-layout>
-              <v-layout row v-if="showFields[11]">
+              <v-layout row v-if="showFields.showWorkerNotified">
                 <v-flex xs8 offset-xs2>
                   <v-radio-group v-model="workerNotified" :mandatory="false" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
@@ -190,12 +190,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[12]">
+              <v-layout row v-if="showFields.showLocation">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
                     :items="errorLocations"
-                    :rules="[() => errorLocation > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     v-model="errorLocation"
                     label='Where was error detected?'
                     autocomplete
@@ -206,12 +206,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[13]">
+              <v-layout row v-if="showFields.showIIMScompleted">
                 <v-flex xs8 offset-xs2>
                   <h4>Was an IIMS completed?</h4>
                 </v-flex>
               </v-layout>
-              <v-layout row v-if="showFields[13]">
+              <v-layout row v-if="showFields.showIIMScompleted">
                 <v-flex xs8 offset-xs2>
                   <v-radio-group v-model="iimsCompleted" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
@@ -220,12 +220,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[14]">
+              <v-layout row v-if="showFields.showSeverity">
                 <v-flex xs8 offset-xs2>
                   <v-select
                     :loading="loading"
                     :items="severityLevels"
-                    :rules="[() => severity > 0 || 'You must select one']"
+                    :rules="[rules.requiredSelect]"
                     v-model="severity"
                     label='Select Severity Level'
                     autocomplete
@@ -236,12 +236,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[15]">
+              <v-layout row v-if="showFields.showPhysicianFields">
                 <v-flex xs8 offset-xs2>
                   <h4>Was the physician notified?</h4>
                 </v-flex>
               </v-layout>
-              <v-layout row v-if="showFields[15]">
+              <v-layout row v-if="showFields.showPhysicianFields">
                 <v-flex xs8 offset-xs2>
                   <v-radio-group v-model="wasPhysicianNotified" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
@@ -250,46 +250,46 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[16]">
+              <v-layout row v-if="showFields.showPhysicianFields">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Provider Number"
                     v-model="providerNumber"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[() => providerNumber == '' || rules.drAlphaNum]"
+                    :rules="[rules.drAlphaNum]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[17]">
+              <v-layout row v-if="showFields.showPhysicianFields">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician First Name"
                     v-model="physicianFirstName"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[() => physicianFirstName == '' || rules.drAlpha]"
+                    :rules="[rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[18]">
+              <v-layout row v-if="showFields.showPhysicianFields">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Surname"
                     v-model="physicianSurname"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[() => physicianSurname == '' || rules.drAlpha]"
+                    :rules="[rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields[19]">
+              <v-layout row v-if="showFields.showPhysicianFields">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Comments"
                     v-model="physicianComment"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[() => physicianComment == '' || rules.drAlpha]"
+                    :rules="[rules.drAlpha]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -321,6 +321,13 @@
                     @click="clear">
                     clear
                   </v-btn>
+                  <v-btn
+                    round color="secondary"
+                    dark
+                    @click="showAllCurrentFields"
+                    :disabled="!this.fieldsAreHidden">
+                    Show Missing Fields
+                  </v-btn>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -342,14 +349,9 @@ import MedicationtypeService from '@/services/MedicationtypeService'
 import PatienttypeService from '@/services/PatienttypeService'
 // import PatientService from '@/services/PatientService'
 import LocationService from '@/services/LocationService'
-import {mapGetters} from 'vuex'
+import HiddenFieldsService from '@/services/HiddenFieldsService'
 
 export default {
-
-  // This gets the array telling which fields should and shouldn't be hidden from the store.
-  computed: mapGetters([
-    'showFields'
-  ]),
 
   data: () => ({
     menu: false,
@@ -394,8 +396,9 @@ export default {
     physicianComment: '',
     rules: {
       required: value => !!value || 'This field is required',
+      requiredSelect: value => value > 0 || 'You must select one',
       alphaNum: value => {
-        const pattern = /^([a-zA-Z0-9]+)$/
+        const pattern = /^$|^([a-zA-Z0-9]+)$/
         return pattern.test(value) || 'Alpha-numeric field only'
       },
       alphaDashApos: value => {
@@ -403,16 +406,39 @@ export default {
         return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
       },
       drAlpha: value => {
-        const pattern = /^([a-zA-Z-' ]+)$/
+        const pattern = /^$|^([a-zA-Z-' ]+)$/
         return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
       },
       drAlphaNum: value => {
         const pattern = /^([a-zA-Z0-9]+)$/
         return pattern.test(value) || 'Alpha-numeric field only'
+      },
+      drCommentRule: value => {
+        const pattern = /^$|^[a-zA-Z0-9 -'\\.]+$/
+        return pattern.test(value) || 'Optional, but must be Alpha-numeric. You can use spaces, dashes and full stops.'
       }
-    }
+    },
+    showFields: {
+      showPatientFields: true,
+      showErrorType: true,
+      showMedicationFields: true,
+      showWorker: true,
+      showWorkerNotified: true,
+      showLocation: true,
+      showIIMScompleted: true,
+      showSeverity: true,
+      showPhysicianFields: true
+    },
+    fieldsAreHidden: false
   }),
   created () {
+    HiddenFieldsService.getHiddenFields(1)
+      .then(function (res, err) {
+        if (!res.data[1] && !this.$route.query.errorId) {
+          this.showFields = res.data[0]
+        }
+      }.bind(this))
+
     // Retrieve specific error and load into the form.
     if (this.$route.query.errorId) {
       ErrorService.getError(this.$route.query.errorId)
@@ -420,24 +446,62 @@ export default {
           this.errorId = this.$route.query.errorId
           this.date = res.data.errorDate
           this.time = res.data.errorTime.split(':', 2).join(':')
-          this.patientId = res.data.patient.patientHospitalId
-          this.patientFirstName = res.data.patient.patientFirstName
-          this.patientSurname = res.data.patient.patientSurname
-          this.patientType = res.data.patient.patienttypeId
-          this.errorType = res.data.errortype.id
-          this.medication = res.data.medication.medicationName
-          this.medicationType = res.data.medication.medicationtypeId
           this.errorComment = res.data.generalComment
-          this.workerAtFault = res.data.worker.id
-          this.workerNotified = res.data.wasWorkerNotified ? 'true' : 'false'
-          this.errorLocation = res.data.location.id
-          this.iimsCompleted = res.data.iimsCompleted ? 'true' : 'false'
-          this.severity = res.data.severity.id
-          this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
-          this.physicianFirstName = res.data.physician.physicianFirstName
-          this.physicianSurname = res.data.physician.physicianSurname
-          this.providerNumber = res.data.physician.providerNumber
-          this.physicianComment = res.data.physician.physicianComment
+
+          if (res.data.patient) {
+            this.showFields.showPatientFields = true
+            this.patientId = res.data.patient.patientHospitalId
+            this.patientFirstName = res.data.patient.patientFirstName
+            this.patientSurname = res.data.patient.patientSurname
+            this.patientType = res.data.patient.patienttypeId
+          } else { this.showFields.showPatientFields = false }
+
+          if (res.data.errortype) {
+            this.showFields.showErrorType = true
+            this.errorType = res.data.errortype.id
+          } else { this.showFields.showErrorType = false }
+
+          if (res.data.medication) {
+            this.showFields.showMedicationFields = true
+            this.medication = res.data.medication.medicationName
+            this.medicationType = res.data.medication.medicationtypeId
+          } else { this.showFields.showMedicationFields = false }
+
+          if (res.data.worker) {
+            this.showFields.showWorker = true
+            this.workerAtFault = res.data.worker.id
+          } else { this.showFields.showWorker = false }
+
+          if (res.data.wasWorkerNotified === 'null') {
+            this.showFields.showWorkerNotified = true
+            this.workerNotified = res.data.wasWorkerNotified ? 'true' : 'false'
+          } else { this.showFields.showWorkerNotified = false }
+
+          if (res.data.location) {
+            this.showFields.showLocation = true
+            this.errorLocation = res.data.location.id
+          } else { this.showFields.showLocation = false }
+
+          if (res.data.iimsCompleted === 'null') {
+            this.showFields.showIIMScompleted = true
+            this.iimsCompleted = res.data.iimsCompleted ? 'true' : 'false'
+          } else { this.showFields.showIIMScompleted = false }
+
+          if (res.data.severity) {
+            this.showFields.showSeverity = true
+            this.severity = res.data.severity.id
+          } else { this.showFields.showSeverity = false }
+
+          if (res.data.physician) {
+            this.showFields.showPhysicianFields = true
+            this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
+            this.physicianFirstName = res.data.physician.physicianFirstName
+            this.physicianSurname = res.data.physician.physicianSurname
+            this.providerNumber = res.data.physician.providerNumber
+            this.physicianComment = res.data.physician.physicianComment
+          } else { this.showFields.showPhysicianFields = false }
+          this.fieldsAreHidden = true
+          console.log('data initialised')
         }.bind(this))
     }
 
@@ -554,28 +618,30 @@ export default {
       var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
       var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
       var errorId = this.$route.query.errorId
+
       var values = {
         errorDate: this.date.valueOf(),
         errorTime: this.time,
         patientId: this.patientId,
         patientFirstName: this.patientFirstName,
         patientSurname: this.patientSurname,
-        patientType: this.patientType.valueOf(),
-        errortypeId: this.errorType.valueOf(),
-        medicationName: this.medication.valueOf(),
-        medicationtypeId: this.medicationType.valueOf(),
         generalComment: this.errorComment,
-        errorCausedByWorker: this.workerAtFault.valueOf(),
-        wasWorkerNotified: workerNotified,
-        locationId: this.errorLocation.valueOf(),
-        iimsCompleted: iimsCompleted,
-        severityId: this.severity.valueOf(),
-        wasPhysicianNotified: wasPhysicianNotified,
         physicianFirstName: this.physicianFirstName,
         physicianSurname: this.physicianSurname,
         providerNumber: this.providerNumber,
         physicianComment: this.physicianComment
       }
+      if (this.showFields.showPatientFields) { values = Object.assign(values, { patientType: this.patientType.valueOf() }) }
+      if (this.showFields.showErrorType) { values = Object.assign(values, { errortypeId: this.errorType.valueOf() }) }
+      if (this.showFields.showMedicationFields) { values = Object.assign(values, { medicationName: this.medication.valueOf() }) }
+      if (this.showFields.showMedicationFields) { values = Object.assign(values, { medicationtypeId: this.medicationType.valueOf() }) }
+      if (this.showFields.showWorker) { values = Object.assign(values, { errorCausedByWorker: this.workerAtFault.valueOf() }) }
+      if (this.showFields.showWorkerNotified) { values = Object.assign(values, { wasWorkerNotified: workerNotified }) }
+      if (this.showFields.showLocation) { values = Object.assign(values, { locationId: this.errorLocation.valueOf() }) }
+      if (this.showFields.showIIMScompleted) { values = Object.assign(values, { iimsCompleted: iimsCompleted }) }
+      if (this.showFields.showSeverity) { values = Object.assign(values, { severityId: this.severity.valueOf() }) }
+      if (this.showFields.showPhysicianFields) { values = Object.assign(values, { wasPhysicianNotified: wasPhysicianNotified }) }
+
       if (this.validForm() && errorId != null) {
         try {
           await ErrorService.updateError(errorId, values)
@@ -603,6 +669,13 @@ export default {
     },
     validForm: function () {
       return this.$refs.form.validate()
+    },
+    showAllCurrentFields: function () {
+      HiddenFieldsService.getHiddenFields(1)
+        .then(function (res, err) {
+          this.showFields = res.data[0]
+          this.fieldsAreHidden = false
+        }.bind(this))
     }
   }
 }
