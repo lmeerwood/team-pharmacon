@@ -96,7 +96,7 @@
 
           <v-list-tile>
             <v-list-tile-action>
-              <v-btn :to="{name:'User'}" v-if="authlevel === 2" flat>Add User</v-btn>
+              <v-btn :to="{name:'User'}" v-if="authlevel === 2" flat>Manage Users</v-btn>
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
