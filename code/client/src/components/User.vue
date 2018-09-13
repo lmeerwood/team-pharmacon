@@ -117,9 +117,12 @@ export default {
           })
           this.clear()
           this.authlevel = '1'
+          this.login = ''
+          this.password = ''
           this.message = 'Form submitted successfully!'
+          console.log('spacer')
         } catch (error) {
-          this.errorMessage = error.response.data.error
+          this.errorMessage = 'Failure here' + error.response.data.error
         }
       } else {
         this.errorMessage = 'There was an error with your form.'
