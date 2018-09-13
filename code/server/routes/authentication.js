@@ -72,4 +72,32 @@ router.delete('/user/:id', passport.authenticate('jwtAdmin', {session: false}),
     deleteUser(req, res, next)
   })
 
+// ChangePassword post function
+router.post('/changePassword', passport.authenticate('jwtAdmin', {session: false}), function (req, res, next) {
+  model.login.findOne({
+    where: {
+      username: req.body.username 
+    }
+  }).then(user => {
+    if (!user) {
+      return res.status(403).send({
+        error: 'The login information was incorrect'
+      })
+    }
+    model.login.update(
+      {password: req.body.password},
+      {where: {username: req.body.username}}
+    ).then(function (qres) {
+      return res.send(qres)
+    }).catch((error) => {
+      res.status(500)
+      res.send('error has occurred: ' + error)
+    })
+  })
+    .catch((error) => {
+      res.status(500)
+      res.send('error has occurred: ' + error)
+    })
+})
+
 module.exports = router
