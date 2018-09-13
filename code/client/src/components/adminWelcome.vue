@@ -69,8 +69,24 @@
                 <v-btn
                   round color="primary"
                   dark
+                  :to="{name: 'searchUser'}">
+                  Search Users
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
                   :to="{name: 'searchWorker'}">
                   Search Workers
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  round color="primary"
+                  dark
+                  :to="{name: 'toggleError'}">
+                  Manage Error Form
                 </v-btn>
               </div>
               <div>
@@ -109,24 +125,8 @@
                 <v-btn
                   round color="primary"
                   dark
-                  :to="{name: 'toggleError'}">
-                  Manage Error Form
-                </v-btn>
-              </div>
-              <div>
-                <v-btn
-                  round color="primary"
-                  dark
                   :to="{name: 'User'}">
                   Manage Users
-                </v-btn>
-              </div>
-              <div>
-                <v-btn
-                  round color="primary"
-                  dark
-                  :to="{name: 'searchUser'}">
-                  Search Users
                 </v-btn>
               </div>
               <div>
