@@ -30,6 +30,12 @@
                 </v-flex>
               </v-layout>
 
+              <v-layout row v-if="uploading">
+                <v-flex xs12 >
+                  <v-progress-linear :indeterminate="true" :disabled="false" ></v-progress-linear>
+                </v-flex>
+              </v-layout>
+
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-btn
@@ -65,6 +71,7 @@ export default {
     menu: false,
     msg: 'Error Type Details',
     loading: false,
+    uploading: false,
     errorMessage: '',
     message: '',
 
@@ -94,6 +101,7 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
+      this.uploading = true
       var type = this.errorType
       var errorTypeId = this.$route.query.errorTypeId
       var values = {
@@ -105,28 +113,38 @@ export default {
         try {
           this.clear()
           this.errorMessage = 'Error type - ' + type + ' - already exists!'
+          this.uploading = false
         } catch (error) {
           this.errorMessage = error.response.data.errorType
+          this.uploading = false
         }
       } else if (this.validForm() && errorTypeId !== undefined) {
         console.log('inside update error type. ID: ' + errorTypeId)
         try {
           await ErrortypeService.updateErrorType(errorTypeId, values)
           this.clear()
+          this.uploading = false
           this.message = 'Record updated successfully!'
+          setTimeout(function () {
+            this.$router.push('/searchErrorType')
+          }.bind(this), 1000)
         } catch (error) {
           this.errorMessage = error.response.data.errorType
+          this.uploading = false
         }
       } else if (this.validForm()) {
         console.log('inside add error type. Values: ' + values)
         try {
           await ErrortypeService.addErrorType(values)
           this.clear()
+          this.uploading = false
           this.message = 'Record added successfully!'
         } catch (error) {
+          this.uploading = false
           this.errorMessage = error.response.data.errorType
         }
       } else {
+        this.uploading = false
         this.errorMessage = 'There was an error with your form.'
       }
     },
