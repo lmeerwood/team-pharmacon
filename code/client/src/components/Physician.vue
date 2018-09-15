@@ -60,6 +60,12 @@
                 </v-flex>
               </v-layout>
 
+              <v-layout row v-if="uploading">
+                <v-flex xs12 >
+                  <v-progress-linear :indeterminate="true" :disabled="false" ></v-progress-linear>
+                </v-flex>
+              </v-layout>
+
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-btn
@@ -95,6 +101,7 @@ export default {
     menu: false,
     msg: 'Physician Details',
     loading: false,
+    uploading: false,
     errorMessage: '',
     message: '',
 
@@ -138,6 +145,7 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
+      this.uploading = true
       var physicianId = this.$route.query.physicianId
       var values = {
         physicianSurname: this.physicianSurname,
@@ -150,11 +158,17 @@ export default {
           await PhysicianService.updatePhysician(physicianId, values)
           this.clear()
           this.message = 'Record updated successfully!'
+          this.uploading = false
+          setTimeout(function () {
+            this.$router.push('/searchPhysician')
+          }.bind(this), 1000)
         } catch (error) {
-          this.errorMessage = error.response.data.error
+          this.errorMessage = 'An error has occured'
+          this.uploading = false
         }
       } else {
         this.errorMessage = 'There was an error with your form.'
+          this.uploading = false
       }
     },
     clear: function () {
