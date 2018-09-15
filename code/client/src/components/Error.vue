@@ -305,6 +305,12 @@
                 </v-flex>
               </v-layout>
 
+              <v-layout row v-if="uploading">
+                <v-flex xs12 >
+                  <v-progress-linear :indeterminate="true" :disabled="false" ></v-progress-linear>
+                </v-flex>
+              </v-layout>
+
               <v-layout row>
                 <v-flex xs8 offset-xs2>
                   <v-btn
@@ -357,6 +363,7 @@ export default {
     menu: false,
     msg: 'Error Form',
     loading: false,
+    uploading: false,
     errorMessage: '',
     message: '',
 
@@ -614,6 +621,7 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
+      this.uploading = true
       var wasPhysicianNotified = (this.wasPhysicianNotified.valueOf() === 'true') ? 1 : 0
       var iimsCompleted = (this.iimsCompleted.valueOf() === 'true') ? 1 : 0
       var workerNotified = (this.workerNotified.valueOf() === 'true') ? 1 : 0
@@ -646,19 +654,27 @@ export default {
         try {
           await ErrorService.updateError(errorId, values)
           this.clear()
+          this.uploading = false
           this.message = 'Record updated successfully!'
+          setTimeout(function () {
+            this.$router.push('/searchError')
+          }.bind(this), 1000)
         } catch (error) {
+          this.uploading = false
           this.errorMessage = error.response.data.error
         }
       } else if (this.validForm()) {
         try {
           await ErrorService.logError(values)
+          this.uploading = false
           this.clear()
           this.message = 'Record submitted successfully!'
         } catch (error) {
+          this.uploading = false
           this.errorMessage = error.response.data.error
         }
       } else {
+        this.uploading = false
         this.errorMessage = 'There was an error with your form.'
       }
     },
