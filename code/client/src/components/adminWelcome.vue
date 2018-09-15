@@ -117,16 +117,16 @@
                 <v-btn
                   round color="primary"
                   dark
-                  :to="{name: 'Worker'}">
-                  Manage Workers
+                  :to="{name: 'User'}">
+                  Manage Users
                 </v-btn>
               </div>
               <div>
                 <v-btn
                   round color="primary"
                   dark
-                  :to="{name: 'User'}">
-                  Manage Users
+                  :to="{name: 'Worker'}">
+                  Manage Workers
                 </v-btn>
               </div>
               <div>
