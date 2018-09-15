@@ -75,6 +75,12 @@
                 </v-flex>
               </v-layout>
 
+              <v-layout row v-if="uploading">
+                <v-flex xs12 >
+                  <v-progress-linear :indeterminate="true" :disabled="false" ></v-progress-linear>
+                </v-flex>
+              </v-layout>
+
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-btn
@@ -110,6 +116,7 @@ export default {
     menu: false,
     msg: 'Worker Details',
     loading: false,
+    uploading: false,
     errorMessage: '',
     message: '',
 
@@ -173,27 +180,38 @@ export default {
       if (this.validForm() && currentWorker.data && worker === undefined) {
         try {
           this.errorMessage = 'Worker ID already exists, please check your input'
+          this.uploading = false
         } catch (error) {
           this.errorMessage = error.response.data.worker
+          this.uploading = false
         }
       } else if (this.validForm() && worker !== undefined) {
         try {
           await WorkerService.updateWorker(workerId, values)
           this.clear()
           this.message = 'Record updated successfully!'
+          this.uploading = false
+          
+          setTimeout(function () {
+            this.$router.push('/searchWorker')
+          }.bind(this), 1000)
         } catch (error) {
           this.errorMessage = error.response.data.worker
+          this.uploading = false
         }
       } else if (this.validForm()) {
         try {
           await WorkerService.logWorker(values)
           this.clear()
           this.message = 'Record added successfully!'
+          this.uploading = false
         } catch (error) {
           this.errorMessage = error.response.data.worker
+          this.uploading = false
         }
       } else {
         this.errorMessage = 'There was an error with your form.'
+        this.uploading = false
       }
     },
     clear: function () {

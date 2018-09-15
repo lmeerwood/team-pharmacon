@@ -30,6 +30,12 @@
                 </v-flex>
               </v-layout>
 
+              <v-layout row v-if="uploading">
+                <v-flex xs12 >
+                  <v-progress-linear :indeterminate="true" :disabled="false" ></v-progress-linear>
+                </v-flex>
+              </v-layout>
+
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-btn
@@ -65,6 +71,7 @@ export default {
     menu: false,
     msg: 'Patient Type Details',
     loading: false,
+    uploading: false,
     errorMessage: '',
     message: '',
 
@@ -94,6 +101,7 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
+      this.uploading = true
       var type = this.patientType
       var patientTypeId = this.$route.query.patientTypeId
       console.log('inside methods submit patient type. ID: ' + this.$route.query.patientTypeId)
@@ -107,8 +115,10 @@ export default {
         try {
           this.clear()
           this.errorMessage = 'Error type - ' + type + ' - already exists!'
+          this.uploading = false
         } catch (error) {
-          this.errorMessage = error.response.data.errorType
+          this.errorMessage = 'An error has occured'
+          this.uploading = false
         }
       } else if (this.validForm() && patientTypeId !== undefined) {
         console.log('inside update patient type. ID: ' + patientTypeId + ' type: ' + values)
@@ -116,8 +126,13 @@ export default {
           await PatienttypeService.updatePatientType(patientTypeId, values)
           this.clear()
           this.message = 'Record updated successfully!'
+          this.uploading = false
+          setTimeout(function () {
+            this.$router.push('/searchPatientType')
+          }.bind(this), 1000)
         } catch (error) {
-          this.errorMessage = error.response.data.patientType
+          this.errorMessage = 'An error has occured'
+          this.uploading = false
         }
       } else if (this.validForm()) {
         console.log('inside add patient type. Values: ' + this.patientType)
@@ -125,11 +140,14 @@ export default {
           await PatienttypeService.addPatientType(values)
           this.clear()
           this.message = 'Record added successfully!'
+          this.uploading = false
         } catch (error) {
-          this.errorMessage = error.response.data.patientType
+          this.errorMessage = 'An error has occured'
+          this.uploading = false
         }
       } else {
         this.errorMessage = 'There was an error with your form.'
+        this.uploading = false
       }
     },
     clear: function () {
