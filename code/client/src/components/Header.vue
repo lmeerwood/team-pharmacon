@@ -63,7 +63,14 @@
           Manage...
           <v-icon>arrow_drop_down</v-icon>
         </v-btn>
+
         <v-list>
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'toggleError'}" v-if="authlevel === 2" flat>Manage Error Form</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
           <v-list-tile>
             <v-list-tile-action>
               <v-btn :to="{name:'ErrorType'}" v-if="authlevel === 2" flat>Manage Error Type</v-btn>
@@ -84,19 +91,13 @@
 
           <v-list-tile>
             <v-list-tile-action>
-              <v-btn :to="{name:'Worker'}" v-if="authlevel === 2" flat>Manage Workers</v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-
-          <v-list-tile>
-            <v-list-tile-action>
-              <v-btn :to="{name:'toggleError'}" v-if="authlevel === 2" flat>Manage Error Form</v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-
-          <v-list-tile>
-            <v-list-tile-action>
               <v-btn :to="{name:'User'}" v-if="authlevel === 2" flat>Manage Users</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-tile-action>
+              <v-btn :to="{name:'Worker'}" v-if="authlevel === 2" flat>Manage Workers</v-btn>
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
