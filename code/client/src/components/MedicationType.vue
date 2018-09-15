@@ -30,6 +30,12 @@
                 </v-flex>
               </v-layout>
 
+              <v-layout row v-if="uploading">
+                <v-flex xs12 >
+                  <v-progress-linear :indeterminate="true" :disabled="false" ></v-progress-linear>
+                </v-flex>
+              </v-layout>
+
             <v-layout row>
               <v-flex xs8 offset-xs2>
                 <v-btn
@@ -65,6 +71,7 @@ export default {
     menu: false,
     msg: 'Medication Type Details',
     loading: false,
+    uploading: false,
     errorMessage: '',
     message: '',
 
@@ -94,6 +101,7 @@ export default {
     async submit () {
       this.errorMessage = ''
       this.message = ''
+      this.uploading = true
       var type = this.medicationType
       var medicationTypeId = this.$route.query.medicationTypeId
       var values = {
@@ -101,34 +109,40 @@ export default {
       }
       var currentType = await MedicationtypeService.isMedicationTypeValid(type)
       if (this.validForm() && currentType.data) {
-        console.log('inside update medication type. currentType: ' + currentType.data)
         try {
           this.clear()
           this.errorMessage = 'Error type - ' + type + ' - already exists!'
+          this.uploading = false
         } catch (error) {
           this.errorMessage = error.response.data.errorType
+          this.uploading = false
         }
       } else if (this.validForm() && medicationTypeId !== undefined) {
-        console.log('inside update medication type. ID: ' + medicationTypeId)
-        console.log('inside update medication type: ' + this.medicationType)
         try {
           await MedicationtypeService.updateMedicationType(medicationTypeId, values)
           this.clear()
           this.message = 'Record updated successfully!'
+          this.uploading = false
+          setTimeout(function () {
+            this.$router.push('/searchMedicationType')
+          }.bind(this), 1000)
         } catch (error) {
           this.errorMessage = error.response.data.medicationType
+          this.uploading = false
         }
       } else if (this.validForm()) {
-        console.log('inside add medication type. Values: ' + this.medicationType)
         try {
           await MedicationtypeService.addMedicationType(values)
           this.clear()
+          this.uploading = false
           this.message = 'Record added successfully!'
         } catch (error) {
-          this.errorMessage = error.response.data.medicationType
+          this.uploading = false
+          this.errorMessage = 'An error has occurred'
         }
       } else {
         this.errorMessage = 'There was an error with your form.'
+        this.uploading = false
       }
     },
     clear: function () {
