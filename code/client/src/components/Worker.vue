@@ -191,7 +191,7 @@ export default {
           this.clear()
           this.message = 'Record updated successfully!'
           this.uploading = false
-          
+
           setTimeout(function () {
             this.$router.push('/searchWorker')
           }.bind(this), 1000)
