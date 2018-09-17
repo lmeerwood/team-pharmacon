@@ -168,7 +168,7 @@ export default {
         }
       } else {
         this.errorMessage = 'There was an error with your form.'
-          this.uploading = false
+        this.uploading = false
       }
     },
     clear: function () {
