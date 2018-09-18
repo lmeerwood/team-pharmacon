@@ -13,7 +13,7 @@ export default new Vuex.Store({
     token: null,
     user: {
       authlevel: 0,
-      email: ''
+      username: ''
     },
     isUserLoggedIn: false
   },
@@ -28,7 +28,7 @@ export default new Vuex.Store({
     clearUser (state) {
       state.user = {
         authlevel: 0,
-        email: ''
+        username: ''
       }
     }
   },
@@ -51,6 +51,9 @@ export default new Vuex.Store({
     auth: state => {
       console.log('Someone wants the user ' + state.user.authlevel)
       return state.user.authlevel
+    },
+    getUser: state => {
+      return state.user.username
     }
   }
 })

@@ -6,20 +6,24 @@
     "start": "node ./bin/www",
     "test": "node node_modules/standard/bin/cmd.js",
     "fix": "node node_modules/standard/bin/cmd.js --fix",
-    "dev": "node node_modules/nodemon/bin/nodemon.js ./bin/www --exec \"npm run fix && npm run test && node\""
+    "dev": "node node_modules/nodemon/bin/nodemon.js ./bin/www"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
+    "csv": "^3.1.0",
     "dotenv": "^5.0.1",
     "express": "~4.16.0",
+    "express-validator": "^5.3.0",
     "jsonwebtoken": "^8.2.1",
     "mustache": "^2.3.0",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.3",
     "nodemon": "^1.17.4",
+    "npm": "^6.4.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pug": "^2.0.3",
     "sequelize": "^4.37.8"
   },

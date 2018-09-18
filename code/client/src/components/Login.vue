@@ -12,14 +12,14 @@
 
             <v-layout row>
               <v-flex xs4>
-                <v-subheader><b>Enter Email</b></v-subheader>
+                <v-subheader><b>Enter Username</b></v-subheader>
                 </v-flex>
                 <v-flex xs8>
                   <v-text-field
-                  name="email"
-                  label="Email"
-                  v-model="email"
-                  :rules="[() => !!email || 'This field is required']"
+                  name="username"
+                  label="Username"
+                  v-model="username"
+                  :rules="[() => !!username || 'This field is required']"
                   :error-messages="errorMessages"
                   required
                   single-line
@@ -101,7 +101,7 @@ export default {
   data: () => ({
     msg: 'Please Login',
     e1: true,
-    email: '',
+    username: '',
     password: '',
     valid: true,
     message: '',
@@ -115,13 +115,13 @@ export default {
   computed: {
     form () {
       return {
-        email: this.email,
+        username: this.username,
         password: this.password
       }
     }
   },
   watch: {
-    email () {
+    username () {
       this.errorMessages = []
     },
     password () {
@@ -139,16 +139,24 @@ export default {
       if (!this.formHasErrors) {
         try {
           const response = await AuthenticationService.login({
-            email: this.email,
+            username: this.username,
             password: this.password
           })
           this.$store.dispatch('setToken', response.data.token)
           this.$store.dispatch('setUser', response.data.user)
-          this.$router.push({
-            name: 'Error'
-          })
+          var authlevel = this.$store.state.user.authlevel
+          // checks if user is admin or standard user.
+          if (authlevel === 2) {
+            this.$router.push({
+              name: 'adminWelcome'
+            })
+          } else {
+            this.$router.push({
+              name: 'Error'
+            })
+          }
         } catch (error) {
-          this.error = error.response.data.error
+          this.error = 'Incorrect login details'
         }
       }
     },

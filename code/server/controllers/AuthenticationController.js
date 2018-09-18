@@ -12,10 +12,10 @@ function jwtSignUser (user) {
 module.exports = {
   async login (req, res) {
     try {
-      const {email, password} = req.body
+      const {username, password} = req.body
       const user = await login.findOne({
         where: {
-          email: email
+          username: username
         }
       })
 
