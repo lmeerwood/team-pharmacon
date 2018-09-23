@@ -62,7 +62,7 @@
                 <v-btn
                   color="red lighten-1"
                   dark
-                  @click="deleteItem(props.item.id)"
+                  @click="deleteItem(props.item.id, props.item.user)"
                 >
                   Delete User
                 </v-btn>
@@ -75,7 +75,7 @@
             :bottom= true
             :timeout="3000"
           >
-            User {{ props.item.user }} deleted.
+            User {{ deletedUser }} deleted.
           </v-snackbar>
         </td>
       </template>
@@ -113,7 +113,8 @@ export default {
       { text: 'Authentication Level', align: 'center', value: 'authlevel' }
     ],
     dialogDelete: {},
-    snackbar: false
+    snackbar: false,
+    deletedUser: ''
   }),
   created () {
     UserService.getAll()
@@ -130,8 +131,9 @@ export default {
       }.bind(this))
   },
   methods: {
-    deleteItem (id) {
+    deleteItem (id, user) {
       this.dialogDelete[id] = false
+      this.deletedUser = user
       UserService.deleteUser(id).then(function (res, err) {
         while (this.Users.length > 0) { this.Users.pop() }
         UserService.getAll()
