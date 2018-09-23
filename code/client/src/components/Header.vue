@@ -121,7 +121,7 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-      <v-btn href="http://127.0.0.1:3000/resources/UserGuide.pdf" flat>Help</v-btn>
+      <v-btn href="http://18.188.218.170:3000/resources/UserGuide.pdf" flat>Help</v-btn>
       <v-btn @click="logout" flat>Logout</v-btn>
     </v-toolbar-items>
   </v-toolbar>
