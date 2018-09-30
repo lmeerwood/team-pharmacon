@@ -422,6 +422,7 @@ export default {
       showLocation: true,
       showIIMScompleted: true,
       showSeverity: true,
+      showPhysicianNotifed: true,
       showPhysicianFields: true
     },
     fieldsAreHidden: false
@@ -449,52 +450,82 @@ export default {
             this.patientFirstName = res.data.patient.patientFirstName
             this.patientSurname = res.data.patient.patientSurname
             this.patientType = res.data.patient.patienttypeId
-          } else { this.showFields.showPatientFields = false }
+          } else {
+            this.showFields.showPatientFields = false
+          }
 
           if (res.data.errortype) {
             this.showFields.showErrorType = true
             this.errorType = res.data.errortype.id
-          } else { this.showFields.showErrorType = false }
+          } else {
+            this.showFields.showErrorType = false
+          }
 
           if (res.data.medication) {
             this.showFields.showMedicationFields = true
             this.medication = res.data.medication.medicationName
             this.medicationType = res.data.medication.medicationtypeId
-          } else { this.showFields.showMedicationFields = false }
+          } else {
+            this.showFields.showMedicationFields = false
+          }
 
           if (res.data.worker) {
             this.showFields.showWorker = true
             this.workerAtFault = res.data.worker.id
-          } else { this.showFields.showWorker = false }
+          } else {
+            this.showFields.showWorker = false
+          }
 
-          if (res.data.wasWorkerNotified === 'null') {
+          if (res.data.wasWorkerNotified === null) {
+            this.showFields.showWorkerNotified = false
+          } else {
             this.showFields.showWorkerNotified = true
             this.workerNotified = res.data.wasWorkerNotified ? 'true' : 'false'
-          } else { this.showFields.showWorkerNotified = false }
+          }
 
           if (res.data.location) {
             this.showFields.showLocation = true
             this.errorLocation = res.data.location.id
-          } else { this.showFields.showLocation = false }
+          } else {
+            this.showFields.showLocation = false
+          }
 
-          if (res.data.iimsCompleted === 'null') {
+          if (res.data.iimsCompleted === null) {
+            this.showFields.showIIMScompleted = false
+          } else {
             this.showFields.showIIMScompleted = true
             this.iimsCompleted = res.data.iimsCompleted ? 'true' : 'false'
-          } else { this.showFields.showIIMScompleted = false }
+          }
 
           if (res.data.severity) {
             this.showFields.showSeverity = true
             this.severity = res.data.severity.id
-          } else { this.showFields.showSeverity = false }
+          } else {
+            this.showFields.showSeverity = false
+          }
 
-          if (res.data.physician) {
-            this.showFields.showPhysicianFields = true
+          if (res.data.wasPhysicianNotified === null) {
+            console.log('res.data.wasPhysicianNotified in if: ' + res.data.wasPhysicianNotified)
+            this.showFields.showPhysicianFields = false
+            this.showFields.showPhysicianNotifed = false
+          } else {
+            console.log('res.data.wasPhysicianNotified in else - actual: ' + res.data.wasPhysicianNotified)
+            this.showFields.showPhysicianNotifed = true
             this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
-            this.physicianFirstName = res.data.physician.physicianFirstName
-            this.physicianSurname = res.data.physician.physicianSurname
-            this.providerNumber = res.data.physician.providerNumber
-            this.physicianComment = res.data.physician.physicianComment
-          } else { this.showFields.showPhysicianFields = false }
+            if (res.data.wasPhysicianNotified) {
+              console.log('res.data.wasPhysicianNotified in else (if) - actual: ' + res.data.wasPhysicianNotified)
+              try {
+                this.showFields.showPhysicianFields = true
+                this.physicianFirstName = res.data.physician.physicianFirstName
+                this.physicianSurname = res.data.physician.physicianSurname
+                this.providerNumber = res.data.physician.providerNumber
+                this.physicianComment = res.data.physician.physicianComment
+              } catch (error) {
+                this.showFields.showPhysicianFields = false
+                console.log('Physician fields are empty ' + error)
+              }
+            }
+          }
           this.fieldsAreHidden = true
           console.log('data initialised')
         }.bind(this))
@@ -627,17 +658,68 @@ export default {
         providerNumber: this.providerNumber,
         physicianComment: this.physicianComment
       }
-      if (this.showFields.showPatientFields) { values = Object.assign(values, { patientType: this.patientType.valueOf() }) }
-      if (this.showFields.showErrorType) { values = Object.assign(values, { errortypeId: this.errorType.valueOf() }) }
-      if (this.showFields.showMedicationFields) { values = Object.assign(values, { medicationName: this.medication.valueOf() }) }
-      if (this.showFields.showMedicationFields) { values = Object.assign(values, { medicationtypeId: this.medicationType.valueOf() }) }
-      if (this.showFields.showWorker) { values = Object.assign(values, { errorCausedByWorker: this.workerAtFault.valueOf() }) }
-      if (this.showFields.showWorkerNotified) { values = Object.assign(values, { wasWorkerNotified: workerNotified }) }
-      if (this.showFields.showLocation) { values = Object.assign(values, { locationId: this.errorLocation.valueOf() }) }
-      if (this.showFields.showIIMScompleted) { values = Object.assign(values, { iimsCompleted: iimsCompleted }) }
-      if (this.showFields.showSeverity) { values = Object.assign(values, { severityId: this.severity.valueOf() }) }
-      if (this.showFields.showPhysicianFields) { values = Object.assign(values, { wasPhysicianNotified: wasPhysicianNotified }) }
 
+      // Show Fields data
+      if (this.showFields.showPatientFields) {
+        values = Object.assign(values, {
+          patientType: this.patientType.valueOf()
+        })
+      }
+      if (this.showFields.showErrorType) {
+        values = Object.assign(values, {
+          errortypeId: this.errorType.valueOf()
+        })
+      }
+      if (this.showFields.showMedicationFields) {
+        values = Object.assign(values, {
+          medicationName: this.medication.valueOf()
+        })
+      }
+      if (this.showFields.showMedicationFields) {
+        values = Object.assign(values, {
+          medicationtypeId: this.medicationType.valueOf()
+        })
+      }
+      if (this.showFields.showWorker) {
+        values = Object.assign(values, {
+          errorCausedByWorker: this.workerAtFault.valueOf()
+        })
+      }
+      if (this.showFields.showWorkerNotified) {
+        values = Object.assign(values, {
+          wasWorkerNotified: workerNotified
+        })
+      }
+      if (this.showFields.showLocation) {
+        values = Object.assign(values, {
+          locationId: this.errorLocation.valueOf()
+        })
+      }
+      if (this.showFields.showIIMScompleted) {
+        values = Object.assign(values, {
+          iimsCompleted: iimsCompleted
+        })
+      }
+      if (this.showFields.showSeverity) {
+        values = Object.assign(values, {
+          severityId: this.severity.valueOf()
+        })
+      }
+      if (this.showFields.showPhysicianNotifed) {
+        values = Object.assign(values, {
+          wasPhysicianNotified: wasPhysicianNotified
+        })
+      }
+      if (this.showFields.showPhysicianFields) {
+        values = Object.assign(values, {
+          physicianFirstName: this.physicianFirstName.valueOf(),
+          physicianSurname: this.physicianSurname.valueOf(),
+          providerNumber: this.providerNumber.valueOf(),
+          physicianComment: this.physicianComment.valueOf()
+        })
+      }
+
+      // Update error data or add error
       if (this.validForm() && errorId != null) {
         try {
           await ErrorService.updateError(errorId, values)
