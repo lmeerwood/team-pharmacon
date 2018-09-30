@@ -155,7 +155,7 @@
                   <v-text-field
                     label="Error Description or General Comment"
                     v-model="errorComment"
-                    :rules="[rules.drCommentRule]"
+                    :rules="[rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -256,7 +256,7 @@
                     label="Physician Provider Number"
                     v-model="providerNumber"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.drAlphaNum]"
+                    :rules="[rules.alphaNum]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -267,7 +267,7 @@
                     label="Physician First Name"
                     v-model="physicianFirstName"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.drAlpha]"
+                    :rules="[rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -278,7 +278,7 @@
                     label="Physician Surname"
                     v-model="physicianSurname"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.drAlpha]"
+                    :rules="[rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -289,7 +289,7 @@
                     label="Physician Comments"
                     v-model="physicianComment"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.drAlpha]"
+                    :rules="[rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -409,20 +409,8 @@ export default {
         return pattern.test(value) || 'Alpha-numeric field only'
       },
       alphaDashApos: value => {
-        const pattern = /^([a-zA-Z-' ]+)$/
-        return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
-      },
-      drAlpha: value => {
         const pattern = /^$|^([a-zA-Z-' ]+)$/
         return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
-      },
-      drAlphaNum: value => {
-        const pattern = /^([a-zA-Z0-9]+)$/
-        return pattern.test(value) || 'Alpha-numeric field only'
-      },
-      drCommentRule: value => {
-        const pattern = /^$|^[a-zA-Z0-9 -'\\.]+$/
-        return pattern.test(value) || 'Optional, but must be Alpha-numeric. You can use spaces, dashes and full stops.'
       }
     },
     showFields: {
