@@ -797,38 +797,6 @@ router.post(
   }
 )
 
-
-router.post(
-  '/export',
-  passport.authenticate('jwtAdmin', {session: false}),
-  function (req, res, next) {
-    // const errors = validationResult(req)
-    // if (!errors.isEmpty()){
-    //   return res.status(422).json({ errors: errors.array() })
-    // }
-
-    var startDate = req.body.startDate
-    var endDate = req.body.endDate
-    model.error.findAll({
-      where: {
-        errorDate: {
-          [Op.and]: {
-            [Op.gt]: startDate,
-            [Op.lt]: endDate
-          }
-        }
-      },
-      include: [{ all: true, nested: true }]
-    }).then(function (qres) {
-      res.send(qres)
-    })
-    .catch((error) => {
-      res.status(500)
-      res.send('error has occurred: ' + error)
-    })
-  }
-)
-
 module.exports = router
 
 // model.errortype,

@@ -111,11 +111,6 @@
         <v-list>
           <v-list-tile>
             <v-list-tile-action>
-              <v-btn :to="{name:'downloadData'}" v-if="authlevel === 2" flat>Download Data</v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
-          <v-list-tile>
-            <v-list-tile-action>
               <v-btn href="http://18.188.218.170:17050" v-if="authlevel === 2" flat>Reporting</v-btn>
             </v-list-tile-action>
           </v-list-tile>
