@@ -236,12 +236,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianNotified">
                 <v-flex xs8 offset-xs2>
                   <h4>Was the physician notified?</h4>
                 </v-flex>
               </v-layout>
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianNotified">
                 <v-flex xs8 offset-xs2>
                   <v-radio-group v-model="wasPhysicianNotified" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
@@ -250,7 +250,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianFields && !this.wasPhysicianNotified == 'false'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Provider Number"
@@ -261,7 +261,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianFields && !this.wasPhysicianNotified == 'false'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician First Name"
@@ -272,7 +272,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianFields && !this.wasPhysicianNotified == 'false'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Surname"
@@ -283,7 +283,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianFields && !this.wasPhysicianNotified == 'false'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Comments"
@@ -331,8 +331,8 @@
                     round color="secondary"
                     dark
                     @click="showAllCurrentFields"
-                    :disabled="!this.fieldsAreHidden">
-                    Show Missing Fields
+                    :disabled="this.fieldsAreHidden">
+                    Show Currently Enabled Fields
                   </v-btn>
                 </v-flex>
               </v-layout>
@@ -432,6 +432,7 @@ export default {
       .then(function (res, err) {
         if (!res.data[1] && !this.$route.query.errorId) {
           this.showFields = res.data[0]
+          this.showFields.showPhysicianNotified = res.data[0].showPhysicianFields
         }
       }.bind(this))
 
@@ -760,6 +761,7 @@ export default {
       HiddenFieldsService.getHiddenFields(1)
         .then(function (res, err) {
           this.showFields = res.data[0]
+          this.showFields.showPhysicianNotified = showPhysicianFields
           this.fieldsAreHidden = false
         }.bind(this))
     }
