@@ -250,7 +250,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields && !this.wasPhysicianNotified == 'false'">
+              <v-layout row v-if="showFields.showPhysicianFields && this.wasPhysicianNotified == 'true'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Provider Number"
@@ -261,7 +261,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields && !this.wasPhysicianNotified == 'false'">
+              <v-layout row v-if="showFields.showPhysicianFields && this.wasPhysicianNotified == 'true'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician First Name"
@@ -272,7 +272,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields && !this.wasPhysicianNotified == 'false'">
+              <v-layout row v-if="showFields.showPhysicianFields && this.wasPhysicianNotified == 'true'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Surname"
@@ -283,7 +283,7 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields && !this.wasPhysicianNotified == 'false'">
+              <v-layout row v-if="showFields.showPhysicianFields && this.wasPhysicianNotified == 'true'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Comments"
@@ -422,7 +422,7 @@ export default {
       showLocation: true,
       showIIMScompleted: true,
       showSeverity: true,
-      showPhysicianNotifed: true,
+      showPhysicianNotified: true,
       showPhysicianFields: true
     },
     fieldsAreHidden: false
@@ -506,25 +506,27 @@ export default {
           }
 
           if (res.data.wasPhysicianNotified === null) {
-            console.log('res.data.wasPhysicianNotified in if: ' + res.data.wasPhysicianNotified)
             this.showFields.showPhysicianFields = false
-            this.showFields.showPhysicianNotifed = false
+            this.showFields.showPhysicianNotified = false
           } else {
-            console.log('res.data.wasPhysicianNotified in else - actual: ' + res.data.wasPhysicianNotified)
-            this.showFields.showPhysicianNotifed = true
-            this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
             if (res.data.wasPhysicianNotified) {
-              console.log('res.data.wasPhysicianNotified in else (if) - actual: ' + res.data.wasPhysicianNotified)
               try {
+                this.showFields.showPhysicianNotified = true
+                this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
                 this.showFields.showPhysicianFields = true
                 this.physicianFirstName = res.data.physician.physicianFirstName
                 this.physicianSurname = res.data.physician.physicianSurname
                 this.providerNumber = res.data.physician.providerNumber
                 this.physicianComment = res.data.physician.physicianComment
               } catch (error) {
+                this.showFields.showPhysicianNotified = false
                 this.showFields.showPhysicianFields = false
                 console.log('Physician fields are empty ' + error)
               }
+            } else {
+              this.showFields.showPhysicianNotified = true
+              this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
+              this.showFields.showPhysicianFields = false
             }
           }
           this.fieldsAreHidden = true
@@ -706,7 +708,7 @@ export default {
           severityId: this.severity.valueOf()
         })
       }
-      if (this.showFields.showPhysicianNotifed) {
+      if (this.showFields.showPhysicianNotified) {
         values = Object.assign(values, {
           wasPhysicianNotified: wasPhysicianNotified
         })
@@ -761,7 +763,7 @@ export default {
       HiddenFieldsService.getHiddenFields(1)
         .then(function (res, err) {
           this.showFields = res.data[0]
-          this.showFields.showPhysicianNotified = showPhysicianFields
+          this.showFields.showPhysicianNotified = res.data[0].showPhysicianFields
           this.fieldsAreHidden = false
         }.bind(this))
     }
