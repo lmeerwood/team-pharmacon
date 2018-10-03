@@ -69,7 +69,6 @@ export default {
       .then(function (res, err) {
         var i
         for (i = 0; i < res.data.length; i++) {
-          console.log(res.data)
           if (res.data[i].physician && res.data[i].patient) {
             this.errors.push({
               id: res.data[i].id,
