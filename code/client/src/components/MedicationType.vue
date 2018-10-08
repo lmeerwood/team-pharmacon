@@ -115,6 +115,7 @@ export default {
           this.uploading = false
         } catch (error) {
           this.errorMessage = error.response.data.errorType
+          console.log('An error has occurred: ' + error)
           this.uploading = false
         }
       } else if (this.validForm() && medicationTypeId !== undefined) {
@@ -128,6 +129,7 @@ export default {
           }.bind(this), 1000)
         } catch (error) {
           this.errorMessage = error.response.data.medicationType
+          console.log('An error has occurred: ' + error)
           this.uploading = false
         }
       } else if (this.validForm()) {
@@ -139,6 +141,7 @@ export default {
         } catch (error) {
           this.uploading = false
           this.errorMessage = 'An error has occurred'
+          console.log('An error has occurred: ' + error)
         }
       } else {
         this.errorMessage = 'There was an error with your form.'

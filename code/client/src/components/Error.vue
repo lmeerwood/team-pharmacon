@@ -155,7 +155,7 @@
                   <v-text-field
                     label="Error Description or General Comment"
                     v-model="errorComment"
-                    :rules="[rules.drCommentRule]"
+                    :rules="[rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -236,12 +236,12 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianNotified">
                 <v-flex xs8 offset-xs2>
                   <h4>Was the physician notified?</h4>
                 </v-flex>
               </v-layout>
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianNotified">
                 <v-flex xs8 offset-xs2>
                   <v-radio-group v-model="wasPhysicianNotified" row="row">
                     <v-radio label="Yes" value="true"></v-radio>
@@ -250,46 +250,46 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianFields && this.wasPhysicianNotified == 'true'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Provider Number"
                     v-model="providerNumber"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.drAlphaNum]"
+                    :rules="[rules.alphaNum]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianFields && this.wasPhysicianNotified == 'true'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician First Name"
                     v-model="physicianFirstName"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.drAlpha]"
+                    :rules="[rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianFields && this.wasPhysicianNotified == 'true'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Surname"
                     v-model="physicianSurname"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.drAlpha]"
+                    :rules="[rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
 
-              <v-layout row v-if="showFields.showPhysicianFields">
+              <v-layout row v-if="showFields.showPhysicianFields && this.wasPhysicianNotified == 'true'">
                 <v-flex xs8 offset-xs2>
                   <v-text-field
                     label="Physician Comments"
                     v-model="physicianComment"
                     :disabled="this.wasPhysicianNotified == 'false' || this.wasPhysicianNotified == 0"
-                    :rules="[rules.drAlpha]"
+                    :rules="[rules.alphaDashApos]"
                   ></v-text-field>
                 </v-flex>
               </v-layout>
@@ -321,19 +321,56 @@
                     @click="submit"
                   >Submit
                   </v-btn>
+
+                  <v-dialog v-model="dialogClear" width="500">
                   <v-btn
+                    slot="activator"
                     round color="secondary"
                     dark
-                    @click="clear">
-                    clear
-                  </v-btn>
+                    @click="dialogClear=true"
+                    >
+                      Clear
+                    </v-btn>
+
+                    <v-card>
+                      <v-card-title class="headline red lighten-2" primary-title>
+                        Clear Form
+                      </v-card-title>
+
+                      <v-card-text>
+                        Are you sure you want to clear the form? This cannot be undone!
+                      </v-card-text>
+
+                      <v-divider></v-divider>
+
+                      <v-card-actions>
+                        <v-btn
+                          color="gray lighten-1"
+                          dark
+                          @click="dialogClear=false"
+                        >
+                          Cancel
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="red lighten-1"
+                          dark
+                          @click="clear"
+                        >
+                          Clear Form
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+
                   <v-btn
                     round color="secondary"
                     dark
                     @click="showAllCurrentFields"
-                    :disabled="!this.fieldsAreHidden">
-                    Show Missing Fields
+                    :disabled="this.fieldsAreHidden">
+                    Show Currently Enabled Fields
                   </v-btn>
+
                 </v-flex>
               </v-layout>
             </v-container>
@@ -366,6 +403,7 @@ export default {
     uploading: false,
     errorMessage: '',
     message: '',
+    dialogClear: false,
 
     // Variables to hold drop down box values
     errorLocations: [],
@@ -409,20 +447,8 @@ export default {
         return pattern.test(value) || 'Alpha-numeric field only'
       },
       alphaDashApos: value => {
-        const pattern = /^([a-zA-Z-' ]+)$/
-        return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
-      },
-      drAlpha: value => {
         const pattern = /^$|^([a-zA-Z-' ]+)$/
         return pattern.test(value) || 'Field must contain letters and/or dash/apostrophe only'
-      },
-      drAlphaNum: value => {
-        const pattern = /^([a-zA-Z0-9]+)$/
-        return pattern.test(value) || 'Alpha-numeric field only'
-      },
-      drCommentRule: value => {
-        const pattern = /^$|^[a-zA-Z0-9 -'\\.]+$/
-        return pattern.test(value) || 'Optional, but must be Alpha-numeric. You can use spaces, dashes and full stops.'
       }
     },
     showFields: {
@@ -434,6 +460,7 @@ export default {
       showLocation: true,
       showIIMScompleted: true,
       showSeverity: true,
+      showPhysicianNotified: true,
       showPhysicianFields: true
     },
     fieldsAreHidden: false
@@ -443,6 +470,7 @@ export default {
       .then(function (res, err) {
         if (!res.data[1] && !this.$route.query.errorId) {
           this.showFields = res.data[0]
+          this.showFields.showPhysicianNotified = res.data[0].showPhysicianFields
         }
       }.bind(this))
 
@@ -461,52 +489,84 @@ export default {
             this.patientFirstName = res.data.patient.patientFirstName
             this.patientSurname = res.data.patient.patientSurname
             this.patientType = res.data.patient.patienttypeId
-          } else { this.showFields.showPatientFields = false }
+          } else {
+            this.showFields.showPatientFields = false
+          }
 
           if (res.data.errortype) {
             this.showFields.showErrorType = true
             this.errorType = res.data.errortype.id
-          } else { this.showFields.showErrorType = false }
+          } else {
+            this.showFields.showErrorType = false
+          }
 
           if (res.data.medication) {
             this.showFields.showMedicationFields = true
             this.medication = res.data.medication.medicationName
             this.medicationType = res.data.medication.medicationtypeId
-          } else { this.showFields.showMedicationFields = false }
+          } else {
+            this.showFields.showMedicationFields = false
+          }
 
           if (res.data.worker) {
             this.showFields.showWorker = true
             this.workerAtFault = res.data.worker.id
-          } else { this.showFields.showWorker = false }
+          } else {
+            this.showFields.showWorker = false
+          }
 
-          if (res.data.wasWorkerNotified === 'null') {
+          if (res.data.wasWorkerNotified === null) {
+            this.showFields.showWorkerNotified = false
+          } else {
             this.showFields.showWorkerNotified = true
             this.workerNotified = res.data.wasWorkerNotified ? 'true' : 'false'
-          } else { this.showFields.showWorkerNotified = false }
+          }
 
           if (res.data.location) {
             this.showFields.showLocation = true
             this.errorLocation = res.data.location.id
-          } else { this.showFields.showLocation = false }
+          } else {
+            this.showFields.showLocation = false
+          }
 
-          if (res.data.iimsCompleted === 'null') {
+          if (res.data.iimsCompleted === null) {
+            this.showFields.showIIMScompleted = false
+          } else {
             this.showFields.showIIMScompleted = true
             this.iimsCompleted = res.data.iimsCompleted ? 'true' : 'false'
-          } else { this.showFields.showIIMScompleted = false }
+          }
 
           if (res.data.severity) {
             this.showFields.showSeverity = true
             this.severity = res.data.severity.id
-          } else { this.showFields.showSeverity = false }
+          } else {
+            this.showFields.showSeverity = false
+          }
 
-          if (res.data.physician) {
-            this.showFields.showPhysicianFields = true
-            this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
-            this.physicianFirstName = res.data.physician.physicianFirstName
-            this.physicianSurname = res.data.physician.physicianSurname
-            this.providerNumber = res.data.physician.providerNumber
-            this.physicianComment = res.data.physician.physicianComment
-          } else { this.showFields.showPhysicianFields = false }
+          if (res.data.wasPhysicianNotified === null) {
+            this.showFields.showPhysicianFields = false
+            this.showFields.showPhysicianNotified = false
+          } else {
+            if (res.data.wasPhysicianNotified) {
+              try {
+                this.showFields.showPhysicianNotified = true
+                this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
+                this.showFields.showPhysicianFields = true
+                this.physicianFirstName = res.data.physician.physicianFirstName
+                this.physicianSurname = res.data.physician.physicianSurname
+                this.providerNumber = res.data.physician.providerNumber
+                this.physicianComment = res.data.physician.physicianComment
+              } catch (error) {
+                this.showFields.showPhysicianNotified = false
+                this.showFields.showPhysicianFields = false
+                console.log('Physician fields are empty ' + error)
+              }
+            } else {
+              this.showFields.showPhysicianNotified = true
+              this.wasPhysicianNotified = res.data.wasPhysicianNotified ? 'true' : 'false'
+              this.showFields.showPhysicianFields = false
+            }
+          }
           this.fieldsAreHidden = true
           console.log('data initialised')
         }.bind(this))
@@ -639,17 +699,68 @@ export default {
         providerNumber: this.providerNumber,
         physicianComment: this.physicianComment
       }
-      if (this.showFields.showPatientFields) { values = Object.assign(values, { patientType: this.patientType.valueOf() }) }
-      if (this.showFields.showErrorType) { values = Object.assign(values, { errortypeId: this.errorType.valueOf() }) }
-      if (this.showFields.showMedicationFields) { values = Object.assign(values, { medicationName: this.medication.valueOf() }) }
-      if (this.showFields.showMedicationFields) { values = Object.assign(values, { medicationtypeId: this.medicationType.valueOf() }) }
-      if (this.showFields.showWorker) { values = Object.assign(values, { errorCausedByWorker: this.workerAtFault.valueOf() }) }
-      if (this.showFields.showWorkerNotified) { values = Object.assign(values, { wasWorkerNotified: workerNotified }) }
-      if (this.showFields.showLocation) { values = Object.assign(values, { locationId: this.errorLocation.valueOf() }) }
-      if (this.showFields.showIIMScompleted) { values = Object.assign(values, { iimsCompleted: iimsCompleted }) }
-      if (this.showFields.showSeverity) { values = Object.assign(values, { severityId: this.severity.valueOf() }) }
-      if (this.showFields.showPhysicianFields) { values = Object.assign(values, { wasPhysicianNotified: wasPhysicianNotified }) }
 
+      // Show Fields data
+      if (this.showFields.showPatientFields) {
+        values = Object.assign(values, {
+          patientType: this.patientType.valueOf()
+        })
+      }
+      if (this.showFields.showErrorType) {
+        values = Object.assign(values, {
+          errortypeId: this.errorType.valueOf()
+        })
+      }
+      if (this.showFields.showMedicationFields) {
+        values = Object.assign(values, {
+          medicationName: this.medication.valueOf()
+        })
+      }
+      if (this.showFields.showMedicationFields) {
+        values = Object.assign(values, {
+          medicationtypeId: this.medicationType.valueOf()
+        })
+      }
+      if (this.showFields.showWorker) {
+        values = Object.assign(values, {
+          errorCausedByWorker: this.workerAtFault.valueOf()
+        })
+      }
+      if (this.showFields.showWorkerNotified) {
+        values = Object.assign(values, {
+          wasWorkerNotified: workerNotified
+        })
+      }
+      if (this.showFields.showLocation) {
+        values = Object.assign(values, {
+          locationId: this.errorLocation.valueOf()
+        })
+      }
+      if (this.showFields.showIIMScompleted) {
+        values = Object.assign(values, {
+          iimsCompleted: iimsCompleted
+        })
+      }
+      if (this.showFields.showSeverity) {
+        values = Object.assign(values, {
+          severityId: this.severity.valueOf()
+        })
+      }
+      if (this.showFields.showPhysicianNotified) {
+        values = Object.assign(values, {
+          wasPhysicianNotified: wasPhysicianNotified
+        })
+      }
+      if (this.showFields.showPhysicianFields) {
+        values = Object.assign(values, {
+          physicianFirstName: this.physicianFirstName.valueOf(),
+          physicianSurname: this.physicianSurname.valueOf(),
+          providerNumber: this.providerNumber.valueOf(),
+          physicianComment: this.physicianComment.valueOf()
+        })
+      }
+
+      // Update error data or add error
       if (this.validForm() && errorId != null) {
         try {
           await ErrorService.updateError(errorId, values)
@@ -679,6 +790,7 @@ export default {
       }
     },
     clear: function () {
+      this.dialogClear = false
       this.$refs.form.reset()
       this.message = ''
       this.errorMessage = ''
@@ -690,6 +802,7 @@ export default {
       HiddenFieldsService.getHiddenFields(1)
         .then(function (res, err) {
           this.showFields = res.data[0]
+          this.showFields.showPhysicianNotified = res.data[0].showPhysicianFields
           this.fieldsAreHidden = false
         }.bind(this))
     }

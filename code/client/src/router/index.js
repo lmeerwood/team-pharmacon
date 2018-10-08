@@ -20,7 +20,6 @@ import searchMedicationType from '@/components/searchMedicationType'
 import PatientType from '@/components/PatientType'
 import searchPatientType from '@/components/searchPatientType'
 import searchUser from '@/components/searchUser'
-import downloadData from '@/components/downloadData'
 import password from '@/components/Password'
 
 Vue.use(Router)
@@ -121,11 +120,6 @@ var router = new Router({
       path: '/searchUser',
       name: 'searchUser',
       component: searchUser
-    },
-    {
-      path: '/downloadData',
-      name: 'downloadData',
-      component: downloadData
     },
     {
       path: '/password',
