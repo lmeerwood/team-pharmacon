@@ -118,6 +118,7 @@ export default {
           this.uploading = false
         } catch (error) {
           this.errorMessage = 'An error has occured'
+          console.log('An error has occurred: ' + error)
           this.uploading = false
         }
       } else if (this.validForm() && patientTypeId !== undefined) {
@@ -132,6 +133,7 @@ export default {
           }.bind(this), 1000)
         } catch (error) {
           this.errorMessage = 'An error has occured'
+          console.log('An error has occurred: ' + error)
           this.uploading = false
         }
       } else if (this.validForm()) {
@@ -143,6 +145,7 @@ export default {
           this.uploading = false
         } catch (error) {
           this.errorMessage = 'An error has occured'
+          console.log('An error has occurred: ' + error)
           this.uploading = false
         }
       } else {

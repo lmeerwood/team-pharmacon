@@ -321,12 +321,48 @@
                     @click="submit"
                   >Submit
                   </v-btn>
+
+                  <v-dialog v-model="dialogClear" width="500">
                   <v-btn
+                    slot="activator"
                     round color="secondary"
                     dark
-                    @click="clear">
-                    clear
-                  </v-btn>
+                    @click="dialogClear=true"
+                    >
+                      Clear
+                    </v-btn>
+
+                    <v-card>
+                      <v-card-title class="headline red lighten-2" primary-title>
+                        Clear Form
+                      </v-card-title>
+
+                      <v-card-text>
+                        Are you sure you want to clear the form? This cannot be undone!
+                      </v-card-text>
+
+                      <v-divider></v-divider>
+
+                      <v-card-actions>
+                        <v-btn
+                          color="gray lighten-1"
+                          dark
+                          @click="dialogClear=false"
+                        >
+                          Cancel
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="red lighten-1"
+                          dark
+                          @click="clear"
+                        >
+                          Clear Form
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+
                   <v-btn
                     round color="secondary"
                     dark
@@ -334,6 +370,7 @@
                     :disabled="this.fieldsAreHidden">
                     Show Currently Enabled Fields
                   </v-btn>
+
                 </v-flex>
               </v-layout>
             </v-container>
@@ -366,6 +403,7 @@ export default {
     uploading: false,
     errorMessage: '',
     message: '',
+    dialogClear: false,
 
     // Variables to hold drop down box values
     errorLocations: [],
@@ -752,6 +790,7 @@ export default {
       }
     },
     clear: function () {
+      this.dialogClear = false
       this.$refs.form.reset()
       this.message = ''
       this.errorMessage = ''
