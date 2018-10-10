@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`physician` (
   `physicianComment` VARCHAR(150) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 12
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`patient` (
   `patientTypeId` INT(11) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 21
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`worker` (
   `workerActive` TINYINT(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `idWorker_UNIQUE` (`id` ASC))
+  AUTO_INCREMENT = 1
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -70,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`errortype` (
   `errorType` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 12
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -82,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`location` (
   `errorLocation` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -95,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`medication` (
   `medicationTypeId` INT(11) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 25
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -107,8 +108,21 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`severity` (
   `level` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Data for table `petdatabase`.`severity`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petdatabase`;
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Minor');
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Low');
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate-Low');
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate');
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate-Severe');
+INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Severe');
 
 
 -- -----------------------------------------------------
@@ -173,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`error` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 18
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -188,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`login` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `userName_UNIQUE` (`username` ASC))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -205,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`medicationtype` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 9
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -222,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `petdatabase`.`patienttype` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
