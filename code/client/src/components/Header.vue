@@ -111,7 +111,7 @@
         <v-list>
           <v-list-tile>
             <v-list-tile-action>
-              <v-btn href="http://18.188.218.170:17050" v-if="authlevel === 2" flat>Reporting</v-btn>
+              <v-btn href=process.env.METABASE v-if="authlevel === 2" flat>Reporting</v-btn>
             </v-list-tile-action>
           </v-list-tile>
         </v-list>

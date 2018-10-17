@@ -39,21 +39,6 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `petdatabase`.`severity`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `petdatabase`;
-INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Minor');
-INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Low');
-INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate-Low');
-INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate');
-INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Moderate-Severe');
-INSERT INTO `petdatabase`.`severity` (`level`) VALUES ('Severe');
-
-COMMIT;
-
-
--- -----------------------------------------------------
 -- Data for table `petdatabase`.`medicationtype`
 -- -----------------------------------------------------
 START TRANSACTION;
