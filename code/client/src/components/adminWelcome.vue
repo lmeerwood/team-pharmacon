@@ -131,7 +131,7 @@
               </div>
               <div>
                 <v-btn
-                  href="http://18.188.218.170:17050"
+                  href="http://pet.hopto.me:17050"
                   round color="primary"
                   dark>
                   Reporting</v-btn>
