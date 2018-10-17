@@ -15,7 +15,7 @@ server.listen(port, hostname, () => {
 });
 
 var con = mysql.createConnection({
-    host: "18.188.218.170",
+    host: "pet.hopto.me",
     user: "pet_user",
     password: "password"
   });
